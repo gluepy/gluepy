@@ -20,6 +20,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/gluepy/gluepy",
     packages=setuptools.find_packages(),
+    scripts=["gluepy/bin/gluepy.py"],
     install_requires=dependencies,
     include_package_data=True,
     classifiers=[
