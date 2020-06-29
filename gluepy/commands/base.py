@@ -22,7 +22,7 @@ class Command(object):
         name = cls.label or cls.__name__.lower()
         REGISTRY[name] = cls
 
-    def handler(self, *args, **kwargs):
+    def handle(self, *args, **kwargs):
         """Hook to add logic to your command"""
         raise NotImplementedError("Command has not been implemented yet.")
 
@@ -68,7 +68,7 @@ class DefaultCommand(Command):
 
         if options.get("list"):
             self.stdout(
-                "Available commands: \n\n%s"
+                "Available commands: \n%s"
                 % "\n".join([cmd for cmd in REGISTRY.keys()])
             )
 
