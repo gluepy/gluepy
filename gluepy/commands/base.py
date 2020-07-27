@@ -39,7 +39,7 @@ class Command(object):
     def run(self):
         parser = self.parser_class()
         self.add_arguments(parser)
-        kwargs = vars(parser.parse_args())
+        kwargs = vars(parser.parse_args(args=None if sys.argv[1:] else ['--help']))
         self.handle(**kwargs)
 
 
@@ -62,11 +62,9 @@ class DefaultCommand(Command):
     def handle(self, **options):
         if not options:
             self.parser_class().print_help()
-
-        if options.get("version"):
+        elif options.get("version"):
             self.stdout("Gluepy version: %s" % VERSION)
-
-        if options.get("list"):
+        elif options.get("list"):
             self.stdout(
                 "Available commands: \n%s"
                 % "\n".join([cmd for cmd in REGISTRY.keys()])
