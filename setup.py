@@ -6,9 +6,9 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 
-with open("requirements.txt", "r") as fh:
-    dependencies = fh.read()
-
+# with open("requirements.txt", "r") as fh:
+#     dependencies = fh.read()
+dependencies = []
 
 setuptools.setup(
     name="gluepy",
@@ -20,7 +20,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/gluepy/gluepy",
     packages=setuptools.find_packages(),
-    scripts=["gluepy/bin/gluepy.py"],
+    scripts=["gluepy/bin/gluepy-cli.py"],
     install_requires=dependencies,
     include_package_data=True,
     classifiers=[
