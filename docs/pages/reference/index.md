@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Reference
-permalink: /ref/
+permalink: /gluepy/ref/
 has_children: true
 nav_order: 4
 ---

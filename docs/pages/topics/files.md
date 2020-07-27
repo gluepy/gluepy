@@ -1,10 +1,10 @@
 ---
 layout: default
 title: Files and Data
-nav_order: 4
+nav_order: 2
 parent: Topics
 has_children: true
-permalink: /topics/files/
+permalink: /gluepy/topics/files/
 ---
 
 # Files

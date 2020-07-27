@@ -6,4 +6,4 @@ COPY . /app
 
 RUN gem install bundler jekyll && bundle && bundle install
 
-CMD bundle exec jekyll serve --host=0.0.0.0
+CMD bundle exec jekyll serve --host=0.0.0.0 --config _config_local.yml

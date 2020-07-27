@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Topics
-permalink: /topics/
+permalink: /gluepy/topics/
 nav_order: 3
 has_children: true
 ---

@@ -3,7 +3,7 @@ layout: default
 title: First Project
 parent: Tutorials
 grand_parent: Getting Started
-permalink: /tutorials/first-project
+permalink: /gluepy/tutorials/first-project
 nav_order: 1
 ---
 

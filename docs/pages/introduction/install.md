@@ -2,7 +2,7 @@
 layout: default
 title: Installation
 parent: Getting Started
-permalink: /intro/install
+permalink: /gluepy/intro/install
 nav_order: 2
 ---
 

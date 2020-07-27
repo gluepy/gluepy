@@ -2,7 +2,7 @@
 layout: default
 title: Overview
 parent: Getting Started
-permalink: /intro/overview
+permalink: /gluepy/intro/overview
 nav_order: 1
 ---
 

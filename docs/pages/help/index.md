@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Help
-permalink: /help/
+permalink: /gluepy/help/
 nav_order: 5
 ---
 

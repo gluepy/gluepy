@@ -2,7 +2,7 @@
 layout: default
 title: Execution
 parent: Reference
-permalink: /ref/execution
+permalink: /gluepy/ref/execution
 nav_order: 2
 ---
 

@@ -2,7 +2,7 @@
 layout: default
 title: Commands
 parent: Reference
-permalink: /ref/commands
+permalink: /gluepy/ref/commands
 nav_order: 3
 ---
 

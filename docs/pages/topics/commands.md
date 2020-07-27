@@ -3,7 +3,7 @@ layout: default
 title: Commands
 nav_order: 3
 parent: Topics
-permalink: /topics/commands/
+permalink: /gluepy/topics/commands/
 ---
 
 # Commands

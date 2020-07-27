@@ -4,7 +4,7 @@ title: Pipelines
 nav_order: 1
 parent: Topics
 has_children: true
-permalink: /topics/pipelines/
+permalink: /gluepy/topics/pipelines/
 ---
 
 # Pipelines

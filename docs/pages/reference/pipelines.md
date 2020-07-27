@@ -2,7 +2,7 @@
 layout: default
 title: Pipelines
 parent: Reference
-permalink: /ref/pipelines
+permalink: /gluepy/ref/pipelines
 nav_order: 1
 ---
 

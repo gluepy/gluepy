@@ -2,7 +2,7 @@
 layout: default
 title: Settings
 parent: Reference
-permalink: /ref/settings
+permalink: /gluepy/ref/settings
 nav_order: 4
 ---
 
