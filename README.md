@@ -1,1 +1,5 @@
 # gluepy
+
+```
+pip install gluepy
+```
