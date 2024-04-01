@@ -150,22 +150,36 @@ class S3Storage(BaseStorage):
         """
         self.touch(str(Path(path) / ".empty"))
 
-    def rm(self, path: str) -> None:
+    def rm(self, path: str, recursive: bool = False) -> None:
         """Delete a file
 
         Args:
             path (str): Path to file to delete
+            recursive (bool): If allowed to delete recursive directories or not.
 
         """
+        if recursive:
+            raise NotImplementedError("`recursive` not supported")
         self.bucket.Object(path).delete()
 
-    def cp(self, src_path: str, dest_path: str) -> None:
+    def cp(
+        self,
+        src_path: str,
+        dest_path: str,
+        recursive: bool = False,
+        overwrite: bool = False,
+    ) -> None:
         """Copy a file from source to destination
 
         Args:
             src_path (str): Path to file or directory to copy.
             dest_path (str): Path to file or directory to copy to.
+            recursive (bool): If should copy sub directories as well.
+            overwrite (bool): If should copy to destination that already exists.
         """
+        if recursive or overwrite:
+            raise NotImplementedError("`recursive` and `overwrite` not supported.")
+
         self.touch(dest_path, self.open(src_path))
 
     def isdir(self, path: str) -> bool:

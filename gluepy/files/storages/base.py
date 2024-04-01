@@ -9,6 +9,7 @@ class BaseStorage:
     """Base class of a Storage implementation"""
 
     MAX_CHUNK_SIZE = 1_000_000
+    separator = os.sep
 
     def abspath(self, path: str) -> str:
         """Get absolute path to file including STORAGE_ROOT"""
@@ -57,23 +58,32 @@ class BaseStorage:
         """
         raise NotImplementedError()
 
-    def rm(self, path: str) -> None:
+    def rm(self, path: str, recursive: bool = False) -> None:
         """Delete a file
 
         Args:
             path (str): Path to file to delete
+            recursive (bool): If allowed to delete recursive directories or not.
 
         Raises:
             NotImplementedError: Base class raise NotImplementedError
         """
         raise NotImplementedError()
 
-    def cp(self, src_path: str, dest_path: str) -> None:
+    def cp(
+        self,
+        src_path: str,
+        dest_path: str,
+        recursive: bool = False,
+        overwrite: bool = False,
+    ) -> None:
         """Copy a file from source to destination
 
         Args:
             src_path (str): Path to file or directory to copy.
             dest_path (str): Path to file or directory to copy to.
+            recursive (bool): If should copy sub directories as well.
+            overwrite (bool): If should copy to destination that already exists.
         """
         raise NotImplementedError()
 
