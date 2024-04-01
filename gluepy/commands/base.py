@@ -9,6 +9,7 @@ REGISTRY = {}
 
 class Command(object):
     """Define a command that will be exposed to the CLI"""
+
     label = None
     parser_class = ArgumentParser
     autoload = True
@@ -39,7 +40,7 @@ class Command(object):
     def run(self):
         parser = self.parser_class()
         self.add_arguments(parser)
-        kwargs = vars(parser.parse_args(args=None if sys.argv[1:] else ['--help']))
+        kwargs = vars(parser.parse_args(args=None if sys.argv[1:] else ["--help"]))
         self.handle(**kwargs)
 
 
@@ -49,6 +50,7 @@ class DefaultCommand(Command):
     e.g. `.run.py --version` will use this command.
 
     """
+
     autoload = False
 
     def add_arguments(self, parser):
@@ -66,8 +68,7 @@ class DefaultCommand(Command):
             self.stdout("Gluepy version: %s" % VERSION)
         elif options.get("list"):
             self.stdout(
-                "Available commands: \n%s"
-                % "\n".join([cmd for cmd in REGISTRY.keys()])
+                "Available commands: \n%s" % "\n".join([cmd for cmd in REGISTRY.keys()])
             )
 
 
