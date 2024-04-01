@@ -53,7 +53,8 @@ def dag(
         t().run()
         time_end = time.time()
         logger.info(
-            f"---------- Completed task '{t.__name__}' in {'{:f}'.format(time_end-time_start)} seconds"
+            f"---------- Completed task '{t.__name__}' in "
+            f"{'{:f}'.format(time_end-time_start)} seconds"
         )
 
 
