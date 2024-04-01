@@ -1,0 +1,4 @@
+-r base.txt
+flake8~=6.0.0
+flake8-mypy~=17.8.0
+pytest~=6.2
