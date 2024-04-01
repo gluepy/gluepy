@@ -40,7 +40,7 @@ def startmodule(module):
 def _create_file_from_jinja(file_path, template, **context):
     env = jinja2.Environment(
         loader=jinja2.PackageLoader("gluepy", "templates"),
-        autoescape=jinja2.select_autoescape()
+        autoescape=jinja2.select_autoescape(),
     )
     t = env.get_template(template)
     if not os.path.exists(os.path.dirname(file_path)):

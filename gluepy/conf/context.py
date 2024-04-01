@@ -91,6 +91,7 @@ class DefaultContextManager:
     def load_context(self, path: str, patches: Optional[List[str]] = None):
         # Imported here to avoid circular import.
         from gluepy.files.storages import default_storage
+
         patches = patches or []
         # Reformat folder name to be valid.
         path_formatted = re.sub(r"[:\+\s]+", "-", os.path.dirname(path))

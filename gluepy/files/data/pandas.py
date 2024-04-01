@@ -33,7 +33,9 @@ class PandasDataManager(BaseDataManager):
             return self._read_csv(path, root, *args, **kwargs)
         elif ext in {".pq", ".parquet"}:
             return self._read_parquet(path, root, *args, **kwargs)
-        elif ext in {".json", }:
+        elif ext in {
+            ".json",
+        }:
             return self._read_json(path, root, *args, **kwargs)
         else:
             raise ValueError(
@@ -82,25 +84,31 @@ class PandasDataManager(BaseDataManager):
 
     def _read_csv(self, path: str, root: bool = False, *args, **kwargs):
         """Implementation of reading csv file"""
-        stream = BytesIO(default_storage.open(
-            path if root is True else default_storage.runpath(path)
-        ))
+        stream = BytesIO(
+            default_storage.open(
+                path if root is True else default_storage.runpath(path)
+            )
+        )
         logger.info(f"Reading file from path '{path}'.")
         return pd.read_csv(stream, *args, **kwargs)
 
     def _read_parquet(self, path: str, root: bool = False, *args, **kwargs):
         """Implementation of reading parquet file"""
-        stream = BytesIO(default_storage.open(
-            path if root is True else default_storage.runpath(path)
-        ))
+        stream = BytesIO(
+            default_storage.open(
+                path if root is True else default_storage.runpath(path)
+            )
+        )
         logger.info(f"Reading file from path '{path}'.")
         return pd.read_parquet(stream, *args, **kwargs)
 
     def _read_json(self, path: str, root: bool = False, *args, **kwargs):
         """Implementation of reading json file"""
-        stream = BytesIO(default_storage.open(
-            path if root is True else default_storage.runpath(path)
-        ))
+        stream = BytesIO(
+            default_storage.open(
+                path if root is True else default_storage.runpath(path)
+            )
+        )
         logger.info(f"Reading file from path '{path}'.")
         return pd.read_json(stream, *args, **kwargs)
 

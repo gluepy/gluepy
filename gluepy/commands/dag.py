@@ -27,13 +27,10 @@ def dag(
 
     if retry:
         default_context_manager.load_context(
-            os.path.join(retry, "context.yaml"),
-            patches=list(patch)
+            os.path.join(retry, "context.yaml"), patches=list(patch)
         )
     elif patch:
-        default_context_manager.create_context(
-            patches=list(patch)
-        )
+        default_context_manager.create_context(patches=list(patch))
 
     tasks = DAG().inject_tasks()
 
@@ -55,7 +52,9 @@ def dag(
         time_start = time.time()
         t().run()
         time_end = time.time()
-        logger.info(f"---------- Completed task '{t.__name__}' in {'{:f}'.format(time_end-time_start)} seconds")
+        logger.info(
+            f"---------- Completed task '{t.__name__}' in {'{:f}'.format(time_end-time_start)} seconds"
+        )
 
 
 def _get_dag_by_label(label):

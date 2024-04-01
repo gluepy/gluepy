@@ -10,6 +10,4 @@ class Settings(SingletonMixin):
                 setattr(self, key, getattr(module, key))
 
 
-default_settings = LazyProxy(
-    lambda: Settings(os.environ.get("GLUEPY_SETTINGS_MODULE"))
-)
+default_settings = LazyProxy(lambda: Settings(os.environ.get("GLUEPY_SETTINGS_MODULE")))

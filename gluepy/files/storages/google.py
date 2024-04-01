@@ -4,9 +4,10 @@ from .base import BaseStorage
 
 
 class GoogleStorage(BaseStorage):
-    """"
+    """ "
     Storage support for Google Cloud Storage.
     """
+
     def __init__(self) -> None:
         super().__init__()
         self.client = ()

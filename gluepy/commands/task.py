@@ -14,13 +14,10 @@ def task(label, retry: Optional[str] = None, patch: Optional[List[str]] = None):
 
     if retry:
         default_context_manager.load_context(
-            os.path.join(retry, "context.yaml"),
-            patches=list(patch)
+            os.path.join(retry, "context.yaml"), patches=list(patch)
         )
     elif patch:
-        default_context_manager.create_context(
-            patches=list(patch)
-        )
+        default_context_manager.create_context(patches=list(patch))
 
     Task().run()
 

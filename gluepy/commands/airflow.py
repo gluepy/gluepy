@@ -46,22 +46,19 @@ def generate(dest_path: str, dag: Optional[str] = None):
 def get_jinja(dag):
     if dag.extra_options.get("airflow_template"):
         env = Environment(
-            loader=FileSystemLoader(default_settings.BASE_DIR),
-            autoescape=True
+            loader=FileSystemLoader(default_settings.BASE_DIR), autoescape=True
         )
         env.filters["to_identifier"] = to_identifier
         template = env.get_template(dag.extra_options.get("airflow_template"))
     elif default_settings.AIRFLOW_TEMPLATE:
         env = Environment(
-            loader=FileSystemLoader(default_settings.BASE_DIR),
-            autoescape=True
+            loader=FileSystemLoader(default_settings.BASE_DIR), autoescape=True
         )
         env.filters["to_identifier"] = to_identifier
         template = env.get_template(default_settings.AIRFLOW_TEMPLATE)
     else:
         env = Environment(
-            loader=PackageLoader("gluepy", "templates/airflow"),
-            autoescape=True
+            loader=PackageLoader("gluepy", "templates/airflow"), autoescape=True
         )
         env.filters["to_identifier"] = to_identifier
         template = env.get_template("dag.j2")

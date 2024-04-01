@@ -5,6 +5,4 @@ from .local import LocalStorage
 from .s3 import S3Storage
 
 
-default_storage = LazyProxy(
-    lambda: import_string(default_settings.STORAGE_BACKEND)()
-)
+default_storage = LazyProxy(lambda: import_string(default_settings.STORAGE_BACKEND)())
