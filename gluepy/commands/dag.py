@@ -34,7 +34,10 @@ def dag(
     elif retry:
         # Retry a run folder path that does not exist by creating it.
         default_context_manager.create_context(
-            run_id=os.path.basename(retry), run_folder=retry, evaluate_lazy=True
+            run_id=os.path.basename(retry),
+            run_folder=retry,
+            patches=list(patch) if patch else None,
+            evaluate_lazy=True,
         )
     elif patch:
         default_context_manager.create_context(patches=list(patch), evaluate_lazy=True)
