@@ -4,6 +4,7 @@ from typing import List, Optional
 import time
 import click
 from gluepy.conf import default_context_manager
+from gluepy.files.storages import default_storage
 from . import cli
 
 logger = logging.getLogger(__name__)
@@ -24,13 +25,19 @@ def dag(
 ):
     DAG = _get_dag_by_label(label)
     assert not (from_task and task), "Only one of --from-task or --task can be set."
+    retry = retry if retry is None else retry.strip(default_storage.separator)
 
-    if retry:
+    if retry and default_storage.exists(os.path.join(retry, "context.yaml")):
         default_context_manager.load_context(
             os.path.join(retry, "context.yaml"), patches=list(patch)
         )
+    elif retry:
+        # Retry a run folder path that does not exist by creating it.
+        default_context_manager.create_context(
+            run_id=os.path.basename(retry), run_folder=retry, evaluate_lazy=True
+        )
     elif patch:
-        default_context_manager.create_context(patches=list(patch))
+        default_context_manager.create_context(patches=list(patch), evaluate_lazy=True)
 
     tasks = DAG().inject_tasks()
 

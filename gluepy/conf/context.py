@@ -53,6 +53,7 @@ class DefaultContextManager:
         run_id: Optional[str] = None,
         run_folder: Optional[str] = None,
         patches: Optional[List[str]] = None,
+        evaluate_lazy: bool = False,
     ):
         # Imported here to avoid circular import.
         from gluepy.files.storages import default_storage
@@ -84,9 +85,13 @@ class DefaultContextManager:
 
         patches += [self.get_run_meta(run_id=run_id, run_folder=run_folder)]
 
-        return Context(
+        ctx = Context(
             data=reduce(lambda config, patch: merge(config, patch), patches, {})
         )
+
+        if evaluate_lazy:
+            self._ctx = ctx
+        return ctx
 
     def load_context(self, path: str, patches: Optional[List[str]] = None):
         # Imported here to avoid circular import.
