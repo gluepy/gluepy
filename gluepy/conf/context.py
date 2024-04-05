@@ -63,6 +63,7 @@ class DefaultContextManager:
             for i, path in enumerate(patches):
                 if not default_storage.exists(path):
                     logger.warning(f"Patch '{path}' was not found.")
+                    patches[i] = dict()
                     continue
 
                 patches[i] = yaml.load(
