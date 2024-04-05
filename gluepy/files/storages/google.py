@@ -217,9 +217,9 @@ class GoogleStorage(BaseStorage):
         """
         # Ensure always ending with `/`.
         path = self.abspath(path).rstrip(self.separator) + self.separator
-        return self.bucket.blob(path).exists() or bool(
+        return self.bucket.blob(path).exists() or bool(list(
             self.client.list_blobs(self.bucket, prefix=path, max_results=1)
-        )
+        ))
 
     def isfile(self, path: str) -> bool:
         """Check if path is a file or not.
