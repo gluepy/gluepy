@@ -11,3 +11,4 @@ def bootstrap():
     for module in default_settings.INSTALLED_MODULES:
         import_module(".".join([module, "tasks"]))
         import_module(".".join([module, "dags"]))
+        import_module(".".join([module, "commands"]))
