@@ -1,13 +1,11 @@
 import os
 import jinja2
 import click
-from gluepy.exec import bootstrap
 
 
 @click.group()
 def cli():
     """Group of commands for `gluepy` CLI."""
-    bootstrap()
 
 
 @cli.command()

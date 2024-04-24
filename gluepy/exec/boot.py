@@ -9,6 +9,13 @@ def bootstrap():
 
     logging.config.dictConfig(default_settings.LOGGING)
     for module in default_settings.INSTALLED_MODULES:
-        import_module(".".join([module, "tasks"]))
-        import_module(".".join([module, "dags"]))
-        import_module(".".join([module, "commands"]))
+        for pkg in {"tasks", "dags", "commands"}:
+            pkg_path = ".".join([module, pkg])
+            try:
+                import_module(pkg_path)
+            except ModuleNotFoundError as ex:
+                # Only skip error if it is specifically raised due to
+                # failing importing the requested pkg path.
+                if pkg_path in str(ex.msg):
+                    continue
+                raise
