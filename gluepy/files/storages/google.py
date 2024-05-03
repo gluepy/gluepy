@@ -3,12 +3,42 @@ import logging
 from pathlib import Path
 from typing import Union
 from io import StringIO, BytesIO
+import requests
+import requests.exceptions as requests_exceptions
 from google.cloud import storage
-from google.api_core.exceptions import NotFound as GoogleNotFound
+from google.api_core import retry
+from google.api_core import exceptions as api_exceptions
+from google.auth import exceptions as auth_exceptions
 from gluepy.conf import default_settings
 from .base import BaseStorage
 
 logger = logging.getLogger(__name__)
+
+_RETRYABLE_TYPES = (
+    api_exceptions.TooManyRequests,  # 429
+    api_exceptions.InternalServerError,  # 500
+    api_exceptions.BadGateway,  # 502
+    api_exceptions.ServiceUnavailable,  # 503
+    api_exceptions.GatewayTimeout,  # 504
+    ConnectionError,
+    requests.ConnectionError,
+    requests_exceptions.ChunkedEncodingError,
+    requests_exceptions.Timeout,
+)
+
+_ADDITIONAL_RETRYABLE_STATUS_CODES = (408,)
+
+
+def _should_retry(exc):
+    """Predicate for determining when to retry."""
+    if isinstance(exc, _RETRYABLE_TYPES):
+        return True
+    elif isinstance(exc, api_exceptions.GoogleAPICallError):
+        return exc.code in _ADDITIONAL_RETRYABLE_STATUS_CODES
+    elif isinstance(exc, auth_exceptions.TransportError):
+        return _should_retry(exc.args[0])
+    else:
+        return False
 
 
 class GoogleStorage(BaseStorage):
@@ -42,7 +72,13 @@ class GoogleStorage(BaseStorage):
         content.seek(0)
         if isinstance(content, StringIO):
             content = BytesIO(content.read().encode("utf-8"))
-        self.bucket.blob(self.abspath(file_path)).upload_from_file(content)
+
+        self.bucket.blob(self.abspath(file_path)).upload_from_file(
+            content,
+            rewind=True,
+            retry=retry.Retry(predicate=_should_retry),
+            size=len(content.read()),
+        )
 
     def open(self, file_path: str, mode: str = "rb") -> Union[str, bytes]:
         """Opens a blob at file_path
@@ -59,7 +95,7 @@ class GoogleStorage(BaseStorage):
         stream = BytesIO()
         try:
             self.bucket.blob(self.abspath(file_path)).download_to_file(stream)
-        except GoogleNotFound as exc:
+        except api_exceptions.NotFound as exc:
             raise FileNotFoundError(
                 f"File '{self.abspath(file_path)}' does not exist."
             ) from exc
