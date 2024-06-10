@@ -14,8 +14,8 @@ General notes
 
 .. _separate_data_from_storage:
 
-Separate Dataframes from Storage
---------------------------------
+Separating Dataframes from Storage
+----------------------------------
 
 When it comes to interacting with data, Gluepy are separating the various kind of actions into two types of actions,
 the "File system actions" such as listing directories, creating files, checking paths and so on is managed by the :ref:`storage_backends`.
