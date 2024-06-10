@@ -74,10 +74,6 @@ it can be a relative path of using Blob Storage backends such as ``S3Storage``.
 Default: ``"gluepy.files.storages.LocalStorage"`` (dotted string to ``LocalStorage``)
 
 Dotted path to the :ref:`storage_backends` class to be loaded and later used by the ``default_storage`` object throughout application.
-
-.. _context:
-
-
 .. setting:: DATA_BACKEND
 
 ``DATA_BACKEND``
@@ -137,11 +133,13 @@ For example, you may have a ``context.yaml`` file that looks like this:
 
 .. code-block:: yaml
 
+   # Gluepy protected parameters 
    meta:
     run_id:
     run_folder:
     created_at:
 
+   # Custom user added parameters
    forecaster:
     start_date: 2024-01-01
 
@@ -160,6 +158,9 @@ That you later want to access in your Python code like this:
         def run(self):
           print(default_context.forecaster.start_date)
 
+
+
+.. _context:
 
 Context
 -------

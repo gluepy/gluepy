@@ -20,6 +20,7 @@ class BaseStorage:
         return str(Path(path).relative_to(default_settings.STORAGE_ROOT))
 
     def runpath(self, path: str) -> str:
+        """Get the path appended to the current context's :ref:`context_run_folder`"""
         return str(Path(default_context.gluepy.run_folder) / path)
 
     def _to_bytes(self, content: StringIO):
