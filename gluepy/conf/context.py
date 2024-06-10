@@ -45,6 +45,16 @@ class Context(SingletonMixin):
 
 
 class DefaultContextManager:
+    """
+    Class responsible for populating the ``Context`` object that is
+    later used by ``default_context``.
+
+    The default context manager is populating the context object by reading
+    in a set of YAML files located in the :setting:`CONFIG_PATH` directory.
+
+
+    """
+
     def __init__(self) -> None:
         self._ctx = None
 
@@ -55,6 +65,15 @@ class DefaultContextManager:
         patches: Optional[List[str]] = None,
         evaluate_lazy: bool = False,
     ):
+        """Create a new context instance.
+
+        Read in existing configuration files from :setting:`CONFIG_PATH` directory
+        and patch them with any overrides from ``patches`` kwarg passed in.
+
+        Also populates the ``meta`` key of the context with run meta data
+        such as run_folder, run_id and created_at timestamp.
+
+        """
         # Imported here to avoid circular import.
         from gluepy.files.storages import default_storage
 
@@ -95,6 +114,17 @@ class DefaultContextManager:
         return ctx
 
     def load_context(self, path: str, patches: Optional[List[str]] = None):
+        """Loads an existing context.
+
+        When we may want to recreate or rerun a pre-existing model execution,
+        we may want to load the same context and parameters used by that pre-existing
+        execution.
+
+        This method reads in an existing file and applies a set of optional patches
+        as overrides, and will reuse the same run_id, run_folder as is already
+        defined in the pre-existing context YAML file passed in.
+
+        """
         # Imported here to avoid circular import.
         from gluepy.files.storages import default_storage
 

@@ -11,6 +11,11 @@ def cli():
 @cli.command()
 @click.argument("project")
 def startproject(project):
+    """Command used to initiate a new Gluepy project.
+
+    Args:
+        project (str): project name
+    """
     files = {
         f"{project}/manage.py": "manage.j2",
         f"{project}/configs/settings.py": "settings.j2",
@@ -25,6 +30,11 @@ def startproject(project):
 @cli.command()
 @click.argument("module")
 def startmodule(module):
+    """Command used to initiate a new Module in existing Gluepy project.
+
+    Args:
+        module (str): module name
+    """
     files = {
         f"{module}/dags.py": "dags.j2",
         f"{module}/tasks.py": "tasks.j2",

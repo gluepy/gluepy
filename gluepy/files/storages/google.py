@@ -42,7 +42,7 @@ def _should_retry(exc):
 
 
 class GoogleStorage(BaseStorage):
-    """ "
+    """
     Storage support for Google Cloud Storage.
     """
 
@@ -63,8 +63,6 @@ class GoogleStorage(BaseStorage):
             file_path (str): Path to file we want to create
             content (Union[StringIO, BytesIO]): Content of file we want to generate
 
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
         """
         assert not file_path.endswith(
             self.separator
@@ -86,8 +84,6 @@ class GoogleStorage(BaseStorage):
         Args:
             file_path (str): File path of blob we want to open
 
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
         """
         if mode != "rb":
             logger.warning(f"`mode` is not used for {self.__class__.__name__}")
@@ -109,8 +105,6 @@ class GoogleStorage(BaseStorage):
             path (str): Path to file to delete
             recursive (bool): If allowed to delete recursive directories or not.
 
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
         """
         if self.isdir(path):
             files, dirs = self.ls(path)
@@ -177,9 +171,6 @@ class GoogleStorage(BaseStorage):
         Args:
             path (str): Path where we want to list contents of
 
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
-
         Returns:
             Tuple[List[str], List[str]]:
               First list is files, second list is directories.
@@ -221,9 +212,6 @@ class GoogleStorage(BaseStorage):
             path (str): Path of directory we want to create
             make_parents (bool, optional): If we should generate parents
               folders as well. Defaults to False.
-
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
         """
         path = path.rstrip(self.separator) + self.separator
         if self.exists(path):
@@ -245,9 +233,6 @@ class GoogleStorage(BaseStorage):
         Args:
             path (str): Path we want to check
 
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
-
         Returns:
             bool: True/False if path is directory or not
         """
@@ -263,9 +248,6 @@ class GoogleStorage(BaseStorage):
         Args:
             path (str): Path we want to check
 
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
-
         Returns:
             bool: True/False if path is file or not.
         """
@@ -278,9 +260,6 @@ class GoogleStorage(BaseStorage):
 
         Args:
             path (str): Path we want to check
-
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
 
         Returns:
             bool: True/False if path is file or not.

@@ -23,6 +23,20 @@ def dag(
     from_task: Optional[str] = None,
     task: Optional[str] = None,
 ):
+    """Command to run a DAG by its label.
+
+    Args:
+        label (str): The label of the DAG to execute.
+        retry (Optional[str], optional): Path to existing run_folder of a run to retry.
+          Defaults to None.
+        patch (Optional[List[str]], optional): Path to patch YAML file to override
+            context with. Defaults to None.
+        from_task (Optional[str], optional): Label of task in DAG to retry from.
+            Defaults to None.
+        task (Optional[str], optional): Label of task if only want to execute a single task in DAG.
+            Defaults to None.
+
+    """
     DAG = _get_dag_by_label(label)
     assert not (from_task and task), "Only one of --from-task or --task can be set."
     retry = retry if retry is None else retry.strip(default_storage.separator)

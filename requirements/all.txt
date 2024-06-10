@@ -1,3 +1,4 @@
 -r base.txt
 -r dev.txt
 -r digitalocean.txt
+-r gcp.txt

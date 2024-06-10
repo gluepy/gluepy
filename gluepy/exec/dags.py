@@ -6,6 +6,20 @@ from gluepy.conf import default_settings
 
 
 class DAG:
+    """Class that defines a pipeline or a 'directed acyclic graph'.
+
+    The DAG itself contain minimum logic, and is only a grouping of a set
+    of :ref:`tasks` instances that execute in a specific order combined
+    with a set of configuration or options.
+
+    Attributes:
+        label (str): The label of this DAG is a descriptive label that is
+            used to identify and run this DAG in future. Defaults to lowercase
+            version of class name.
+        extra_options (dict): Dictionary of additional options specific to this DAG.
+        tasks (list): List of :ref:`tasks` instances to execute in a specific order.
+
+    """
     label = None
     extra_options = {}
     tasks = []
@@ -18,7 +32,7 @@ class DAG:
         REGISTRY[cls.label] = cls
 
     def inject_tasks(self) -> List[Task]:
-        """Inject all tasks including START_TASK to the final
+        """Inject all tasks including :setting:`START_TASK` to the final
         list of executable tasks of this DAG.
 
         Returns:

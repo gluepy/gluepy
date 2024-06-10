@@ -41,9 +41,6 @@ class BaseStorage:
         Args:
             file_path (str): Path to file we want to create
             content (Union[StringIO, BytesIO]): Content of file we want to generate
-
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
         """
         raise NotImplementedError()
 
@@ -64,9 +61,6 @@ class BaseStorage:
         Args:
             path (str): Path to file to delete
             recursive (bool): If allowed to delete recursive directories or not.
-
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
         """
         raise NotImplementedError()
 
@@ -93,9 +87,6 @@ class BaseStorage:
         Args:
             path (str): Path where we want to list contents of
 
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
-
         Returns:
             Tuple[List[str], List[str]]:
               First list is files, second list is directories.
@@ -108,10 +99,7 @@ class BaseStorage:
         Args:
             path (str): Path of directory we want to create
             make_parents (bool, optional): If we should generate parents
-              folders as well. Defaults to False.
-
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
+            folders as well. Defaults to False.
         """
         raise NotImplementedError()
 
@@ -120,9 +108,6 @@ class BaseStorage:
 
         Args:
             path (str): Path we want to check
-
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
 
         Returns:
             bool: True/False if path is directory or not
@@ -135,9 +120,6 @@ class BaseStorage:
         Args:
             path (str): Path we want to check
 
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
-
         Returns:
             bool: True/False if path is file or not.
         """
@@ -148,9 +130,6 @@ class BaseStorage:
 
         Args:
             path (str): Path we want to check
-
-        Raises:
-            NotImplementedError: Base class raise NotImplementedError
 
         Returns:
             bool: True/False if path is file or not.

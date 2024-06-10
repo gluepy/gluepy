@@ -10,6 +10,12 @@ REGISTRY = {}
 
 
 class Task:
+    """Class that represent a single step in a :ref:`dags`.
+
+    Attributes:
+        label (str): Name of the task used when calling the task.
+
+    """
     label = None
 
     def __init__(self) -> None:
@@ -20,6 +26,14 @@ class Task:
         REGISTRY[cls.label] = cls
 
     def run(self):
+        """Entrypoint of the Task.
+        
+        This is the method called when executing each step of the :ref:`dags`.
+
+        Raises:
+            NotImplementedError: Raise exeception if the child task have not yet
+                implemented the entrypoint method.
+        """
         raise NotImplementedError()
 
 
