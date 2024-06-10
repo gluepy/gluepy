@@ -1,0 +1,5 @@
+pyenchant
+Sphinx~=7.3.7
+sphinxcontrib-spelling
+blacken-docs
+sphinx_rtd_theme
