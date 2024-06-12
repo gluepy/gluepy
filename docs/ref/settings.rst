@@ -38,7 +38,7 @@ by other settings and configuration to construct paths.
 
 Default: ``os.path.join(BASE_DIR, "configs")`` (path to configs folder of project)
 
-A string that represent the full absolute path to the configs folder of the project where your 
+A string that represent the full absolute path to the configs folder of the project where your
 YAML files resides that later populate your default :ref:`context`.
 
 
@@ -133,7 +133,7 @@ For example, you may have a ``context.yaml`` file that looks like this:
 
 .. code-block:: yaml
 
-   # Gluepy protected parameters 
+   # Gluepy protected parameters
    meta:
     run_id:
     run_folder:
@@ -166,7 +166,7 @@ Context
 -------
 
 Singleton class that holds all parameters and configurations related to the specific execution, such as ``run_id``, ``run_folder``, ``created_at`` and other project parameters.
-The context is lazily evaluated using the :ref:`context_manager` and accessible using the ``gluepy.conf.default_context`` object. 
+The context is lazily evaluated using the :ref:`context_manager` and accessible using the ``gluepy.conf.default_context`` object.
 
 Given its a singleton, there can only accept a single instance of a ``Context`` at any point in time.
 

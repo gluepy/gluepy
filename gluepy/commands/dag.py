@@ -33,8 +33,8 @@ def dag(
             context with. Defaults to None.
         from_task (Optional[str], optional): Label of task in DAG to retry from.
             Defaults to None.
-        task (Optional[str], optional): Label of task if only want to execute a single task in DAG.
-            Defaults to None.
+        task (Optional[str], optional): Label of task if only want to execute a
+            single task in DAG. Defaults to None.
 
     """
     DAG = _get_dag_by_label(label)

@@ -20,6 +20,7 @@ class DAG:
         tasks (list): List of :ref:`tasks` instances to execute in a specific order.
 
     """
+
     label = None
     extra_options = {}
     tasks = []

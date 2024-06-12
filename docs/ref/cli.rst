@@ -3,7 +3,7 @@ Command Line Interface (CLI)
 ============================
 
 All Gluepy projects have a CLI exposed through the ``manage.py`` file located in project root. This command line interface allow you to
-execute your DAGs, retry previous runs and manage your project in various ways. 
+execute your DAGs, retry previous runs and manage your project in various ways.
 
 The CLI comes with a set of commands out of the box, but it is also extendable and allow you to :ref:`cli_custom_commands`.
 

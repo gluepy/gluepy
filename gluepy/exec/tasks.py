@@ -16,6 +16,7 @@ class Task:
         label (str): Name of the task used when calling the task.
 
     """
+
     label = None
 
     def __init__(self) -> None:
@@ -27,7 +28,7 @@ class Task:
 
     def run(self):
         """Entrypoint of the Task.
-        
+
         This is the method called when executing each step of the :ref:`dags`.
 
         Raises:

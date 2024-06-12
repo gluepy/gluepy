@@ -5,6 +5,7 @@ Data
 Data is of course a key part of any machine learning or data science project, and Gluepy comes packaged with multiple
 helpful tools to help read, interact and customize any data interaction.
 
+.. _topic_storage:
 
 Storage and File System
 =======================
@@ -19,7 +20,7 @@ local development, to production workloads in the cloud is as easy as changing t
 
     from gluepy.exec import Task
     from gluepy.files.storages import default_storage
-    
+
 
     class ForecasterTask(Task):
 
@@ -57,6 +58,7 @@ Here is an example using the :ref:`storage_backend_google`.
 Now, my ``default_storage`` object will point to an instance of ``GoogleStorage``, and all method calls will authenticate to Google Cloud Storage and
 use it as a file system for our Gluepy project.
 
+.. _topic_data:
 
 Data and DataFrames
 ===================
@@ -86,6 +88,7 @@ See :ref:`data_backends` for the currently supported providers.
             df = data_manager.read("training.parquet")
 
 
+.. _topic_data_validation:
 
 Schemas and Data Validation
 ---------------------------
@@ -113,6 +116,3 @@ tools such as `pandera <https://pandera.readthedocs.io/en/stable/>`_ or `pydanti
 
         def run(self):
             df = TrainingSchema(data_manager.read("training.parquet"))
-
-
-

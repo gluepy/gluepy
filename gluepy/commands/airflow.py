@@ -12,7 +12,6 @@ def airflow():
     """Group for all airflow commands"""
 
 
-
 @airflow.command()
 @click.argument("dest_path", type=str, required=True)
 @click.argument("dag", type=str, required=False)
@@ -21,7 +20,8 @@ def generate(dest_path: str, dag: Optional[str] = None):
 
     Args:
         dest_path (str): Path to store Airflow DAG files generated.
-        dag (Optional[str], optional): Label of DAG to generate Airflow DAG of. Defaults to None.
+        dag (Optional[str], optional): Label of DAG to generate Airflow DAG of.
+            Defaults to None.
 
     """
     from gluepy.exec.dags import REGISTRY
@@ -45,7 +45,8 @@ def generate(dest_path: str, dag: Optional[str] = None):
                         "image": default_settings.AIRFLOW_IMAGE,
                         "configmaps": default_settings.AIRFLOW_CONFIGMAPS or [],
                         "pod_resources": default_settings.AIRFLOW_POD_RESOURCES or {},
-                        "k8s_config": default_settings.AIRFLOW_KUBERNETES_CONFIG or None,
+                        "k8s_config": default_settings.AIRFLOW_KUBERNETES_CONFIG
+                        or None,
                     }
                 )
             )

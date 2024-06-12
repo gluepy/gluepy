@@ -63,14 +63,46 @@ will help you know where to look for certain things:
 ..   steps involved in addressing key problems and use-cases. They are more
 ..   advanced than tutorials and assume some knowledge of how Gluepy works.
 
-.. The model layer
-.. ===============
+Execution Layer
+===============
 
-.. Gluepy provides an abstraction layer (the "models") for structuring and
-.. manipulating the data of your web application. Learn more about it below:
+Gluepy provides multiple tools and abstractions related to "Executing" your Machine Learning
+or Data pipelines both from how to structure the execution, to triggering the execution itself.
+Learn more about it below:
 
-.. * **Models:**
-..   :doc:`Introduction to models <topics/db/models>` |
+* **DAG:**
+  :doc:`Introduction to DAGs </topics/dags>` |
+  :doc:`DAG reference </ref/dags>` |
+  :ref:`Task reference <tasks>`
+
+* **Commands:**
+  :doc:`Introduction to CLI </ref/cli>` |
+  :ref:`cli_dag` |
+  :ref:`cli_startproject` |
+  :ref:`cli_startmodule` |
+  :ref:`cli_airflow_generate`
+
+
+File Layer
+==========
+
+Data and file interactions is a primary citizen of the Gluepy framework, and it provides a set of
+utilities, abstractions and useful tools to interact with the file system and read data.
+
+* **Storages:**
+  :ref:`Introduction to Storage <topic_storage>` |
+  :ref:`storage_backend_base` |
+  :ref:`storage_backend_local` |
+  :ref:`storage_backend_google` |
+  :ref:`storage_backend_s3`
+
+* **Data Managers:**
+  :ref:`Introduction to Data Managers <topic_data>` |
+  :ref:`data_backends` |
+  :ref:`data_backend_pandas` |
+  :ref:`data_backend_base`
+
+
 ..   :doc:`Field types <ref/models/fields>` |
 ..   :doc:`Indexes <ref/models/indexes>` |
 ..   :doc:`Meta options <ref/models/options>` |
@@ -314,11 +346,11 @@ will help you know where to look for certain things:
 .. * :doc:`The sites framework <ref/contrib/sites>`
 .. * :doc:`Unicode in Gluepy <ref/unicode>`
 
-.. The Gluepy open-source project
-.. ==============================
+The Gluepy open-source project
+==============================
 
-.. Learn about the development process for the Gluepy project itself and about how
-.. you can contribute:
+Learn about the development process for the Gluepy project itself and about how
+you can contribute:
 
 * **Community:**
   :doc:`Contributing to Gluepy <internals/contributing/index>` |
@@ -326,7 +358,7 @@ will help you know where to look for certain things:
 ..   :doc:`The release process <internals/release-process>` |
 ..   :doc:`Team organization <internals/organization>` |
 ..   :doc:`The Gluepy source code repository <internals/git>` |
-  
+
 ..   :doc:`Mailing lists and Forum<internals/mailing-lists>`
 
 .. * **Design philosophies:**

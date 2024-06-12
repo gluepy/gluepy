@@ -21,9 +21,9 @@ sys.path.append(abspath(join(dirname(__file__), "_ext")))
 # it lives in has been added to sys.path.
 import github_links  # NOQA
 
-project = 'Gluepy'
-copyright = '2024, Gluepy'
-author = 'Marcus Lind'
+project = "Gluepy"
+copyright = "2024, Gluepy"
+author = "Marcus Lind"
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
@@ -51,7 +51,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.autodoc",
     "sphinx.ext.linkcode",
-    'sphinx_rtd_theme',
+    "sphinx_rtd_theme",
 ]
 
 autosectionlabel_prefix_document = True
@@ -64,7 +64,7 @@ autosectionlabel_maxdepth = 2
 today_fmt = "%B %d, %Y"
 
 # templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 
 # The reST default role (used for this markup: `text`) to use for all documents.

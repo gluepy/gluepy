@@ -11,7 +11,8 @@ class BaseDataManager:
 
         Args:
             path (str): Path to file located on :setting:`STORAGE_BACKEND`.
-            root (bool, optional): Is path relative to root or run folder. Defaults to False.
+            root (bool, optional): Is path relative to root or run folder.
+                Defaults to False.
 
         Returns:
             Any: Dataframe depending on implementation.
@@ -36,7 +37,8 @@ class BaseDataManager:
         Args:
             path (str): Path to where to write dataframe
             df (Any): Dataframe to be written
-            root (bool, optional): If path relatove to root or run folder. Defaults to False.
+            root (bool, optional): If path relatove to root or run folder.
+                Defaults to False.
 
         """
         raise NotImplementedError()

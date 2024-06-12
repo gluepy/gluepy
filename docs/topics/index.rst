@@ -8,5 +8,6 @@ Introductions to all the key parts of Gluepy you'll need to know:
    :maxdepth: 3
 
    context
+   dags
    data
    modules

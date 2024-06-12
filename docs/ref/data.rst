@@ -30,7 +30,7 @@ in your project.
 Storage Backends
 ================
 
-As described in our :doc:`Storages Topic guide </topics/storages>`, all file interactions such as creating directories, checking for file existance, creating files or reading files are done using 
+As described in our :doc:`Storages Topic guide </topics/storages>`, all file interactions such as creating directories, checking for file existance, creating files or reading files are done using
 the ``default_storage`` object. This object is lazily evaluated at runtime to whatever :ref:`storage_backends` defined in :setting:`STORAGE_BACKEND`.
 
 This means that by using ``default_storage`` and modifying :setting:`STORAGE_BACKEND` in your project, you can use the same code or libraries on multiple
@@ -115,7 +115,7 @@ to ensure consistency.
 Data Backends
 =============
 
-As described in our :doc:`Data Topic guide </topics/data>`, all dataframe read and writes are done using 
+As described in our :doc:`Data Topic guide </topics/data>`, all dataframe read and writes are done using
 the ``data_manager`` object. This object is lazily evaluated at runtime to whatever :ref:`data_backends` defined in :setting:`DATA_BACKEND`.
 
 This means that by using ``data_manager`` and modifying :setting:`DATA_BACKEND` in your project, you can customize the behavior of Gluepy and work

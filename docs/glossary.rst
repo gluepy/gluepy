@@ -5,7 +5,7 @@ Glossary
 .. glossary::
 
     dag
-        A directed-acyclic-dag, or in other words a 'pipeline' of a number of :term:`task` instances
+        A directed-acyclic-graph, or in other words a 'pipeline' of a number of :term:`task` instances
         that are executed in a specific order.
 
     task
@@ -27,4 +27,3 @@ Glossary
     module
         A Python package -- i.e. a directory of code -- that contains a set of DAGs, Commands, Tasks or other
         Gluepy components. Modules can be project specific, or generic and reusable across multiple projects.
-

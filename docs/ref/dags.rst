@@ -49,7 +49,7 @@ A ``Task`` is a single step in a :ref:`dags`, and holds the logic and code relat
 defined as part of a ``Task`` to not raise an error.
 
 Tasks intentionally do not accept any keyword arguments in the ``run()`` method, this is to ensure that every ``Task`` in your ``DAG`` do not have
-in-memory dependencies from previous ``Task`` earlier in the ``DAG``, and that each ``Task`` can be retried independently at failure without the 
+in-memory dependencies from previous ``Task`` earlier in the ``DAG``, and that each ``Task`` can be retried independently at failure without the
 need to rerun the full ``DAG``.
 
 .. autoclass:: gluepy.exec.tasks.Task

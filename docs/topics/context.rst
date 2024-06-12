@@ -28,7 +28,7 @@ For example, you may have a ``config.yaml`` file that looks like this
 
 .. code-block:: yaml
 
-   # Gluepy protected parameters 
+   # Gluepy protected parameters
    meta:
     run_id:
     run_folder:
@@ -151,5 +151,3 @@ You can also retry a previous run but start from a specific task that is not the
 .. code-block:: bash
 
     $ python manage.py dag forecaster --from-task training --retry /runs/2024/01/01/af41a763-18bc-44b0-9293-f52266898a89/
-
-
