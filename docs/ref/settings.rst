@@ -122,7 +122,7 @@ A ``logging.dictConfig`` that is loaded for any command executed through the :re
 Context Configuration
 =====================
 
-As described in detail in our :doc:`Context topic guide </topics/context>`, the Context Configuration refers to the DAG/Model specific
+As described in detail in our :ref:`Context topic guide <topic_context>`, the Context Configuration refers to the DAG/Model specific
 parameters that made up a specific execution, that you may want to frequently adjust to tweak the behavior of your pipeline and project.
 
 Unlike the :ref:`core_settings` which are standardize and predefined, the Context is more of a "user config" where you can add any parameter

@@ -1,4 +1,89 @@
-=======
+=============
+Configuration
+=============
+
+.. _topic_settings:
+
+Settings
+========
+
+As described in :doc:`Settings Reference </ref/settings>`, Gluepy have two types of settings made up of the :ref:`context` and
+:doc:`Settings </ref/settings>`.
+
+The Settings is the application / project wide application settings for the environment you are currently executing your code on. These
+settings include what modules you have activated, which logging configuration you have, any references to credentials required to
+connect to your data warehouse and more.
+
+
+.. _topic_settings_by_environment:
+
+Different Settings by Environment
+---------------------------------
+
+A common use case would be to have different project settings for different environments. For example, you may
+want to use different settings for your local development versus your production workloads. This can be done by
+splitting the ``settings.py`` file into multiple files by environment, and pointing to the one you want to enable
+as a dotted string path with the ``GLUEPY_SETTINGS_MODULE`` environment variable.
+
+For example, you may have the following settings:
+
+- src/
+
+  - configs/
+
+    - base.py
+    - prod.py
+    - ...
+  - myapp/
+  - manage.py
+  
+
+
+.. code-block:: python
+
+   # base.py
+   STORAGE_BACKEND = "gluepy.files.storages.LocalStorage"
+   STORAGE_ROOT = os.path.join(BASE_DIR, "data")
+   LOGGING = {
+      'version': 1,
+      'disable_existing_loggers': False,
+      'formatters': {
+          'simple': {
+              'format': '{levelname} {asctime} {module} - {message}',
+              'style': '{'
+          }
+      },
+      'handlers': {
+          'stream': {
+              'level': 'DEBUG',
+              'class': 'logging.StreamHandler',
+              'formatter': 'simple',
+          }
+      },
+      'loggers': {
+          'gluepy': {
+              'handlers': ['stream', ],
+              'level': 'DEBUG',
+              'propagate': True,
+          },
+       }
+   }
+
+
+.. code-block:: python
+
+   # prod.py
+   from .base import *
+   STORAGE_BACKEND = "gluepy.files.storages.GoogleStorage"
+   STORAGE_ROOT = "data/"
+   GOOGLE_GCS_BUCKET = "mybucket-1234"
+
+Then set an environment variable on your system named ``GLUEPY_SETTINGS_MODULE`` to ``configs.prod``.
+All commands executed with ``manage.py`` will now load the ``prod.py`` settings using ``base.py`` as the defaults.
+
+
+.. _topic_context:
+
 Context
 =======
 
