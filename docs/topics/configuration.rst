@@ -36,7 +36,7 @@ For example, you may have the following settings:
     - ...
   - myapp/
   - manage.py
-  
+
 
 
 .. code-block:: python
