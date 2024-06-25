@@ -17,7 +17,7 @@ Are you new to Gluepy or to programming? This is the place to start!
 
 * **Tutorial:**
   :doc:`Part 1: DAGs and Tasks <intro/tutorial01>` |
-  :doc:`Part 2: Schemas and data managers <intro/tutorial02>` |
+  :doc:`Part 2: Data managers <intro/tutorial02>` |
   :doc:`Part 3: Context and configuration parameters <intro/tutorial03>` |
   :doc:`Part 4: Custom CLI commands <intro/tutorial04>`
 

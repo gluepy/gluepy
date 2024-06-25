@@ -28,4 +28,4 @@ repos:
     hooks:
       - id: tartufo
         language: python
-        args: [ pre-commit ]
+        args: [ "-xp", "docs/", "pre-commit" ]

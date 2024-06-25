@@ -2,11 +2,11 @@
 Modules
 =======
 
-.. _modules:
-
 Gluepy have the ability to automatically load and activate reusable modules that you can use between projects. These modules
 may contain DAG's, Tasks or CLI Commands that you want to be exposed through the :doc:`Command Line Interface (CLI) </ref/cli>`.
 
+
+.. _topic_modules:
 
 Activate a Gluepy Module
 ========================

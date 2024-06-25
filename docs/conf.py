@@ -29,7 +29,7 @@ author = "Marcus Lind"
 # built documents.
 #
 # The short X.Y version.
-version = "1.1"
+version = "1.2"
 # The full version, including alpha/beta/rc tags.
 try:
     from gluepy import VERSION
@@ -38,7 +38,7 @@ except ImportError:
 else:
     release = VERSION
 
-next_version = "1.1"
+next_version = "1.2"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
