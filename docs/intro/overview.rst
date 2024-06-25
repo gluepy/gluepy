@@ -3,7 +3,7 @@ Gluepy at a glance
 ==================
 
 
-Gluepy was developed by a team with a lot of experience in the fast#paced world of consulting,
+Gluepy was developed by a team with a lot of experience in the fast-paced world of consulting,
 and is designed to make development tasks fast and easy, with a structure that steer data scientists
 into reusable, configurable patterns that can be put in production. Here's an informal overview of how
 to create an AI and ML driven app using Gluepy.

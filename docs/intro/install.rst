@@ -9,10 +9,7 @@ Install Python
 ==============
 
 Being a Python web framework, Gluepy requires Python. See
-:ref:`faq-python-version-support` for details. Python includes a lightweight
-database called SQLite_ so you won't need to set up a database just yet.
-
-.. _sqlite: https://www.sqlite.org/
+:ref:`faq-python-version-support` for details.
 
 Get the latest version of Python at https://www.python.org/downloads/ or with
 your operating system's package manager.
