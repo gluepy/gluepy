@@ -3,10 +3,14 @@ import logging
 from typing import List, Tuple, Union
 from pathlib import Path
 from io import StringIO, BytesIO
-import boto3
-from botocore.client import Config
-from botocore.exceptions import ClientError
 from gluepy.conf import default_settings
+from gluepy.exceptions import BootstrapError
+try:
+    import boto3
+    from botocore.client import Config
+    from botocore.exceptions import ClientError
+except ImportError as e:
+    raise BootstrapError("Could not load Boto3's S3 bindings. %s" % e)
 from gluepy.files.storages.base import BaseStorage
 
 logger = logging.getLogger(__name__)

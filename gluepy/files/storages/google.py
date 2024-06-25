@@ -5,11 +5,18 @@ from typing import Union
 from io import StringIO, BytesIO
 import requests
 import requests.exceptions as requests_exceptions
-from google.cloud import storage
-from google.api_core import retry
-from google.api_core import exceptions as api_exceptions
-from google.auth import exceptions as auth_exceptions
 from gluepy.conf import default_settings
+from gluepy.exceptions import BootstrapError
+try:
+    from google.cloud import storage
+    from google.api_core import retry
+    from google.api_core import exceptions as api_exceptions
+    from google.auth import exceptions as auth_exceptions
+except ImportError:
+    raise BootstrapError(
+        "Could not load Google Cloud Storage bindings.\n"
+        "See https://github.com/GoogleCloudPlatform/gcloud-python"
+    )
 from .base import BaseStorage
 
 logger = logging.getLogger(__name__)
