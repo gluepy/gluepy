@@ -7,6 +7,7 @@ import requests
 import requests.exceptions as requests_exceptions
 from gluepy.conf import default_settings
 from gluepy.exceptions import BootstrapError
+
 try:
     from google.cloud import storage
     from google.api_core import retry

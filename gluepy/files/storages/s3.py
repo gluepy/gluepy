@@ -5,6 +5,7 @@ from pathlib import Path
 from io import StringIO, BytesIO
 from gluepy.conf import default_settings
 from gluepy.exceptions import BootstrapError
+
 try:
     import boto3
     from botocore.client import Config
