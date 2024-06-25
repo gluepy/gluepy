@@ -28,7 +28,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.11",
-    install_requires=(requirements_base + requirements_digitalocean),
+    install_requires=(requirements_base ),
     extra_require={
         "all": (requirements_base + requirements_dev + requirements_digitalocean),
         "digitalocean": (requirements_base + requirements_digitalocean),
