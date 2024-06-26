@@ -31,5 +31,6 @@ jobs:
         pre-commit run --all-files
     - name: Run Tests
       run: |
-        pip install pytest
-        pytest .
+        cd tests/
+        pip install -e ..
+        ./runtests.py
