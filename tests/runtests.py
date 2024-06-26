@@ -7,7 +7,7 @@ import unittest
 
 
 def set_envs():
-    os.environ["SETTINGS_MODULE"] = "settings"
+    os.environ["GLUEPY_SETTINGS_MODULE"] = "settings"
 
 
 if __name__ == "__main__":
