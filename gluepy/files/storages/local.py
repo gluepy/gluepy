@@ -1,4 +1,5 @@
 import os
+import shutil
 import logging
 from typing import List, Tuple, Union
 from io import StringIO, BytesIO
@@ -40,6 +41,29 @@ class LocalStorage(BaseStorage):
                     raise TypeError("Chunk is neither bytes or string")
 
                 stream.write(chunk)
+
+    def cp(
+        self,
+        src_path: str,
+        dest_path: str,
+        recursive: bool = False,
+        overwrite: bool = False,
+    ) -> None:
+        """Copy a file from source to destination
+
+        Args:
+            src_path (str): Path to file or directory to copy.
+            dest_path (str): Path to file or directory to copy to.
+            recursive (bool): If should copy sub directories as well.
+            overwrite (bool): If should copy to destination that already exists.
+        """
+        if self.isdir(src_path) and not recursive:
+            raise ValueError(f"recursive must be True if '{src_path}' is a directory")
+        if self.exists(dest_path) and not overwrite:
+            raise FileExistsError(f"'{dest_path}' already exists and recursive is False")
+        if not self.exists(os.path.dirname(dest_path)):
+            self.mkdir(os.path.dirname(dest_path))
+        shutil.copy2(self.abspath(src_path), self.abspath(dest_path), follow_symlinks=True)
 
     def open(self, file_path: str, mode: str = "rb") -> Union[str, bytes]:
         """Opens a blob at file_path
