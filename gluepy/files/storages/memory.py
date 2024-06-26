@@ -11,6 +11,7 @@ class MemoryStorage(BaseStorage):
     """In memory file storage, used for test suite
     and other non production workloads.
     """
+
     FILE_SYSTEM = dict()
 
     def touch(self, file_path: str, content: Union[StringIO, BytesIO]) -> None:
@@ -26,14 +27,13 @@ class MemoryStorage(BaseStorage):
         paths = self.abspath(file_path).split(self.separator)
         for idx, path in enumerate(paths):
             directory = self.FILE_SYSTEM
-            if path not in directory and idx < len(paths)-1:
+            if path not in directory and idx < len(paths) - 1:
                 directory[path] = dict()
 
-            if idx == len(paths)-1:
+            if idx == len(paths) - 1:
                 directory[path] = content
             else:
                 directory = directory[path]
-
 
     def open(self, file_path: str, mode: str = "rb") -> Union[str, bytes]:
         """Opens a blob at file_path
@@ -49,8 +49,8 @@ class MemoryStorage(BaseStorage):
             directory = self.FILE_SYSTEM
             if path not in directory:
                 raise FileNotFoundError
-            
-            if idx == len(paths)-1:
+
+            if idx == len(paths) - 1:
                 return directory[path].read()
 
             directory = directory[path]
@@ -67,9 +67,13 @@ class MemoryStorage(BaseStorage):
             directory = self.FILE_SYSTEM
             if path not in directory:
                 raise FileNotFoundError
-            
-            if idx == len(paths)-1:
-                if isinstance(directory[path], dict) and not recursive and directory[path]:
+
+            if idx == len(paths) - 1:
+                if (
+                    isinstance(directory[path], dict)
+                    and not recursive
+                    and directory[path]
+                ):
                     raise ValueError("Trying to delete directory without recursive")
                 del directory[path]
 
@@ -116,22 +120,32 @@ class MemoryStorage(BaseStorage):
             directory = self.FILE_SYSTEM
             if path not in directory:
                 raise FileNotFoundError
-            
-            if idx == len(paths)-1:
+
+            if idx == len(paths) - 1:
                 # Its a file, ls return nothing
                 if not isinstance(directory[path], dict):
                     return ([path], [])
-                
+
                 else:
                     return (
-                        list(filter(lambda x: self.isfile(x), [
-                            os.path.join(path, child)
-                            for child in directory[path].keys()
-                        ])),
-                        list(filter(lambda x: self.isdir(x), [
-                            os.path.join(path, child)
-                            for child in directory[path].keys()
-                        ]))
+                        list(
+                            filter(
+                                lambda x: self.isfile(x),
+                                [
+                                    os.path.join(path, child)
+                                    for child in directory[path].keys()
+                                ],
+                            )
+                        ),
+                        list(
+                            filter(
+                                lambda x: self.isdir(x),
+                                [
+                                    os.path.join(path, child)
+                                    for child in directory[path].keys()
+                                ],
+                            )
+                        ),
                     )
 
             directory = directory[path]
@@ -167,7 +181,7 @@ class MemoryStorage(BaseStorage):
             if path not in directory:
                 raise FileNotFoundError
 
-            if idx == len(paths)-1:
+            if idx == len(paths) - 1:
                 return isinstance(directory[path], dict)
 
             directory = directory[path]
@@ -187,11 +201,10 @@ class MemoryStorage(BaseStorage):
             if path not in directory:
                 raise FileNotFoundError
 
-            if idx == len(paths)-1:
+            if idx == len(paths) - 1:
                 return not isinstance(directory[path], dict)
 
             directory = directory[path]
-
 
     def exists(self, path: str) -> bool:
         """Check if path exists or not.

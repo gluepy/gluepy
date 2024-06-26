@@ -30,7 +30,12 @@ class DAG:
 
     def __init_subclass__(cls) -> None:
         super().__init_subclass__()
-        REGISTRY[cls.label] = cls
+        label = cls.label or cls.__name__.lower()
+        if label in REGISTRY:
+            raise KeyError(
+                f"Duplicate DAG label '{cls.label}' already exists in DAG REGISTRY"
+            )
+        REGISTRY[label] = cls
 
     def inject_tasks(self) -> List[Task]:
         """Inject all tasks including :setting:`START_TASK` to the final

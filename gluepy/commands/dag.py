@@ -32,7 +32,7 @@ def run_dag(
     retry: Optional[str] = None,
     patch: Optional[List[str]] = None,
     from_task: Optional[str] = None,
-    task: Optional[str] = None
+    task: Optional[str] = None,
 ):
     """Command to run a DAG by its label.
 

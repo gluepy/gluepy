@@ -24,7 +24,12 @@ class Task:
 
     def __init_subclass__(cls) -> None:
         super().__init_subclass__()
-        REGISTRY[cls.label] = cls
+        label = cls.label or cls.__name__.lower()
+        if label in REGISTRY:
+            raise KeyError(
+                f"Duplicate Task label '{cls.label}' already exists in Task REGISTRY"
+            )
+        REGISTRY[label] = cls
 
     def run(self):
         """Entrypoint of the Task.
