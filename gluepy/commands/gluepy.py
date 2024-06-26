@@ -38,6 +38,7 @@ def startmodule(module):
     files = {
         f"{module}/dags.py": "dags.j2",
         f"{module}/tasks.py": "tasks.j2",
+        f"{module}/commands.py": "commands.j2",
     }
     for path, template in files.items():
         _create_file_from_jinja(path, template, module=module)
