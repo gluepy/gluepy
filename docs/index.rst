@@ -387,6 +387,7 @@ you can contribute:
     internals/index
     faq/index
     glossary
+    acknowledgements
 .. howto/index
 
 .. misc/index
