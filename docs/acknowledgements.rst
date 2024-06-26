@@ -10,4 +10,3 @@ Data Scientists and Machine Learning Engineers.
 One key inspiration has been `Django Framework <https://www.djangoproject.com/>`_ including some of the naming conventions,
 structure of repository, structure of their excellent documentation and pluggable, lazily evaluated backend classes such as
 the :ref:`topic_data`.
-

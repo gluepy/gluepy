@@ -98,7 +98,7 @@ That was it for this tutorial. We have now learned:
 
 * How to create new projects
 * How to create a :ref:`dags` consisting of 2 :ref:`tasks` that train a machine learning model.
-* Using output versioning with :ref:`context_run_folder`. 
+* Using output versioning with :ref:`context_run_folder`.
 * Retrying DAG runs and running subset of runs.
 * Parameterizing our model using YAML and :ref:`topic_context`.
 * File system interactions with ``default_storage`` and :ref:`topic_storage`.
