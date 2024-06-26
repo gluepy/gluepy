@@ -107,9 +107,14 @@ After installing ``xgboost`` and ``scikit-learn`` we can create our ``TrainingTa
 
 .. code-block:: python
 
+   import os
+   import io
+   import pickle
    import xgboost as xgb
    from gluepy.exec import Task
+   from gluepy.conf import default_context
    from gluepy.files.data import data_manager
+   from gluepy.files.storages import default_storage
    import pandas as pd
 
 
@@ -127,6 +132,15 @@ After installing ``xgboost`` and ``scikit-learn`` we can create our ``TrainingTa
            # Train our machine learning model.
            model = xgb.XGBRegressor(enable_categorical=True)
            model.fit(df[["date", "article_id"]], df["units"])
+
+           # Store model to disk to later be used when we want
+           # to do inference.
+           stream = io.BytesIO()
+           pickle.dump(model, stream)
+           stream.seek(0)
+           default_storage.touch(
+               os.path.join(default_context.gluepy.run_folder, "model.pkl"), stream
+           )
 
 We must then add our new ``TrainingTask`` to our ``SampleDAG``:
 
