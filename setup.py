@@ -27,7 +27,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.11",
+    python_requires=">=3.9",
     install_requires=(requirements_base),
     extra_require={
         "all": (requirements_base + requirements_dev + requirements_digitalocean),
