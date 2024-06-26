@@ -15,10 +15,32 @@ reference -- but we've got both! When you're ready to start a project, you can
 detailed documentation </topics/index>`.
 
 
+What is Gluepy
+==============
+
+Gluepy is a framework that allow you as an AI Engineer to apply a structure to your Machine Learning repositories that makes it easy to productionize workloads
+and guide your Data Scientist colleagues away from trying to deploy Jupyter Notebooks in production.
+
+Gluepy do not involve itself with the details of your workload and is agnostic to what kind of Machine Learning tools or algorithm that you are building. It is simply focusing on
+standardizing how your team write their steps in your pipeline, how configuration is managed, and how you can easily move from local experiments on someones laptop to a production
+deployment in the cloud.
+
+
+What Gluepy is not
+------------------
+
+To avoid misunderstandings, here are a few examples of misconceptions of what Gluepy is not.
+
+* Gluepy is **not** an Orchestrator such as Airflow. Gluepy is agnostic to how your execution is scheduled or what tools you use to run your code.
+* Gluepy is **not** an ETL tool. We personally use tools such as `DBT <https://www.getdbt.com/>`_ for our data pipelines and transformations in parallel
+  to using Gluepy for our Machine Learning models and pipelines.
+* Gluepy is **not** opinionated only for a single type of ML workload or cloud provider.
+
+
 .. _overview_dag:
 
 Design your DAG (Pipeline)
-##########################
+==========================
 
 .. code-block:: python
 
@@ -59,7 +81,7 @@ with a single command.
 .. _interact_with_data:
 
 Load your DataFrames
-####################
+====================
 
 Gluepy provides a wrapper around any Dataframe backend of your choice (Pandas, Polars, PySpark etc) to ensure that
 your project have consistency throughout in regards to file storages used, which path data is stored from,
@@ -94,7 +116,7 @@ dataframes than Pandas as used in the example above, see :ref:`topic_data`.
 .. _interact_with_filesystem:
 
 Leverage File System API
-########################
+========================
 
 In a data driven project, there are more type of file interactions than just DataFrames. Gluepy comes with an exhaustive
 API that allow you to interact with the file system in a cloud and SDK agnostic manner, which ensures that your code is
@@ -146,7 +168,7 @@ in case you want to run this code locally, on S3, GCS or other backends. See mor
 .. _result_versioning_and_retry:
 
 Version and recreate all output
-###############################
+===============================
 
 As part of a ML/Data Science driven project, you may run your models hundreds of times with varying output
 due to version of model used or :ref:`context` parameters defined for that particular execution.
@@ -166,7 +188,7 @@ previous output.
 .. _configuration:
 
 Extendability and configuration
-###############################
+===============================
 
 Gluepy was built by a team with a rich experience of the AI Consulting world, which means that any code written must be able
 to be deployed to various cloud environments and run with varying parameters that fit each client the best.

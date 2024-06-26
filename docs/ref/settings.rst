@@ -52,7 +52,7 @@ Default: ``[]`` (empty list of strings)
 
 A list of strings that represent the dotted import path available on your system path for any Gluepy module that you want to enable as part of the project.
 
-See more at :doc:`Reusable Apps </intro/reusable-apps>`.
+See more at :doc:`Modules </topics/modules>`.
 
 
 .. setting:: STORAGE_ROOT
@@ -103,7 +103,7 @@ Dotted path to the :ref:`context_configuration` manager class to be loaded and l
 
 Default: ``"gluepy.exec.tasks.BootstrapTask"`` (dotted string to ``BootstrapTask``)
 
-Dotted path to a :ref:`task` that we want to inject to the beginning of every DAG that we execute in our project.
+Dotted path to a :ref:`tasks` that we want to inject to the beginning of every DAG that we execute in our project.
 Usually helpful to provide a standard set of diagnostic meta data around the execution.
 
 .. setting:: LOGGING

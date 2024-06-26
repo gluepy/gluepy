@@ -14,7 +14,6 @@ place: read this material to quickly get up and running.
    tutorial02
    tutorial03
    tutorial04
-   reusable-apps
    contributing
 
 .. seealso::

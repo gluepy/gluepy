@@ -23,9 +23,3 @@ as long as they are available in ``<module>.tasks``, ``<module>.dags``, ``<modul
         "companyutils",
         "myforecaster",
     ]
-
-
-Write your own Gluepy Module
-============================
-
-To write your own module, see our tutorial on :doc:`How to write reusable apps </intro/reusable-apps>`
