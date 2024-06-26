@@ -67,9 +67,10 @@ you will need for your Gluepy module in the following structure:
 
 * ``dags.py``. This is the module that holds all your :ref:`dags` definitions.
 * ``tasks.py``. This is the module that holds all your :ref:`tasks` definitions.
+* ``commands.py``. This is the module that holds all your custom :ref:`cli`.
 
-Both of these files can be replaced with directories named ``tasks/`` and ``dags/`` if your module grows to consist of many
-:ref:`dags` and :ref:`tasks` that you want to separate into different files.
+These files can be replaced with directories named ``tasks/``, ``commands/`` and ``dags/`` if your module grows to consist of many
+classes and functions that you want to separate into different files.
 
 
 Install our Module
