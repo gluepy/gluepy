@@ -6,12 +6,25 @@ def merge(a, b, path: str = None, allow_new_key: bool = True):
 
     for key in b:
         if key in a:
+            # For float and int, cast both to float.
+            if (
+                a[key] is not None
+                and b[key] is not None
+                and (
+                    (isinstance(a[key], int) and isinstance(b[key], float))
+                    or (isinstance(a[key], float) and isinstance(b[key], int))
+                )
+            ):
+                a[key] = float(a[key])
+                b[key] = float(b[key])
+
+            # Sanity check that we don't merge different types.
             if (
                 a[key] is not None
                 and b[key] is not None
                 and not isinstance(a[key], type(b[key]))
             ):
-                raise TypeError(
+                raise ValueError(
                     f"Conflicting types '{a[key].__class__.__name__}' and "
                     f"'{b[key].__class__.__name__}' at '{'.'.join(path + [str(key)])}'"
                 )

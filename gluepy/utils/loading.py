@@ -88,10 +88,9 @@ class SingletonMixin(object):
     __singleton_lock = threading.Lock()
     __singleton_instance = None
 
-    @classmethod
-    def instance(cls):
+    def __new__(cls):
         if not cls.__singleton_instance:
             with cls.__singleton_lock:
                 if not cls.__singleton_instance:
-                    cls.__singleton_instance = cls()
+                    cls.__singleton_instance = super().__new__(cls)
         return cls.__singleton_instance
