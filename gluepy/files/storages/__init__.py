@@ -5,6 +5,7 @@ from .local import LocalStorage
 from .s3 import S3Storage
 from .google import GoogleStorage
 from .base import BaseStorage
+from .memory import MemoryStorage
 
 
 default_storage: BaseStorage = LazyProxy(

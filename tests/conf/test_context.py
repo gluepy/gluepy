@@ -2,7 +2,6 @@ from unittest import TestCase
 from gluepy.utils.loading import empty
 
 
-
 class ContextTestCase(TestCase):
 
     def test_context_populated(self):

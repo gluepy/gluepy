@@ -3,7 +3,7 @@ import os
 BASE_DIR = os.path.dirname(__file__)
 CONFIG_PATH = os.path.join(BASE_DIR, "")
 INSTALLED_MODULES = []
-STORAGE_BACKEND = "gluepy.files.storages.LocalStorage"
+STORAGE_BACKEND = "gluepy.files.storages.MemoryStorage"
 STORAGE_ROOT = os.path.join(BASE_DIR, "data")
 DATA_BACKEND = "gluepy.files.data.PandasDataManager"
 CONTEXT_BACKEND = "gluepy.conf.context.DefaultContextManager"

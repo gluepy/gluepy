@@ -23,6 +23,17 @@ def dag(
     from_task: Optional[str] = None,
     task: Optional[str] = None,
 ):
+    """Wrapper around run_dag function to expose to CLI"""
+    run_dag(label, retry, patch, from_task, task)
+
+
+def run_dag(
+    label,
+    retry: Optional[str] = None,
+    patch: Optional[List[str]] = None,
+    from_task: Optional[str] = None,
+    task: Optional[str] = None
+):
     """Command to run a DAG by its label.
 
     Args:
