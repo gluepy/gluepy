@@ -24,9 +24,12 @@ class MemoryStorage(BaseStorage):
         if not self.exists(os.path.dirname(file_path)):
             self.mkdir(os.path.dirname(file_path))
 
+        # print(self.abspath(file_path).split(self.separator))
+        # paths = [path for path in self.abspath(file_path).split(self.separator) if path != ""]
+        # print(paths)
         paths = self.abspath(file_path).split(self.separator)
+        directory = self.FILE_SYSTEM
         for idx, path in enumerate(paths):
-            directory = self.FILE_SYSTEM
             if path not in directory and idx < len(paths) - 1:
                 directory[path] = dict()
 
@@ -45,8 +48,8 @@ class MemoryStorage(BaseStorage):
             NotImplementedError: Base class raise NotImplementedError
         """
         paths = self.abspath(file_path).split(self.separator)
+        directory = self.FILE_SYSTEM
         for idx, path in enumerate(paths):
-            directory = self.FILE_SYSTEM
             if path not in directory:
                 raise FileNotFoundError
 
@@ -63,8 +66,8 @@ class MemoryStorage(BaseStorage):
             recursive (bool): If allowed to delete recursive directories or not.
         """
         paths = self.abspath(path).split(self.separator)
+        directory = self.FILE_SYSTEM
         for idx, path in enumerate(paths):
-            directory = self.FILE_SYSTEM
             if path not in directory:
                 raise FileNotFoundError
 
@@ -103,7 +106,9 @@ class MemoryStorage(BaseStorage):
         if not self.exists(os.path.dirname(dest_path)):
             self.mkdir(os.path.dirname(dest_path))
 
-        self.touch(dest_path, self.open(src_path))
+        contents = self.open(src_path)
+        contents = StringIO(contents.decode("utf-8")) if isinstance(contents, bytes) else StringIO(contents)
+        self.touch(dest_path, contents)
 
     def ls(self, path: str) -> Tuple[List[str], List[str]]:
         """List all files and directories at given path.
@@ -116,8 +121,8 @@ class MemoryStorage(BaseStorage):
               First list is files, second list is directories.
         """
         paths = self.abspath(path).split(self.separator)
+        directory = self.FILE_SYSTEM
         for idx, path in enumerate(paths):
-            directory = self.FILE_SYSTEM
             if path not in directory:
                 raise FileNotFoundError
 
@@ -159,8 +164,8 @@ class MemoryStorage(BaseStorage):
             folders as well. Defaults to False.
         """
         paths = self.abspath(path).split(self.separator)
+        directory = self.FILE_SYSTEM
         for path in paths:
-            directory = self.FILE_SYSTEM
             if path not in directory:
                 directory[path] = dict()
 
@@ -176,8 +181,8 @@ class MemoryStorage(BaseStorage):
             bool: True/False if path is directory or not
         """
         paths = self.abspath(path).split(self.separator)
+        directory = self.FILE_SYSTEM
         for idx, path in enumerate(paths):
-            directory = self.FILE_SYSTEM
             if path not in directory:
                 raise FileNotFoundError
 
@@ -196,8 +201,8 @@ class MemoryStorage(BaseStorage):
             bool: True/False if path is file or not.
         """
         paths = self.abspath(path).split(self.separator)
+        directory = self.FILE_SYSTEM
         for idx, path in enumerate(paths):
-            directory = self.FILE_SYSTEM
             if path not in directory:
                 raise FileNotFoundError
 
@@ -216,8 +221,8 @@ class MemoryStorage(BaseStorage):
             bool: True/False if path is file or not.
         """
         paths = self.abspath(path).split(self.separator)
+        directory = self.FILE_SYSTEM
         for path in paths:
-            directory = self.FILE_SYSTEM
             if path not in directory:
                 return False
 
