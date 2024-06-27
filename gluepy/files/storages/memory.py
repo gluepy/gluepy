@@ -12,7 +12,9 @@ class MemoryStorage(BaseStorage):
     and other non production workloads.
     """
 
-    FILE_SYSTEM = dict()
+    def __init__(self) -> None:
+        self.FILE_SYSTEM = dict()
+        super().__init__()
 
     def touch(self, file_path: str, content: Union[StringIO, BytesIO]) -> None:
         """Create a new blob at file path.
@@ -24,9 +26,6 @@ class MemoryStorage(BaseStorage):
         if not self.exists(os.path.dirname(file_path)):
             self.mkdir(os.path.dirname(file_path))
 
-        # print(self.abspath(file_path).split(self.separator))
-        # paths = [path for path in self.abspath(file_path).split(self.separator) if path != ""]
-        # print(paths)
         paths = self.abspath(file_path).split(self.separator)
         directory = self.FILE_SYSTEM
         for idx, path in enumerate(paths):
@@ -79,6 +78,7 @@ class MemoryStorage(BaseStorage):
                 ):
                     raise ValueError("Trying to delete directory without recursive")
                 del directory[path]
+                return
 
             directory = directory[path]
 
@@ -101,13 +101,17 @@ class MemoryStorage(BaseStorage):
             raise ValueError(f"recursive must be True if '{src_path}' is a directory")
         if self.exists(dest_path) and not overwrite:
             raise FileExistsError(
-                f"'{dest_path}' already exists and recursive is False"
+                f"'{dest_path}' already exists and overwrite is False"
             )
         if not self.exists(os.path.dirname(dest_path)):
             self.mkdir(os.path.dirname(dest_path))
 
         contents = self.open(src_path)
-        contents = StringIO(contents.decode("utf-8")) if isinstance(contents, bytes) else StringIO(contents)
+        contents = (
+            StringIO(contents.decode("utf-8"))
+            if isinstance(contents, bytes)
+            else StringIO(contents)
+        )
         self.touch(dest_path, contents)
 
     def ls(self, path: str) -> Tuple[List[str], List[str]]:
@@ -133,24 +137,16 @@ class MemoryStorage(BaseStorage):
 
                 else:
                     return (
-                        list(
-                            filter(
-                                lambda x: self.isfile(x),
-                                [
-                                    os.path.join(path, child)
-                                    for child in directory[path].keys()
-                                ],
-                            )
-                        ),
-                        list(
-                            filter(
-                                lambda x: self.isdir(x),
-                                [
-                                    os.path.join(path, child)
-                                    for child in directory[path].keys()
-                                ],
-                            )
-                        ),
+                        [
+                            child
+                            for child in directory[path]
+                            if self.isfile(os.path.join(path, child))
+                        ],
+                        [
+                            child
+                            for child in directory[path]
+                            if self.isdir(os.path.join(path, child))
+                        ],
                     )
 
             directory = directory[path]

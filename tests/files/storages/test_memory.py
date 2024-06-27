@@ -16,10 +16,7 @@ class MemoryStorageTestCase(TestCase):
         dir = storage.FILE_SYSTEM
         for path in paths:
             dir = dir[path]
-        self.assertEqual(
-            dir["file.txt"], 
-            contents
-        )
+        self.assertEqual(dir["file.txt"], contents)
 
     def test_cp(self):
         storage = MemoryStorage()
@@ -38,109 +35,103 @@ class MemoryStorageTestCase(TestCase):
         for path in paths:
             dir = dir[path]
         self.assertEqual(
-            dir["file2.txt"].read(), 
+            dir["file2.txt"].read(),
             "Foo",
         )
 
-    # def test_cp_overwrite_error(self):
-    #     storage = MemoryStorage()
-    #     storage.isdir = mock.Mock()
-    #     storage.isdir.return_value = False
-    #     # Mock that file already exists
-    #     storage.exists = mock.Mock()
-    #     storage.exists.side_effect = (True, True)
-    #     with self.assertRaises(FileExistsError):
-    #         # overwrite=False raise error if file already exists.
-    #         storage.cp("file.txt", "file2.txt", overwrite=False)
+    def test_cp_overwrite_error(self):
+        storage = MemoryStorage()
+        storage.isdir = mock.Mock()
+        storage.isdir.return_value = False
+        # Mock that file already exists
+        storage.exists = mock.Mock()
+        storage.exists.side_effect = (True, True)
+        with self.assertRaises(FileExistsError):
+            # overwrite=False raise error if file already exists.
+            storage.cp("file.txt", "file2.txt", overwrite=False)
 
-    # def test_cp_overwrite_success(self):
-    #     storage = MemoryStorage()
-    #     storage.isdir = mock.Mock()
-    #     storage.isdir.return_value = False
-    #     # Mock that file already exists
-    #     storage.exists = mock.Mock()
-    #     storage.exists.side_effect = (True, True)
-    #     with mock.patch("gluepy.files.storages.local.shutil.copy2") as mock_copy2:
-    #         # overwrite=True is necessary if file already exist
-    #         storage.cp("file.txt", "file2.txt", overwrite=True)
+    def test_cp_overwrite_success(self):
+        storage = MemoryStorage()
+        storage.isdir = mock.Mock()
+        storage.isdir.return_value = False
+        storage.exists = mock.Mock()
+        storage.exists.return_value = True
+        storage.open = mock.Mock()
+        storage.open.return_value = "Foo"
 
-    #     mock_copy2.assert_called_once_with(
-    #         os.path.join(default_settings.STORAGE_ROOT, "file.txt"),
-    #         os.path.join(default_settings.STORAGE_ROOT, "file2.txt"),
-    #         follow_symlinks=True,
-    #     )
+        storage.cp("file.txt", "file2.txt", overwrite=True)
 
-    # def test_open(self):
-    #     storage = MemoryStorage()
-    #     with mock.patch("builtins.open", mock.mock_open(read_data="foo")) as mock_file:
-    #         f = storage.open("file.txt")
+        full_path = os.path.join(default_settings.STORAGE_ROOT, "file2.txt")
+        paths = os.path.dirname(full_path).split(storage.separator)
+        dir = storage.FILE_SYSTEM
+        for path in paths:
+            dir = dir[path]
+        self.assertEqual(
+            dir["file2.txt"].read(),
+            "Foo",
+        )
 
-    #     mock_file.assert_called_once_with(
-    #         os.path.join(default_settings.STORAGE_ROOT, "file.txt"), mode="rb"
-    #     )
-    #     # The returned value from f is the contents of the file,
-    #     # not a stream.
-    #     self.assertEqual(f, "foo")
+    def test_open(self):
+        storage = MemoryStorage()
+        storage.touch("path/file.txt", io.StringIO("foo"))
+        f = storage.open("path/file.txt")
+        # The returned value from f is the contents of the file,
+        # not a stream.
+        self.assertEqual(f, "foo")
 
-    # def test_ls(self):
-    #     storage = MemoryStorage()
-    #     with mock.patch("gluepy.files.storages.local.os.listdir") as mock_ls:
-    #         mock_ls.return_value = ["file.txt", "file2.txt", "directory"]
-    #         storage.isdir = mock.Mock()
-    #         storage.isdir.side_effect = lambda x: x in {
-    #             os.path.join(default_settings.STORAGE_ROOT, "directory")
-    #         }
-    #         storage.isfile = mock.Mock()
-    #         storage.isfile.side_effect = lambda x: x in {
-    #             os.path.join(default_settings.STORAGE_ROOT, "file.txt"),
-    #             os.path.join(default_settings.STORAGE_ROOT, "file2.txt"),
-    #         }
-    #         files, dirs = storage.ls(".")
+    def test_rm(self):
+        storage = MemoryStorage()
+        storage.touch("file.txt", io.StringIO("foo"))
+        self.assertTrue(storage.exists("file.txt"))
+        storage.rm("file.txt")
+        self.assertFalse(storage.exists("file.txt"))
 
-    #     self.assertEqual(files, ["file.txt", "file2.txt"])
-    #     self.assertEqual(dirs, ["directory"])
+    def test_rm_recursive_error(self):
+        storage = MemoryStorage()
+        storage.touch("path/file.txt", io.StringIO("foo"))
+        self.assertTrue(storage.exists("path/file.txt"))
+        with self.assertRaises(ValueError):
+            storage.rm("path/", recursive=False)
 
-    # def test_mkdir(self):
-    #     storage = MemoryStorage()
-    #     with mock.patch("gluepy.files.storages.local.os.makedirs") as mock_makedirs:
-    #         storage.exists = mock.Mock()
-    #         storage.exists.return_value = True
-    #         storage.mkdir("path/to/dir")
+    def test_rm_recursive_success(self):
+        storage = MemoryStorage()
+        storage.touch("path/file.txt", io.StringIO("foo"))
+        self.assertTrue(storage.exists("path/file.txt"))
+        storage.rm("path/", recursive=True)
+        self.assertFalse(storage.exists("file.txt"))
 
-    #     mock_makedirs.assert_called_once_with(
-    #         os.path.join(default_settings.STORAGE_ROOT, "path", "to", "dir"),
-    #         exist_ok=True,
-    #     )
+    def test_ls(self):
+        storage = MemoryStorage()
 
-    # def test_isdir(self):
-    #     storage = MemoryStorage()
-    #     with mock.patch("gluepy.files.storages.local.os.path.isdir") as mock_isdir:
-    #         storage.exists = mock.Mock()
-    #         storage.exists.return_value = True
-    #         self.assertTrue(storage.isdir("path/to/dir"))
+        storage.touch("path/file.txt", io.StringIO("foo"))
+        storage.touch("path/file2.txt", io.StringIO("foo"))
+        storage.touch("path/directory/file3.txt", io.StringIO("foo"))
 
-    #     mock_isdir.assert_called_once_with(
-    #         os.path.join(default_settings.STORAGE_ROOT, "path", "to", "dir"),
-    #     )
+        files, dirs = storage.ls("path/")
 
-    # def test_isfile(self):
-    #     storage = MemoryStorage()
-    #     with mock.patch("gluepy.files.storages.local.os.path.isfile") as mock_isfile:
-    #         storage.exists = mock.Mock()
-    #         storage.exists.return_value = True
-    #         self.assertTrue(storage.isfile("path/to/dir/file.txt"))
+        self.assertEqual(files, ["file.txt", "file2.txt"])
+        self.assertEqual(dirs, ["directory"])
 
-    #     mock_isfile.assert_called_once_with(
-    #         os.path.join(
-    #             default_settings.STORAGE_ROOT, "path", "to", "dir", "file.txt"
-    #         ),
-    #     )
+    def test_mkdir(self):
+        storage = MemoryStorage()
+        storage.mkdir("path/to/dir")
+        self.assertTrue(storage.exists("path/to/dir"))
 
-    # def test_exists(self):
-    #     storage = MemoryStorage()
-    #     with mock.patch("gluepy.files.storages.local.os.path.exists") as mock_exists:
-    #         storage.exists("path/to/dir")
+    def test_isdir(self):
+        storage = MemoryStorage()
+        storage.touch("path/to/dir/file.txt", io.StringIO("foo"))
+        self.assertTrue(storage.isdir("path/to/dir"))
+        self.assertFalse(storage.isdir("path/to/dir/file.txt"))
 
-    #     mock_exists.assert_called_once_with(
-    #         os.path.join(default_settings.STORAGE_ROOT, "path", "to", "dir"),
-    #     )
+    def test_isfile(self):
+        storage = MemoryStorage()
+        storage.touch("path/to/dir/file.txt", io.StringIO("foo"))
+        self.assertTrue(storage.isfile("path/to/dir/file.txt"))
+        self.assertFalse(storage.isfile("path/to/dir"))
+
+    def test_exists(self):
+        storage = MemoryStorage()
+        storage.touch("path/to/dir/file.txt", io.StringIO("foo"))
+        self.assertTrue(storage.exists("path/to/dir"))
+        self.assertTrue(storage.exists("path/to/dir/file.txt"))
+        self.assertFalse(storage.exists("path/to/missing-dir"))
