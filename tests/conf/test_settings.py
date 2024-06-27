@@ -15,7 +15,8 @@ class SettingsTestCase(TestCase):
         self.assertEqual(default_settings._wrapped, empty)
         # When we try to access a setting, it is being populated by our ``settings.py``
         self.assertEqual(
-            default_settings.STORAGE_BACKEND, "gluepy.files.storages.memory.MemoryStorage"
+            default_settings.STORAGE_BACKEND,
+            "gluepy.files.storages.memory.MemoryStorage",
         )
         # It is now fully evaluated and no longer lazy.
         self.assertNotEqual(default_settings._wrapped, empty)
