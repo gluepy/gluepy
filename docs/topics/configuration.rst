@@ -42,7 +42,7 @@ For example, you may have the following settings:
 .. code-block:: python
 
    # base.py
-   STORAGE_BACKEND = "gluepy.files.storages.LocalStorage"
+   STORAGE_BACKEND = "gluepy.files.storages.local.LocalStorage"
    STORAGE_ROOT = os.path.join(BASE_DIR, "data")
    LOGGING = {
       'version': 1,
@@ -74,7 +74,7 @@ For example, you may have the following settings:
 
    # prod.py
    from .base import *
-   STORAGE_BACKEND = "gluepy.files.storages.GoogleStorage"
+   STORAGE_BACKEND = "gluepy.files.storages.google.GoogleStorage"
    STORAGE_ROOT = "data/"
    GOOGLE_GCS_BUCKET = "mybucket-1234"
 

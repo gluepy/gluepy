@@ -51,7 +51,7 @@ Here is an example using the :ref:`storage_backend_google`.
 .. code-block:: python
 
     # settings.py
-    STORAGE_BACKEND = "gluepy.files.storages.GoogleStorage"
+    STORAGE_BACKEND = "gluepy.files.storages.google.GoogleStorage"
     GOOGLE_GCS_BUCKET = "mybucket-1234"
 
 

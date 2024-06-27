@@ -71,7 +71,7 @@ it can be a relative path of using Blob Storage backends such as ``S3Storage``.
 ``STORAGE_BACKEND``
 -------------------
 
-Default: ``"gluepy.files.storages.LocalStorage"`` (dotted string to ``LocalStorage``)
+Default: ``"gluepy.files.storages.local.LocalStorage"`` (dotted string to ``LocalStorage``)
 
 Dotted path to the :ref:`storage_backends` class to be loaded and later used by the ``default_storage`` object throughout application.
 .. setting:: DATA_BACKEND

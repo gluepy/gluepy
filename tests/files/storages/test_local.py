@@ -1,7 +1,7 @@
 import io
 import os
 from unittest import TestCase, mock
-from gluepy.files.storages import LocalStorage
+from gluepy.files.storages.local import LocalStorage
 from gluepy.conf import default_settings
 
 
