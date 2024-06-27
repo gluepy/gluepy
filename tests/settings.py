@@ -37,3 +37,5 @@ LOGGING = {
         },
     },
 }
+
+GOOGLE_GCS_BUCKET = "foo"

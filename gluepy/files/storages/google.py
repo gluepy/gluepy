@@ -225,14 +225,12 @@ class GoogleStorage(BaseStorage):
         if self.exists(path):
             logger.warning("Directory '%s' already exists.", path)
             return
-
         parent = os.path.dirname(path)
         if not self.exists(parent) and not make_parents:
             raise FileNotFoundError(
                 f"Parent directory '{parent}' does not exist. "
                 "Use option `make_parents` to automatically create parent directories."
             )
-
         self.bucket.blob(self.abspath(path)).upload_from_file(BytesIO())
 
     def isdir(self, path: str) -> bool:
@@ -246,9 +244,8 @@ class GoogleStorage(BaseStorage):
         """
         # Ensure always ending with `/`.
         path = self.abspath(path).rstrip(self.separator) + self.separator
-        return self.bucket.blob(path).exists() or bool(
-            list(self.client.list_blobs(self.bucket, prefix=path, max_results=1))
-        )
+        files = list(self.client.list_blobs(self.bucket, prefix=path, max_results=1))
+        return self.bucket.blob(path).exists() or bool(files)
 
     def isfile(self, path: str) -> bool:
         """Check if path is a file or not.
