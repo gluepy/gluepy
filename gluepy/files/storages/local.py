@@ -61,7 +61,7 @@ class LocalStorage(BaseStorage):
             raise ValueError(f"recursive must be True if '{src_path}' is a directory")
         if self.exists(dest_path) and not overwrite:
             raise FileExistsError(
-                f"'{dest_path}' already exists and recursive is False"
+                f"'{dest_path}' already exists and overwrite is False"
             )
         if not self.exists(os.path.dirname(dest_path)):
             self.mkdir(os.path.dirname(dest_path))
