@@ -143,11 +143,11 @@ class GoogleStorage(BaseStorage):
         """
         if not self.exists(src_path):
             raise FileNotFoundError(f"File at '{src_path}' not found.")
-        if not self.exists(dest_path) and not overwrite:
-            raise FileNotFoundError(f"File at '{dest_path}' not found.")
+        if self.exists(dest_path) and not overwrite:
+            raise FileExistsError(f"File at '{dest_path}' already exist.")
 
         if self.isfile(src_path):
-            self.touch(dest_path, self.open(src_path))
+            self.touch(dest_path, StringIO(self.open(src_path)))
         elif self.isdir():
             files, dirs = self.ls(src_path)
             if dirs and not recursive:
@@ -202,6 +202,7 @@ class GoogleStorage(BaseStorage):
                     dirs += [
                         f"{self.relpath(os.path.dirname(blob.name)).rstrip(self.separator)}{self.separator}"  # noqa
                     ]
+
                 files += (
                     [self.relpath(blob.name)]
                     if self._is_in_root(blob.name, path)

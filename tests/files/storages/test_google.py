@@ -44,64 +44,48 @@ class GoogleStorageTestCase(TestCase):
         # not a stream.
         self.assertEqual(f, "foo")
 
-    # def test_cp(self):
-    #
-    #     self.storage.isdir = mock.Mock()
-    #     self.storage.isdir.return_value = False
-    #     self.storage.exists = mock.Mock()
-    #     self.storage.exists.side_effect = (False, True)
-    #     with mock.patch("gluepy.files.storages.local.shutil.copy2") as mock_copy2:
-    #         self.storage.cp("file.txt", "file2.txt")
+    def test_cp(self):
+        with mock.patch("gluepy.files.storages.google.storage.Client") as _:
+            storage = GoogleStorage()
+            storage.bucket = mock.Mock()
+            storage.client = mock.Mock()
+        storage.isdir = mock.Mock()
+        storage.isdir.return_value = False
+        storage.isfile = mock.Mock()
+        storage.isfile.return_value = True
+        storage.exists = mock.Mock()
+        storage.exists.side_effect = (True, False)
+        storage.open = mock.Mock()
+        storage.open.return_value = "Foo"
+        storage.touch = mock.Mock()
+        with mock.patch("gluepy.files.storages.local.shutil.copy2") as _:
+            storage.cp("file.txt", "file2.txt")
 
-    #     mock_copy2.assert_called_once_with(
-    #         os.path.join(default_settings.STORAGE_ROOT, "file.txt"),
-    #         os.path.join(default_settings.STORAGE_ROOT, "file2.txt"),
-    #         follow_symlinks=True,
-    #     )
+        storage.open.assert_called_once_with("file.txt")
+        storage.touch.assert_called_once()
 
-    # def test_cp_overwrite_error(self):
-    #
-    #     self.storage.isdir = mock.Mock()
-    #     self.storage.isdir.return_value = False
-    #     # Mock that file already exists
-    #     self.storage.exists = mock.Mock()
-    #     self.storage.exists.side_effect = (True, True)
-    #     with self.assertRaises(FileExistsError):
-    #         # overwrite=False raise error if file already exists.
-    #         self.storage.cp("file.txt", "file2.txt", overwrite=False)
-
-    # def test_cp_overwrite_success(self):
-    #
-    #     self.storage.isdir = mock.Mock()
-    #     self.storage.isdir.return_value = False
-    #     # Mock that file already exists
-    #     self.storage.exists = mock.Mock()
-    #     self.storage.exists.side_effect = (True, True)
-    #     with mock.patch("gluepy.files.storages.local.shutil.copy2") as mock_copy2:
-    #         # overwrite=True is necessary if file already exist
-    #         self.storage.cp("file.txt", "file2.txt", overwrite=True)
-    #     mock_copy2.assert_called_once_with(
-    #         os.path.join(default_settings.STORAGE_ROOT, "file.txt"),
-    #         os.path.join(default_settings.STORAGE_ROOT, "file2.txt"),
-    #         follow_symlinks=True,
-    #     )
-
-    # def test_ls(self):
-    #
-    #     with mock.patch("gluepy.files.storages.local.os.listdir") as mock_ls:
-    #         mock_ls.return_value = ["file.txt", "file2.txt", "directory"]
-    #         self.storage.isdir = mock.Mock()
-    #         self.storage.isdir.side_effect = lambda x: x in {
-    #             os.path.join(default_settings.STORAGE_ROOT, "directory")
-    #         }
-    #         self.storage.isfile = mock.Mock()
-    #         self.storage.isfile.side_effect = lambda x: x in {
-    #             os.path.join(default_settings.STORAGE_ROOT, "file.txt"),
-    #             os.path.join(default_settings.STORAGE_ROOT, "file2.txt"),
-    #         }
-    #         files, dirs = self.storage.ls(".")
-    #     self.assertEqual(files, ["file.txt", "file2.txt"])
-    #     self.assertEqual(dirs, ["directory"])
+    def test_ls(self):
+        mock_blob_a = mock.Mock()
+        mock_blob_a.name = os.path.join(default_settings.STORAGE_ROOT, "file.txt")
+        mock_blob_a.exists.side_effect = (False,)
+        mock_blob_b = mock.Mock()
+        mock_blob_b.name = os.path.join(default_settings.STORAGE_ROOT, "file2.txt")
+        mock_blob_b.exists.side_effect = (False,)
+        mock_blob_c = mock.Mock()
+        mock_blob_c.name = os.path.join(default_settings.STORAGE_ROOT, "directory")
+        mock_blob_c.exists.side_effect = (True,)
+        self.storage.bucket.blob.side_effect = (mock_blob_a, mock_blob_b, mock_blob_c)
+        self.storage.client.list_blobs.side_effect = (
+            # Blobs returned as part of .ls() call
+            [mock_blob_a, mock_blob_b, mock_blob_c],
+            [],
+            [],
+            # Blob returned when running isdir on final iteration
+            [mock_blob_c],
+        )
+        files, dirs = self.storage.ls(".")
+        self.assertEqual(files, ["file.txt", "file2.txt"])
+        self.assertEqual(dirs, ["directory/"])
 
     def test_mkdir(self):
         mock_blob = mock.Mock()
