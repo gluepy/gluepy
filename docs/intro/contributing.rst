@@ -23,7 +23,7 @@ Here are some key points that guide our decision making:
 * Gluepy should be modular and allow users to replace built in components
   with their own alternative, e.g. switch out ``LocalStorage`` to a ``UserCustomStorage``.
 * Gluepy should be agnostic to use case. We do not concern ourselves with if the user
-  is writing Neural Networks, Regression models, Classification models or Data Transformations.  
+  is writing Neural Networks, Regression models, Classification models or Data Transformations.
 * Gluepy primary purpose is to provide an opinionated structure that guide less technical
   Data Scientist into adhering to best practices without them having to make that a concious decision.
 
@@ -51,7 +51,7 @@ Before review, the pull request is expected to contain:
 Creating a standalone Gluepy library
 ------------------------------------
 
-You may have an excellent idea that isn't on the roadmap of our `issue tracker <https://github.com/gluepy/gluepy/issues>`_ but 
+You may have an excellent idea that isn't on the roadmap of our `issue tracker <https://github.com/gluepy/gluepy/issues>`_ but
 still something that you feel passionate about. It may be a niche use case, or something that you simply want to be owning the
 contributions of in the future.
 
@@ -64,7 +64,7 @@ in their own Gluepy projects.
 Running Lint and Style Checks
 =============================
 
-The Gluepy repository comes bundled with a ``.pre-commit-config.yaml`` file that 
+The Gluepy repository comes bundled with a ``.pre-commit-config.yaml`` file that
 defines a list of static code analysis checks to execute before a commit.
 
 These checks ensures there are no secrets stored in the code, that the code adhere to formatting
@@ -90,4 +90,3 @@ install some requirements and run the tests::
     $ source envs/bin/activate
     $ python -m pip install -e ..
     $ ./runtests.py
-
