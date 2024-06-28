@@ -28,9 +28,8 @@ Here are some key points that guide our decision making:
   Data Scientist into adhering to best practices without them having to make that a concious decision.
 
 
-Contributing to Gluepy
-======================
-
+Write your own patch
+====================
 
 As mentioned above, you can find issues to work on in our `issue tracker <https://github.com/gluepy/gluepy/issues>`_. Please
 only work on issues tagged as ``approved``. If you want to work on an issue that is not approved or listed in the issue tracker,
