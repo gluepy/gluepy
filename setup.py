@@ -31,7 +31,7 @@ setuptools.setup(
     ],
     python_requires=">=3.9",
     install_requires=(requirements_base),
-    extra_require={
+    extras_require={
         "all": (requirements_base + requirements_dev + requirements_digitalocean),
         "digitalocean": (requirements_base + requirements_digitalocean),
         "gcp": (requirements_base + requirements_gcp),
