@@ -22,6 +22,7 @@ class Settings(SingletonMixin):
     DATA_BACKEND: str
     CONTEXT_BACKEND: str
     START_TASK: str
+    MLOPS_BACKEND: str
     AIRFLOW_DAG_PREFIX: str
     AIRFLOW_TEMPLATE: str
     AIRFLOW_IMAGE: str
