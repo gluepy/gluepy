@@ -6,14 +6,15 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
+
 class BaseOpsBackend:
     """Backend interface for Gluepy operations.
-    
+
     This class defines the interface for tracking and storing run information,
     similar to MLFlow's but tool agnostic to be extended for tool-specific
     implementations.
     """
-    
+
     def create_run(
         self,
         dag: str,
@@ -22,17 +23,17 @@ class BaseOpsBackend:
         username: Optional[str] = "AnonymousUser",
     ) -> str:
         """Creates a new run in the backend storage.
-        
+
         Args:
             dag: Name of the DAG being executed
             run_id: Optional unique identifier for the run. If not provided,
                    one will be generated.
             config: Optional dictionary containing the run configuration
             username: Optional username of the person creating the run
-            
+
         Returns:
             str: The run_id of the created run
-            
+
         Raises:
             NotImplementedError: Method needs to be implemented by concrete class
         """
@@ -40,13 +41,13 @@ class BaseOpsBackend:
 
     def get_run(self, run_id: str) -> Dict:
         """Gets the run information for the specified run_id.
-        
+
         Args:
             run_id: The unique identifier for the run
-            
+
         Returns:
             Dict: Dictionary containing the run information
-            
+
         Raises:
             NotImplementedError: Method needs to be implemented by concrete class
         """
@@ -60,16 +61,16 @@ class BaseOpsBackend:
         end_time: Optional[datetime] = None,
     ) -> List[Dict]:
         """Lists runs matching the specified criteria.
-        
+
         Args:
             dag: Optional DAG name to filter runs
             username: Optional username to filter runs
             start_time: Optional start time for filtering runs
             end_time: Optional end time for filtering runs
-            
+
         Returns:
             List[Dict]: List of dictionaries containing run information
-            
+
         Raises:
             NotImplementedError: Method needs to be implemented by concrete class
         """
@@ -82,13 +83,13 @@ class BaseOpsBackend:
         timestamp: Optional[datetime] = None,
     ) -> None:
         """Logs a metric for a run.
-        
+
         Args:
             run_id: The run to log the metric for
             key: Metric name
             value: Metric value (must be numeric)
             timestamp: Optional timestamp for the metric
-            
+
         Raises:
             NotImplementedError: Method needs to be implemented by concrete class
         """
@@ -100,12 +101,12 @@ class BaseOpsBackend:
         value: str,
     ) -> None:
         """Logs a parameter for a run.
-        
+
         Args:
             run_id: The run to log the parameter for
             key: Parameter name
             value: Parameter value
-            
+
         Raises:
             NotImplementedError: Method needs to be implemented by concrete class
         """
@@ -117,12 +118,12 @@ class BaseOpsBackend:
         artifact_path: Optional[str] = None,
     ) -> None:
         """Logs an artifact (file) for a run.
-        
+
         Args:
             run_id: The run to log the artifact for
             local_path: Path to the file to log
             artifact_path: Optional path where the artifact should be stored
-            
+
         Raises:
             NotImplementedError: Method needs to be implemented by concrete class
         """
@@ -135,12 +136,12 @@ class BaseOpsBackend:
         end_time: Optional[datetime] = None,
     ) -> None:
         """Sets a run's status to terminated.
-        
+
         Args:
             run_id: The run to terminate
             status: The final status (e.g., 'FINISHED', 'FAILED', 'KILLED')
             end_time: Optional end time for the run
-            
+
         Raises:
             NotImplementedError: Method needs to be implemented by concrete class
         """
@@ -148,10 +149,10 @@ class BaseOpsBackend:
 
     def delete_run(self, run_id: str) -> None:
         """Deletes a run and all its associated data.
-        
+
         Args:
             run_id: The run to delete
-            
+
         Raises:
             NotImplementedError: Method needs to be implemented by concrete class
         """
@@ -166,26 +167,26 @@ class BaseOpsBackend:
         **kwargs,
     ) -> None:
         """Logs an input source for a run.
-        
+
         Args:
             df: Dataframe containing the input data
             context: Optional string providing additional context about the input
             tags: Optional dictionary of tags to associate with this input
-            
+
         Raises:
             NotImplementedError: Method needs to be implemented by concrete class
         """
         raise NotImplementedError
- 
+
 
 class LoggingOpsBackend(BaseOpsBackend):
     """Simple logging-based MLOps backend that logs operations to stdout.
-    
+
     This implementation provides a basic way to track ML operations by logging
     them to stdout using Python's logging module. Useful for development and
     debugging purposes.
     """
-    
+
     def create_run(
         self,
         dag: str,
@@ -196,7 +197,7 @@ class LoggingOpsBackend(BaseOpsBackend):
         """Creates a new run and logs its creation."""
         if run_id is None:
             run_id = str(uuid.uuid4())
-            
+
         logger.info(
             "Created new run: \n"
             f"Run ID: {run_id}\n"
@@ -214,7 +215,7 @@ class LoggingOpsBackend(BaseOpsBackend):
             "run_id": run_id,
             "status": "UNKNOWN",
             "start_time": None,
-            "end_time": None
+            "end_time": None,
         }
 
     def list_runs(
@@ -244,9 +245,7 @@ class LoggingOpsBackend(BaseOpsBackend):
         """Logs a metric by printing it to stdout."""
         current_time = timestamp or datetime.now()
         logger.info(
-            f"Logging metric at {current_time}:\n"
-            f"Key: {key}\n"
-            f"Value: {value}"
+            f"Logging metric at {current_time}:\n" f"Key: {key}\n" f"Value: {value}"
         )
 
     def log_param(
@@ -255,11 +254,7 @@ class LoggingOpsBackend(BaseOpsBackend):
         value: str,
     ) -> None:
         """Logs a parameter by printing it to stdout."""
-        logger.info(
-            "Logging parameter:\n"
-            f"Key: {key}\n"
-            f"Value: {value}"
-        )
+        logger.info("Logging parameter:\n" f"Key: {key}\n" f"Value: {value}")
 
     def log_artifact(
         self,
@@ -307,8 +302,3 @@ class LoggingOpsBackend(BaseOpsBackend):
             f"Tags: {tags}\n"
             f"Shape: {getattr(df, 'shape', 'unknown')}"
         )
-
-
-
-
-

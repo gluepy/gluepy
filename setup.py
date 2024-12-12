@@ -6,11 +6,9 @@ def read_requirements(filename):
     """Read requirements file and clean up lines."""
     with open(f"./requirements/{filename}") as f:
         return [
-            line.strip() 
+            line.strip()
             for line in f.read().split("\n")
-            if line.strip() 
-            and not line.startswith("#")
-            and not line.startswith("-r")
+            if line.strip() and not line.startswith("#") and not line.startswith("-r")
         ]
 
 
@@ -27,7 +25,7 @@ setuptools.setup(
     name="gluepy",
     version=gluepy.VERSION,
     author="Marcus Lind",
-    author_email="marcuslind90@gmail.com", 
+    author_email="marcuslind90@gmail.com",
     description="A framework for data scientists",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -45,7 +43,10 @@ setuptools.setup(
     python_requires=">=3.9",
     install_requires=requirements_base,
     extras_require={
-        "all": requirements_base + requirements_dev + requirements_digitalocean + requirements_gcp,
+        "all": requirements_base
+        + requirements_dev
+        + requirements_digitalocean
+        + requirements_gcp,
         "digitalocean": requirements_base + requirements_digitalocean,
         "gcp": requirements_base + requirements_gcp,
     },
