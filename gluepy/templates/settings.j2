@@ -7,6 +7,7 @@ STORAGE_BACKEND = "gluepy.files.storages.local.LocalStorage"
 STORAGE_ROOT = os.path.join(BASE_DIR, "data")
 DATA_BACKEND = "gluepy.files.data.PandasDataManager"
 CONTEXT_BACKEND = "gluepy.conf.context.DefaultContextManager"
+MLOPS_BACKEND = "gluepy.ops.backend.LoggingOpsBackend"
 START_TASK = "gluepy.exec.tasks.BootstrapTask"
 AIRFLOW_DAG_PREFIX = ""
 AIRFLOW_TEMPLATE = None

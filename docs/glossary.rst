@@ -14,6 +14,11 @@ Glossary
     schema
         A class that define the structure of your data.
 
+    run
+        A 'run' refers to a single execution of a :term:`dag`. The run will be given
+        its own ``run_id`` and ``run_folder`` to version its output from other
+        runs.
+
     field
         An attribute on a :term:`schema`; a given field usually maps directly to
         a single dataframe column.

@@ -8,6 +8,7 @@ STORAGE_ROOT = os.path.join(BASE_DIR, "data")
 DATA_BACKEND = "gluepy.files.data.PandasDataManager"
 CONTEXT_BACKEND = "gluepy.conf.context.DefaultContextManager"
 START_TASK = "gluepy.exec.tasks.BootstrapTask"
+MLOPS_BACKEND = "gluepy.ops.backend.LoggingOpsBackend"
 AIRFLOW_DAG_PREFIX = ""
 AIRFLOW_TEMPLATE = None
 AIRFLOW_IMAGE = "python:3.9-slim"

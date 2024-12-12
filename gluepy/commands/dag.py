@@ -3,8 +3,9 @@ import logging
 from typing import List, Optional
 import time
 import click
-from gluepy.conf import default_context_manager
+from gluepy.conf import default_context_manager, default_context
 from gluepy.files.storages import default_storage
+from gluepy.ops import default_mlops
 from . import cli
 
 logger = logging.getLogger(__name__)
@@ -81,6 +82,8 @@ def run_dag(
         else:
             raise ValueError(f"Task '{from_task}' not found in DAG list of tasks.")
         tasks = tasks[pos:]
+
+    default_mlops.create_run(dag=label, config=default_context.to_dict())
 
     for t in tasks:
         logger.info(f"---------- Started task '{t.__name__}'")
