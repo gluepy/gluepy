@@ -1,0 +1,20 @@
+---
+description: Overall rules for the development of the Gluepy project and python programming
+globs: gluepy/**/*.py
+---
+# Overview
+
+Gluepy is a framework to help structure Machine Learning pipelines and projects in a production-ready manner. It is allowing users to create DAG's that are made up of a set of Tasks which hold the business logic of our execution. In addition to this, it have other supporting features such as project configurations, model parameters files, integration with data backends such as S3 / BigQuery and more.
+
+The intention of Gluepy is that it is shared as an open source Python Library that is pip installed into a project. The framework should be modular and configurable so that users can build their own libraries in the Gluepy eco system that can extend the framework's functionality. Plugging in these modules will be done using the project's settings and the INSTALLED_MODULES as defined in [settings.py](mdc:gluepy/conf/settings.py).
+
+
+# Coding Practices
+
+Given this is an open source project that will be reviewed and used by many other users, it is key to ensure we adhere to best practices and enable readability and modularity.
+
+* Adhere to PEP8 coding style rules, validated by Flake8
+* Ensure all classes, methods and functions have Docstring in Google format with a short, clear description.
+* Use type hints in method definitions.
+* Avoid hardcoding constants and coupling the framework with a specific technology. Use [settings.py](mdc:gluepy/conf/settings.py) to allow users to configure the project. E.g. we allow the user to override the ``STORAGE_BACKEND`` setting to override if the project use S3, GCP Cloud Storage, Azure Blob Storage etc and allow full configurability.
+* When possible, unless there is a bug or error, try to ensure backwards compatibility. If you are breaking backwards compatibility, please ask for confirmation.
