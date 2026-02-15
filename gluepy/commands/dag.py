@@ -1,7 +1,9 @@
 import os
 import logging
+from pathlib import Path
 from typing import List, Optional
 import time
+import yaml
 import click
 from gluepy.conf import default_context_manager, default_context
 from gluepy.files.storages import default_storage
@@ -15,17 +17,19 @@ logger = logging.getLogger(__name__)
 @click.option("--task", type=str)
 @click.option("--from-task", type=str)
 @click.option("--patch", "-p", type=str, multiple=True)
+@click.option("--local-patch", "-lp", type=str, multiple=True)
 @click.option("--retry", type=str)
 @click.argument("label")
 def dag(
     label,
     retry: Optional[str] = None,
     patch: Optional[List[str]] = None,
+    local_patch: Optional[List[str]] = None,
     from_task: Optional[str] = None,
     task: Optional[str] = None,
 ):
     """Wrapper around run_dag function to expose to CLI"""
-    run_dag(label, retry, patch, from_task, task)
+    run_dag(label, retry, patch, from_task, task, local_patch=local_patch)
 
 
 def run_dag(
@@ -34,6 +38,7 @@ def run_dag(
     patch: Optional[List[str]] = None,
     from_task: Optional[str] = None,
     task: Optional[str] = None,
+    local_patch: Optional[List[str]] = None,
 ):
     """Command to run a DAG by its label.
 
@@ -47,15 +52,29 @@ def run_dag(
             Defaults to None.
         task (Optional[str], optional): Label of task if only want to execute a
             single task in DAG. Defaults to None.
+        local_patch (Optional[List[str]], optional): Path to local patch YAML files
+            to override context with. Defaults to None.
 
     """
     DAG = _get_dag_by_label(label)
     assert not (from_task and task), "Only one of --from-task or --task can be set."
     retry = retry if retry is None else retry.strip(default_storage.separator)
 
+    local_patch_dicts = []
+    if local_patch:
+        for lp in local_patch:
+            lp_path = Path(lp) if os.path.isabs(lp) else Path(os.getcwd()) / lp
+            if not lp_path.exists():
+                logger.warning(f"Local patch '{lp}' was not found.")
+                continue
+            with open(lp_path) as f:
+                local_patch_dicts.append(yaml.load(f, Loader=yaml.SafeLoader))
+
     if retry and default_storage.exists(os.path.join(retry, "context.yaml")):
         default_context_manager.load_context(
-            os.path.join(retry, "context.yaml"), patches=list(patch)
+            os.path.join(retry, "context.yaml"),
+            patches=list(patch),
+            local_patches=local_patch_dicts or None,
         )
     elif retry:
         # Retry a run folder path that does not exist by creating it.
@@ -63,10 +82,15 @@ def run_dag(
             run_id=os.path.basename(retry),
             run_folder=retry,
             patches=list(patch) if patch else None,
+            local_patches=local_patch_dicts or None,
             evaluate_lazy=True,
         )
-    elif patch:
-        default_context_manager.create_context(patches=list(patch), evaluate_lazy=True)
+    elif patch or local_patch_dicts:
+        default_context_manager.create_context(
+            patches=list(patch) if patch else None,
+            local_patches=local_patch_dicts or None,
+            evaluate_lazy=True,
+        )
 
     tasks = DAG().inject_tasks()
 
