@@ -63,6 +63,7 @@ class DefaultContextManager:
         run_id: Optional[str] = None,
         run_folder: Optional[str] = None,
         patches: Optional[List[str]] = None,
+        local_patches: Optional[List[dict]] = None,
         evaluate_lazy: bool = False,
     ):
         """Create a new context instance.
@@ -101,7 +102,7 @@ class DefaultContextManager:
                 Loader=yaml.SafeLoader,
             )
             for y in yamls
-        ] + patches
+        ] + patches + (local_patches or [])
 
         patches += [self.get_run_meta(run_id=run_id, run_folder=run_folder)]
 
@@ -113,7 +114,12 @@ class DefaultContextManager:
             self._ctx = ctx
         return ctx
 
-    def load_context(self, path: str, patches: Optional[List[str]] = None):
+    def load_context(
+        self,
+        path: str,
+        patches: Optional[List[str]] = None,
+        local_patches: Optional[List[dict]] = None,
+    ):
         """Loads an existing context.
 
         When we may want to recreate or rerun a pre-existing model execution,
@@ -148,6 +154,7 @@ class DefaultContextManager:
                 ),
                 run_folder=os.path.dirname(path_formatted),
                 patches=patches,
+                local_patches=local_patches,
             )
             return self._ctx
 
