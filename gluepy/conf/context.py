@@ -19,8 +19,7 @@ class Context(SingletonMixin):
 
     def __init__(self, data=None, *args, **kwargs):
         if data:
-            self._data.clear()
-            self._data.update(data)
+            object.__setattr__(self, '_data', Box(data, frozen_box=True))
 
     @property
     def instance(self):
