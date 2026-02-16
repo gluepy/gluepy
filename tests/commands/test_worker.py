@@ -41,7 +41,7 @@ class WorkerCommandTestCase(TestCase):
             from gluepy.commands import cli
 
             runner = CliRunner()
-            result = runner.invoke(cli, ["worker", "--concurrency", "4"])
+            runner.invoke(cli, ["worker", "--concurrency", "4"])
             mock_app.worker_main.assert_called_once()
             argv = mock_app.worker_main.call_args[0][0]
             self.assertIn("--concurrency", argv)
@@ -58,7 +58,7 @@ class WorkerCommandTestCase(TestCase):
             from gluepy.commands import cli
 
             runner = CliRunner()
-            result = runner.invoke(cli, ["worker", "--queues", "high,low"])
+            runner.invoke(cli, ["worker", "--queues", "high,low"])
             mock_app.worker_main.assert_called_once()
             argv = mock_app.worker_main.call_args[0][0]
             self.assertIn("--queues", argv)
@@ -75,7 +75,7 @@ class WorkerCommandTestCase(TestCase):
             from gluepy.commands import cli
 
             runner = CliRunner()
-            result = runner.invoke(cli, ["worker", "--pool", "solo"])
+            runner.invoke(cli, ["worker", "--pool", "solo"])
             mock_app.worker_main.assert_called_once()
             argv = mock_app.worker_main.call_args[0][0]
             self.assertIn("--pool", argv)

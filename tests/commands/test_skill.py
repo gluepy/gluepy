@@ -1,7 +1,7 @@
 import os
 import shutil
 import tempfile
-from unittest import TestCase, mock
+from unittest import TestCase
 from click.testing import CliRunner
 from gluepy.commands import cli
 
@@ -23,9 +23,7 @@ class SkillCommandTestCase(TestCase):
         result = runner.invoke(cli, ["skill", "github"])
         self.assertEqual(result.exit_code, 0)
         self.assertTrue(
-            os.path.exists(
-                os.path.join(".github", "skills", "gluepy", "SKILL.md")
-            )
+            os.path.exists(os.path.join(".github", "skills", "gluepy", "SKILL.md"))
         )
 
     def test_skill_claude(self):
@@ -33,9 +31,7 @@ class SkillCommandTestCase(TestCase):
         result = runner.invoke(cli, ["skill", "claude"])
         self.assertEqual(result.exit_code, 0)
         self.assertTrue(
-            os.path.exists(
-                os.path.join(".claude", "skills", "gluepy", "SKILL.md")
-            )
+            os.path.exists(os.path.join(".claude", "skills", "gluepy", "SKILL.md"))
         )
 
     def test_skill_cursor(self):
@@ -43,9 +39,7 @@ class SkillCommandTestCase(TestCase):
         result = runner.invoke(cli, ["skill", "cursor"])
         self.assertEqual(result.exit_code, 0)
         self.assertTrue(
-            os.path.exists(
-                os.path.join(".cursor", "skills", "gluepy", "SKILL.md")
-            )
+            os.path.exists(os.path.join(".cursor", "skills", "gluepy", "SKILL.md"))
         )
 
     def test_skill_creates_directories(self):
@@ -54,9 +48,7 @@ class SkillCommandTestCase(TestCase):
         self.assertEqual(result.exit_code, 0)
         self.assertTrue(os.path.isdir(os.path.join(".github", "skills", "gluepy")))
         self.assertTrue(
-            os.path.isdir(
-                os.path.join(".github", "skills", "gluepy", "references")
-            )
+            os.path.isdir(os.path.join(".github", "skills", "gluepy", "references"))
         )
 
     def test_skill_creates_reference_files(self):
@@ -64,7 +56,13 @@ class SkillCommandTestCase(TestCase):
         result = runner.invoke(cli, ["skill", "github"])
         self.assertEqual(result.exit_code, 0)
         ref_dir = os.path.join(".github", "skills", "gluepy", "references")
-        for ref_file in ["context.md", "storage.md", "dags.md", "settings.md", "data.md"]:
+        for ref_file in [
+            "context.md",
+            "storage.md",
+            "dags.md",
+            "settings.md",
+            "data.md",
+        ]:
             self.assertTrue(
                 os.path.exists(os.path.join(ref_dir, ref_file)),
                 f"Reference file '{ref_file}' not found",

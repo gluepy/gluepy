@@ -191,15 +191,11 @@ class PandasDataManagerTestCase(TestCase):
 
     def test_read_unsupported_extension(self):
         with self.assertRaises(ValueError):
-            with mock.patch(
-                "gluepy.files.data.pandas.default_storage"
-            ) as mock_storage:
+            with mock.patch("gluepy.files.data.pandas.default_storage"):
                 self.data_manager.read("file.xyz")
 
     def test_write_unsupported_extension(self):
         df = pd.DataFrame({"col": [1, 2, 3]})
         with self.assertRaises(ValueError):
-            with mock.patch(
-                "gluepy.files.data.pandas.default_storage"
-            ) as mock_storage:
+            with mock.patch("gluepy.files.data.pandas.default_storage"):
                 self.data_manager.write("file.xyz", df)

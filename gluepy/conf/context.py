@@ -19,7 +19,7 @@ class Context(SingletonMixin):
 
     def __init__(self, data=None, *args, **kwargs):
         if data:
-            object.__setattr__(self, '_data', Box(data, frozen_box=True))
+            object.__setattr__(self, "_data", Box(data, frozen_box=True))
 
     @property
     def instance(self):
@@ -95,13 +95,17 @@ class DefaultContextManager:
             os.listdir(default_settings.CONFIG_PATH),
         )
 
-        patches = [
-            yaml.load(
-                open(os.path.join(default_settings.CONFIG_PATH, y)),
-                Loader=yaml.SafeLoader,
-            )
-            for y in yamls
-        ] + patches + (local_patches or [])
+        patches = (
+            [
+                yaml.load(
+                    open(os.path.join(default_settings.CONFIG_PATH, y)),
+                    Loader=yaml.SafeLoader,
+                )
+                for y in yamls
+            ]
+            + patches
+            + (local_patches or [])
+        )
 
         patches += [self.get_run_meta(run_id=run_id, run_folder=run_folder)]
 

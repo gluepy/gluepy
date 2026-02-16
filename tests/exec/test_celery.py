@@ -6,7 +6,9 @@ class CeleryTestCase(TestCase):
     def setUp(self):
         # Create a mock celery module so imports work without celery installed
         self.mock_celery_module = mock.MagicMock()
-        self.patcher = mock.patch.dict("sys.modules", {"celery": self.mock_celery_module})
+        self.patcher = mock.patch.dict(
+            "sys.modules", {"celery": self.mock_celery_module}
+        )
         self.patcher.start()
         # Clear cached module so create_celery_app reimports
         if "gluepy.exec.celery" in sys.modules:
@@ -70,8 +72,9 @@ class CeleryTestCase(TestCase):
         create_celery_app()
         self.assertIsNotNone(captured_func)
 
-        with mock.patch("gluepy.exec.boot.bootstrap") as mock_bootstrap, \
-             mock.patch("gluepy.commands.dag.run_dag") as mock_run_dag:
+        with mock.patch("gluepy.exec.boot.bootstrap") as mock_bootstrap, mock.patch(
+            "gluepy.commands.dag.run_dag"
+        ) as mock_run_dag:
             captured_func(
                 None,
                 "test_label",

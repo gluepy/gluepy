@@ -174,5 +174,5 @@ class GoogleStorageTestCase(TestCase):
         with mock.patch("gluepy.files.storages.google.retry.Retry") as mock_retry:
             mock_retry.return_value = mock_retry_instance
             self.storage.touch("file.txt", content)
-            # Verify upload_from_file was called (StringIO should be converted to BytesIO)
+            # StringIO should be converted to BytesIO
             mock_blob.upload_from_file.assert_called_once()

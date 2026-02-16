@@ -2,7 +2,7 @@ import os
 import tempfile
 import yaml
 from io import StringIO
-from unittest import TestCase, mock
+from unittest import TestCase
 from gluepy.exec import Task, DAG, DAG_REGISTRY, TASK_REGISTRY
 from gluepy.commands.dag import run_dag
 from gluepy.files.storages import default_storage
@@ -31,9 +31,7 @@ class DagCommandTestCase(TestCase):
 
     def test_run_dag_with_local_patch(self):
         patch_data = {"foo": 2}
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".yaml", delete=False
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
             yaml.dump(patch_data, f)
             patch_path = f.name
 
@@ -64,15 +62,11 @@ class DagCommandTestCase(TestCase):
     def test_run_dag_with_local_patch_missing_file(self):
         with self.assertLogs("gluepy.commands.dag", level="WARNING") as cm:
             run_dag("test_local_patch", local_patch=["/nonexistent/patch.yaml"])
-        self.assertTrue(
-            any("was not found" in msg for msg in cm.output)
-        )
+        self.assertTrue(any("was not found" in msg for msg in cm.output))
 
     def test_run_dag_with_both_patch_and_local_patch(self):
         local_data = {"foo": 42}
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".yaml", delete=False
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
             yaml.dump(local_data, f)
             local_path = f.name
 
