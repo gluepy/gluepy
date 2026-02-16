@@ -40,3 +40,4 @@ LOGGING = {
 }
 
 GOOGLE_GCS_BUCKET = "foo"
+CELERY_BROKER_URL = "redis://localhost:6379/0"

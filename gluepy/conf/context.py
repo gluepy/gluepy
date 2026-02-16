@@ -19,8 +19,7 @@ class Context(SingletonMixin):
 
     def __init__(self, data=None, *args, **kwargs):
         if data:
-            self._data.clear()
-            self._data.update(data)
+            object.__setattr__(self, "_data", Box(data, frozen_box=True))
 
     @property
     def instance(self):
@@ -63,6 +62,7 @@ class DefaultContextManager:
         run_id: Optional[str] = None,
         run_folder: Optional[str] = None,
         patches: Optional[List[str]] = None,
+        local_patches: Optional[List[dict]] = None,
         evaluate_lazy: bool = False,
     ):
         """Create a new context instance.
@@ -95,13 +95,17 @@ class DefaultContextManager:
             os.listdir(default_settings.CONFIG_PATH),
         )
 
-        patches = [
-            yaml.load(
-                open(os.path.join(default_settings.CONFIG_PATH, y)),
-                Loader=yaml.SafeLoader,
-            )
-            for y in yamls
-        ] + patches
+        patches = (
+            [
+                yaml.load(
+                    open(os.path.join(default_settings.CONFIG_PATH, y)),
+                    Loader=yaml.SafeLoader,
+                )
+                for y in yamls
+            ]
+            + patches
+            + (local_patches or [])
+        )
 
         patches += [self.get_run_meta(run_id=run_id, run_folder=run_folder)]
 
@@ -113,7 +117,12 @@ class DefaultContextManager:
             self._ctx = ctx
         return ctx
 
-    def load_context(self, path: str, patches: Optional[List[str]] = None):
+    def load_context(
+        self,
+        path: str,
+        patches: Optional[List[str]] = None,
+        local_patches: Optional[List[dict]] = None,
+    ):
         """Loads an existing context.
 
         When we may want to recreate or rerun a pre-existing model execution,
@@ -148,6 +157,7 @@ class DefaultContextManager:
                 ),
                 run_folder=os.path.dirname(path_formatted),
                 patches=patches,
+                local_patches=local_patches,
             )
             return self._ctx
 

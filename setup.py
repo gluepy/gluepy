@@ -17,6 +17,7 @@ requirements_base = read_requirements("base.txt")
 requirements_dev = read_requirements("dev.txt")
 requirements_digitalocean = read_requirements("digitalocean.txt")
 requirements_gcp = read_requirements("gcp.txt")
+requirements_celery = read_requirements("celery.txt")
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -46,9 +47,11 @@ setuptools.setup(
         "all": requirements_base
         + requirements_dev
         + requirements_digitalocean
-        + requirements_gcp,
+        + requirements_gcp
+        + requirements_celery,
         "digitalocean": requirements_base + requirements_digitalocean,
         "gcp": requirements_base + requirements_gcp,
+        "celery": requirements_base + requirements_celery,
     },
     entry_points="""
         [console_scripts]
