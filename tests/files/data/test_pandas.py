@@ -164,3 +164,42 @@ class PandasDataManagerTestCase(TestCase):
 
         self.assertEqual(file_path, "file.parquet")
         self.assertEqual(content.read(), stream.read())
+
+    def test_read_sql(self):
+        df_mock = pd.DataFrame({"col": [1, 2, 3]})
+        with mock.patch.dict("sys.modules", {"pandas_gbq": mock.Mock()}) as _:
+            import sys
+
+            mock_gbq = sys.modules["pandas_gbq"]
+            mock_gbq.read_gbq.return_value = df_mock
+            with mock.patch(
+                "gluepy.files.data.pandas.default_settings"
+            ) as mock_settings:
+                mock_settings.GCP_PROJECT_ID = "test-project"
+                df = self.data_manager.read_sql("SELECT * FROM table")
+            mock_gbq.read_gbq.assert_called_once_with(
+                "SELECT * FROM table",
+                project_id="test-project",
+                use_bqstorage_api=True,
+            )
+            pd.testing.assert_frame_equal(df, df_mock)
+
+    def test_read_sql_import_error(self):
+        with mock.patch.dict("sys.modules", {"pandas_gbq": None}):
+            with self.assertRaises(ImportError):
+                self.data_manager.read_sql("SELECT * FROM table")
+
+    def test_read_unsupported_extension(self):
+        with self.assertRaises(ValueError):
+            with mock.patch(
+                "gluepy.files.data.pandas.default_storage"
+            ) as mock_storage:
+                self.data_manager.read("file.xyz")
+
+    def test_write_unsupported_extension(self):
+        df = pd.DataFrame({"col": [1, 2, 3]})
+        with self.assertRaises(ValueError):
+            with mock.patch(
+                "gluepy.files.data.pandas.default_storage"
+            ) as mock_storage:
+                self.data_manager.write("file.xyz", df)

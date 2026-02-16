@@ -131,3 +131,48 @@ class GoogleStorageTestCase(TestCase):
         self.storage.bucket.blob.return_value = mock_blob
         self.storage.client.list_blobs.return_value = []
         self.assertFalse(self.storage.exists("path/to/dir"))
+
+    def test_rm_file(self):
+        mock_blob = mock.Mock()
+        self.storage.bucket.blob.return_value = mock_blob
+        # Mock isdir to return False (it's a file, not a directory)
+        self.storage.isdir = mock.Mock(return_value=False)
+        self.storage.rm("file.txt")
+        mock_blob.delete.assert_called_once()
+
+    def test_rm_recursive(self):
+        mock_blob = mock.Mock()
+        # isdir checks: first call for "path/" -> True (it's a dir)
+        mock_blob.exists.side_effect = [False, True, True]
+        self.storage.bucket.blob.return_value = mock_blob
+
+        mock_child_blob = mock.Mock()
+        mock_child_blob.name = os.path.join(
+            default_settings.STORAGE_ROOT, "path", "child.txt"
+        )
+        mock_child_blob.exists.return_value = False
+
+        # list_blobs calls: ls for "path/" returns child, then isdir checks
+        self.storage.client.list_blobs.side_effect = [
+            [mock_child_blob],  # isdir check for "path/"
+            [mock_child_blob],  # ls call
+            [],  # isdir check for child blob
+        ]
+
+        # Mock isdir and ls to simplify
+        self.storage.isdir = mock.Mock(side_effect=[True, False])
+        self.storage.ls = mock.Mock(return_value=(["child.txt"], []))
+
+        self.storage.rm("path/", recursive=True)
+        mock_blob.delete.assert_called_once()
+
+    def test_touch_stringio(self):
+        content = io.StringIO("foo")
+        mock_blob = mock.Mock()
+        mock_retry_instance = mock.Mock()
+        self.storage.bucket.blob.return_value = mock_blob
+        with mock.patch("gluepy.files.storages.google.retry.Retry") as mock_retry:
+            mock_retry.return_value = mock_retry_instance
+            self.storage.touch("file.txt", content)
+            # Verify upload_from_file was called (StringIO should be converted to BytesIO)
+            mock_blob.upload_from_file.assert_called_once()
