@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration &mdash; Gluepy 1.5.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1cd648e3"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="DAGs" href="dags.html" />
+    <link rel="prev" title="Using Gluepy" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Gluepy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Using Gluepy</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#settings">Settings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#different-settings-by-environment">Different Settings by Environment</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#context">Context</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#default-context-object">Default Context Object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-id">Run ID</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-folder">Run Folder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#retry-previous-run">Retry previous run</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dags.html">DAGs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/index.html">Gluepy internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Gluepy FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Gluepy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Using Gluepy</a></li>
+      <li class="breadcrumb-item active">Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/configuration.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h1>
+<section id="settings">
+<span id="topic-settings"></span><h2>Settings<a class="headerlink" href="#settings" title="Link to this heading"></a></h2>
+<p>As described in <a class="reference internal" href="../ref/settings.html"><span class="doc">Settings Reference</span></a>, Gluepy have two types of settings made up of the <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a> and
+<a class="reference internal" href="../ref/settings.html"><span class="doc">Settings</span></a>.</p>
+<p>The Settings is the application / project wide application settings for the environment you are currently executing your code on. These
+settings include what modules you have activated, which logging configuration you have, any references to credentials required to
+connect to your data warehouse and more.</p>
+<section id="different-settings-by-environment">
+<span id="topic-settings-by-environment"></span><h3>Different Settings by Environment<a class="headerlink" href="#different-settings-by-environment" title="Link to this heading"></a></h3>
+<p>A common use case would be to have different project settings for different environments. For example, you may
+want to use different settings for your local development versus your production workloads. This can be done by
+splitting the <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> file into multiple files by environment, and pointing to the one you want to enable
+as a dotted string path with the <code class="docutils literal notranslate"><span class="pre">GLUEPY_SETTINGS_MODULE</span></code> environment variable.</p>
+<p>For example, you may have the following settings:</p>
+<ul class="simple">
+<li><p>src/</p>
+<ul>
+<li><p>configs/</p>
+<ul>
+<li><p>base.py</p></li>
+<li><p>prod.py</p></li>
+<li><p>…</p></li>
+</ul>
+</li>
+<li><p>myapp/</p></li>
+<li><p>manage.py</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># base.py</span>
+<span class="n">STORAGE_BACKEND</span> <span class="o">=</span> <span class="s2">&quot;gluepy.files.storages.local.LocalStorage&quot;</span>
+<span class="n">STORAGE_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<span class="n">LOGGING</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+   <span class="s1">&#39;disable_existing_loggers&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+   <span class="s1">&#39;formatters&#39;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s1">&#39;simple&#39;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{levelname}</span><span class="s1"> </span><span class="si">{asctime}</span><span class="s1"> </span><span class="si">{module}</span><span class="s1"> - </span><span class="si">{message}</span><span class="s1">&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;style&#39;</span><span class="p">:</span> <span class="s1">&#39;{&#39;</span>
+       <span class="p">}</span>
+   <span class="p">},</span>
+   <span class="s1">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s1">&#39;stream&#39;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;logging.StreamHandler&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;formatter&#39;</span><span class="p">:</span> <span class="s1">&#39;simple&#39;</span><span class="p">,</span>
+       <span class="p">}</span>
+   <span class="p">},</span>
+   <span class="s1">&#39;loggers&#39;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s1">&#39;gluepy&#39;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="s1">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;stream&#39;</span><span class="p">,</span> <span class="p">],</span>
+           <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;propagate&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+       <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># prod.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="n">STORAGE_BACKEND</span> <span class="o">=</span> <span class="s2">&quot;gluepy.files.storages.google.GoogleStorage&quot;</span>
+<span class="n">STORAGE_ROOT</span> <span class="o">=</span> <span class="s2">&quot;data/&quot;</span>
+<span class="n">GOOGLE_GCS_BUCKET</span> <span class="o">=</span> <span class="s2">&quot;mybucket-1234&quot;</span>
+</pre></div>
+</div>
+<p>Then set an environment variable on your system named <code class="docutils literal notranslate"><span class="pre">GLUEPY_SETTINGS_MODULE</span></code> to <code class="docutils literal notranslate"><span class="pre">configs.prod</span></code>.
+All commands executed with <code class="docutils literal notranslate"><span class="pre">manage.py</span></code> will now load the <code class="docutils literal notranslate"><span class="pre">prod.py</span></code> settings using <code class="docutils literal notranslate"><span class="pre">base.py</span></code> as the defaults.</p>
+</section>
+</section>
+<section id="context">
+<span id="topic-context"></span><h2>Context<a class="headerlink" href="#context" title="Link to this heading"></a></h2>
+<p>In the exploratory, experimental, scienticic world of Data Science and Machine Learning, it is crucial to be able to modify
+the behavior of your pipeline or model without changing significant amount of code. E.g. you may want to change the dates
+used to train your model, the features used or other parameters.</p>
+<p>The <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a> is a singleton object that is instantiated in the beginning of each execution of your pipeline, and populated
+with various parameters and configurations that is specific to that execution.</p>
+<p>The context of a run is always serialized and store together with the <a class="reference internal" href="#context-run-folder"><span class="std std-ref">Run Folder</span></a> to ensure that you can
+rerun and replicate the output of a historical/previous execution of a DAG.</p>
+<section id="default-context-object">
+<span id="context-default-context"></span><h3>Default Context Object<a class="headerlink" href="#default-context-object" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">default_context</span></code> object is the lazily evaluated object that holds the <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a> of your execution, and where you can
+access all your parameters from within your code.</p>
+<p>Your default parameters are defined in <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> files stored within the <a class="reference internal" href="../ref/settings.html#std-setting-CONFIG_PATH"><code class="xref std std-setting docutils literal notranslate"><span class="pre">CONFIG_PATH</span></code></a> directory and are automatically populated
+by the <a class="reference internal" href="../ref/settings.html#context-manager"><span class="std std-ref">Context Managers</span></a>.</p>
+<p>For example, you may have a <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file that looks like this</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Gluepy protected parameters</span>
+<span class="nt">meta</span><span class="p">:</span>
+<span class="w"> </span><span class="nt">run_id</span><span class="p">:</span>
+<span class="w"> </span><span class="nt">run_folder</span><span class="p">:</span>
+<span class="w"> </span><span class="nt">created_at</span><span class="p">:</span>
+
+<span class="c1"># Custom user added parameters</span>
+<span class="nt">forecaster</span><span class="p">:</span>
+<span class="w"> </span><span class="nt">start_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2024-01-01</span>
+</pre></div>
+</div>
+<p>That you later want to access in your Python code like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.conf</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_context</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ForecasterTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="nb">print</span><span class="p">(</span><span class="n">default_context</span><span class="o">.</span><span class="n">forecaster</span><span class="o">.</span><span class="n">start_date</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If in the future, you change your <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file, you can still rerun and replicate the same results using the same parameters
+as defined in <a class="reference internal" href="#context-retry-example"><span class="std std-ref">Retry previous run</span></a>.</p>
+</section>
+<section id="run-id">
+<span id="context-run-id"></span><h3>Run ID<a class="headerlink" href="#run-id" title="Link to this heading"></a></h3>
+<p>The Run ID is a unique identifier that is given to the specific execution/run that you are running.
+This ID is assigned in the <code class="docutils literal notranslate"><span class="pre">DefaultContextManager</span></code> defined in <code class="xref std std-setting docutils literal notranslate"><span class="pre">CONFIG_BACKEND</span></code> and defaults to a <code class="docutils literal notranslate"><span class="pre">uuid4</span></code>.</p>
+<p>If you want to customize the default run ID, you can create your own <code class="docutils literal notranslate"><span class="pre">ContextManager</span></code> and refer to it in <code class="xref std std-setting docutils literal notranslate"><span class="pre">CONFIG_BACKEND</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.conf</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_context</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ForecasterTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="nb">print</span><span class="p">(</span><span class="n">default_context</span><span class="o">.</span><span class="n">forecaster</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">run_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="run-folder">
+<span id="context-run-folder"></span><h3>Run Folder<a class="headerlink" href="#run-folder" title="Link to this heading"></a></h3>
+<p>To ensure the ability to replicate results of a previous run, and to ensure that output of your pipeline is
+versioned, each execution of Gluepy use the <a class="reference internal" href="#context-run-id"><span class="std std-ref">Run ID</span></a> to create a directory on your <a class="reference internal" href="../ref/data.html#storage-backends"><span class="std std-ref">Storage Backends</span></a>
+that is unique to the specific run, where it can serialize and save the <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a>, and any other input or output.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.conf</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_context</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ForecasterTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="c1"># /runs/2024/01/01/af41a763-18bc-44b0-9293-f52266898a89/</span>
+      <span class="nb">print</span><span class="p">(</span><span class="n">default_context</span><span class="o">.</span><span class="n">forecaster</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">run_folder</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default, all paths used with the data managers are relative to the <code class="docutils literal notranslate"><span class="pre">run_folder</span></code>. Any time you want to reach out outside of the Run’s <code class="docutils literal notranslate"><span class="pre">run_folder</span></code> you
+need to do so explicitally using the <code class="docutils literal notranslate"><span class="pre">root</span></code> kwarg.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.conf</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_context</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_manager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ForecasterTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="c1"># Writes to /runs/2024/01/01/af41a763-18bc-44b0-9293-f52266898a89/file.csv</span>
+      <span class="n">data_manager</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;file.csv&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]}))</span>
+
+      <span class="c1"># Writes to /file.csv</span>
+      <span class="n">data_manager</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;file.csv&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]}),</span> <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="retry-previous-run">
+<span id="context-retry-example"></span><h3>Retry previous run<a class="headerlink" href="#retry-previous-run" title="Link to this heading"></a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Retrying a run will reuse the same <code class="docutils literal notranslate"><span class="pre">run_folder</span></code> and <code class="docutils literal notranslate"><span class="pre">run_id</span></code>, which means that the execution would
+overwrite any previous output.</p>
+</div>
+<p>Since the <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a> is serialized and stored in the <a class="reference internal" href="#context-run-folder"><span class="std std-ref">Run Folder</span></a> automatically on each run, and all
+data by default is saved within a run’s <a class="reference internal" href="#context-run-folder"><span class="std std-ref">Run Folder</span></a>, Gluepy makes it very easy to re-run and replicate the output
+of a previous execution.</p>
+<p>This is done using the <a class="reference internal" href="../ref/cli.html#cli-dag"><span class="std std-ref">dag command</span></a> and the <code class="docutils literal notranslate"><span class="pre">-retry</span></code> option.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>forecaster<span class="w"> </span>--retry<span class="w"> </span>/runs/2024/01/01/af41a763-18bc-44b0-9293-f52266898a89/
+</pre></div>
+</div>
+<p>You can also retry a previous run but start from a specific task that is not the beginning using the <code class="docutils literal notranslate"><span class="pre">--from-task</span></code> option.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>forecaster<span class="w"> </span>--from-task<span class="w"> </span>training<span class="w"> </span>--retry<span class="w"> </span>/runs/2024/01/01/af41a763-18bc-44b0-9293-f52266898a89/
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Using Gluepy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dags.html" class="btn btn-neutral float-right" title="DAGs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gluepy.
+      <span class="lastupdated">Last updated on Feb 17, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

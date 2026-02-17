@@ -1,0 +1,218 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data &mdash; Gluepy 1.5.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1cd648e3"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Modules" href="modules.html" />
+    <link rel="prev" title="DAGs" href="dags.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Gluepy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Using Gluepy</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dags.html">DAGs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#storage-and-file-system">Storage and File System</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#use-cloud-storage">Use Cloud Storage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#data-and-dataframes">Data and DataFrames</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#schemas-and-data-validation">Schemas and Data Validation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/index.html">Gluepy internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Gluepy FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Gluepy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Using Gluepy</a></li>
+      <li class="breadcrumb-item active">Data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/data.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="data">
+<h1>Data<a class="headerlink" href="#data" title="Link to this heading"></a></h1>
+<p>Data is of course a key part of any machine learning or data science project, and Gluepy comes packaged with multiple
+helpful tools to help read, interact and customize any data interaction.</p>
+<section id="storage-and-file-system">
+<span id="topic-storage"></span><h2>Storage and File System<a class="headerlink" href="#storage-and-file-system" title="Link to this heading"></a></h2>
+<p>All file system interaction should be done using the <code class="docutils literal notranslate"><span class="pre">default_storage</span></code> object which is instantiated with the class defined in <a class="reference internal" href="../ref/settings.html#std-setting-STORAGE_BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">STORAGE_BACKEND</span></code></a>. The <code class="docutils literal notranslate"><span class="pre">default_storage</span></code> object have the methods defined as described on <a class="reference internal" href="../ref/data.html#storage-backend-base"><span class="std std-ref">The BaseStorage Class</span></a>.</p>
+<p>By using the <code class="docutils literal notranslate"><span class="pre">default_storage</span></code> object, you do not need to be concerned if you are on Azure, GCP, S3 or your local file system. Your code looks the same and migrating from
+local development, to production workloads in the cloud is as easy as changing the <a class="reference internal" href="../ref/settings.html#std-setting-STORAGE_BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">STORAGE_BACKEND</span></code></a> setting.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.storages</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_storage</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ForecasterTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;file.txt not found&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="use-cloud-storage">
+<h3>Use Cloud Storage<a class="headerlink" href="#use-cloud-storage" title="Link to this heading"></a></h3>
+<p>By default, <a class="reference internal" href="../ref/settings.html#std-setting-STORAGE_BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">STORAGE_BACKEND</span></code></a> points to the <a class="reference internal" href="../ref/data.html#storage-backend-local"><span class="std std-ref">The LocalStorage Class</span></a>. This makes it easy for you to get started with Gluepy on your local machine.</p>
+<p>Many project may have data that cannot fit into the local machine or your business may have a centralized data lake where all data resides. For these situations, you must
+change the <a class="reference internal" href="../ref/settings.html#std-setting-STORAGE_BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">STORAGE_BACKEND</span></code></a> to point to a <a class="reference internal" href="../ref/data.html#storage-backends"><span class="std std-ref">Storage Backends</span></a> that support your cloud storage of choice.</p>
+<p>Gluepy already support the following providers:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../ref/data.html#storage-backend-local"><span class="std std-ref">The LocalStorage Class</span></a></p></li>
+<li><p><a class="reference internal" href="../ref/data.html#storage-backend-google"><span class="std std-ref">The GoogleStorage Class</span></a></p></li>
+<li><p><a class="reference internal" href="../ref/data.html#storage-backend-s3"><span class="std std-ref">The S3Storage Class</span></a></p></li>
+</ul>
+<p>Here is an example using the <a class="reference internal" href="../ref/data.html#storage-backend-google"><span class="std std-ref">The GoogleStorage Class</span></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.py</span>
+<span class="n">STORAGE_BACKEND</span> <span class="o">=</span> <span class="s2">&quot;gluepy.files.storages.google.GoogleStorage&quot;</span>
+<span class="n">GOOGLE_GCS_BUCKET</span> <span class="o">=</span> <span class="s2">&quot;mybucket-1234&quot;</span>
+</pre></div>
+</div>
+<p>Now, my <code class="docutils literal notranslate"><span class="pre">default_storage</span></code> object will point to an instance of <code class="docutils literal notranslate"><span class="pre">GoogleStorage</span></code>, and all method calls will authenticate to Google Cloud Storage and
+use it as a file system for our Gluepy project.</p>
+</section>
+</section>
+<section id="data-and-dataframes">
+<span id="topic-data"></span><h2>Data and DataFrames<a class="headerlink" href="#data-and-dataframes" title="Link to this heading"></a></h2>
+<p>All reads and writes of DataFrames should be done using the <code class="docutils literal notranslate"><span class="pre">data_manager</span></code> object. This object is lazily evaluated to the <code class="xref std std-setting docutils literal notranslate"><span class="pre">DATA_BACKEND</span></code>, which allow you to
+modify what kind of data frame that is returned with minor changes to your code.</p>
+<p>The benefit of ensuring that your project use the <code class="docutils literal notranslate"><span class="pre">data_manager</span></code> instead of reading the data directly, is that it will ensure that all your Dataframes are stored and versioned in the <a class="reference internal" href="configuration.html#context-run-folder"><span class="std std-ref">Run Folder</span></a>, and
+it will automatically read the data from the <a class="reference internal" href="../ref/settings.html#std-setting-STORAGE_BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">STORAGE_BACKEND</span></code></a> defined.</p>
+<p>You may want to work with Spark DataFrames, Polars Dataframes or Pandas Dataframes. If you want to modify the type of data frame that your project is relying on,
+you can change that using the <code class="xref std std-setting docutils literal notranslate"><span class="pre">DATA_BACKEND</span></code>.</p>
+<p>See <a class="reference internal" href="../ref/data.html#data-backends"><span class="std std-ref">Data Backends</span></a> for the currently supported providers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_manager</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ForecasterTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">data_manager</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;training.parquet&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="schemas-and-data-validation">
+<span id="topic-data-validation"></span><h3>Schemas and Data Validation<a class="headerlink" href="#schemas-and-data-validation" title="Link to this heading"></a></h3>
+<p>There are plenty of great DataFrame validation frameworks out there, and we have made the decision to not invent our own. We recommend that you use
+tools such as <a class="reference external" href="https://pandera.readthedocs.io/en/stable/">pandera</a> or <a class="reference external" href="https://docs.pydantic.dev/latest/">pydantic</a> to do your data validation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_manager</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandera</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pa</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TrainingSchema</span><span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">DataFrameModel</span><span class="p">):</span>
+    <span class="n">created_at</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">typing</span><span class="o">.</span><span class="n">Series</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span>
+    <span class="n">article_id</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">typing</span><span class="o">.</span><span class="n">Series</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+    <span class="n">store_id</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">typing</span><span class="o">.</span><span class="n">Series</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+    <span class="n">units_sold</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">typing</span><span class="o">.</span><span class="n">Series</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ForecasterTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">TrainingSchema</span><span class="p">(</span><span class="n">data_manager</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;training.parquet&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dags.html" class="btn btn-neutral float-left" title="DAGs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gluepy.
+      <span class="lastupdated">Last updated on Feb 17, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

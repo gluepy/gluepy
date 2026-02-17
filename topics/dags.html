@@ -1,0 +1,215 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DAGs &mdash; Gluepy 1.5.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1cd648e3"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data" href="data.html" />
+    <link rel="prev" title="Configuration" href="configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Gluepy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Using Gluepy</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DAGs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#orchestrating-dags">Orchestrating DAGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tasks">Tasks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#passing-objects-between-tasks">Passing objects between Tasks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/index.html">Gluepy internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Gluepy FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Gluepy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Using Gluepy</a></li>
+      <li class="breadcrumb-item active">DAGs</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/dags.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dags">
+<h1>DAGs<a class="headerlink" href="#dags" title="Link to this heading"></a></h1>
+<p>The concept of workflows and pipelines that run a series of <a class="reference internal" href="#topic-tasks"><span class="std std-ref">Tasks</span></a> in a specific order can often be described as a <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a> (directed-acyclic-graph).
+Given Gluepy is a framework to provide structure to your workflows, the concept of the <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a> is a primary citizen of the framework and a very core component.</p>
+<p>Here is an example of a very simple Gluepy DAG:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAG</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.tasks</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DataTask</span><span class="p">,</span> <span class="n">ForecastTrainingTask</span><span class="p">,</span> <span class="n">ForecastTestTask</span><span class="p">,</span> <span class="n">OutputFormatTask</span>
+<span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TrainingDAG</span><span class="p">(</span><span class="n">DAG</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;training&quot;</span>
+    <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">DataTask</span><span class="p">,</span> <span class="n">ForecastTrainingTask</span><span class="p">,</span> <span class="n">ForecastTestTask</span><span class="p">,</span> <span class="n">OutputFormatTask</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>This DAG can easily be executed using the <a class="reference internal" href="../ref/cli.html#cli-dag"><span class="std std-ref">dag command</span></a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>training
+</pre></div>
+</div>
+<section id="orchestrating-dags">
+<h2>Orchestrating DAGs<a class="headerlink" href="#orchestrating-dags" title="Link to this heading"></a></h2>
+<p>As described in the <a class="reference internal" href="../intro/overview.html"><span class="doc">Overview</span></a>, Gluepy is <strong>not</strong> an orchestrator and is taking multiple steps to decouple
+from what tools or architecture that is being used to actually execute the code. A Gluepy project should be able to be executed
+on your Local Machine, <a class="reference external" href="https://airflow.apache.org/">Airflow</a>, <a class="reference external" href="https://dagster.io/">Dagster</a> or other orchestrators.</p>
+<p>This is achieved by the Gluepy <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a> format being agnostic to the various Orchestrator’s DAG formats, and you can
+create CLI commands such as <a class="reference internal" href="../ref/cli.html#cli-airflow-generate"><span class="std std-ref">airflow generate command</span></a> to translate the Gluepy DAG into an Airflow DAG using Jinja templating.</p>
+<p>The benefit of this is that your broader Data Science or Machine Learning team do not need to be familiar with the architecture
+or tools involved to run their pipelines in production, and instead there can be a separation of concern between the Data Scientists
+and the Engineers on topics such as Scheduling, Orchestration, Horizontal Scaling and so on.</p>
+</section>
+<section id="tasks">
+<span id="topic-tasks"></span><h2>Tasks<a class="headerlink" href="#tasks" title="Link to this heading"></a></h2>
+<p>A <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a> is the class that holds the actual logic of a step in your <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a>. This is where you read in data, write custom code,
+transform your dataframes and train your machine learning models.</p>
+<p>Because of the distinction between a <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a> and a <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a>, a <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a> can be reused across multiple <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a>. The task itself is not
+aware or coupled to any specific DAG.</p>
+<p>Here is an example Task that we wrote in <a class="reference internal" href="../intro/tutorial02.html"><span class="doc">Writing your first Gluepy app, part 2</span></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xgboost</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xgb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.conf</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_context</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_manager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.storages</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_storage</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TrainingTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;training&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Read the training dataset previous generated in</span>
+        <span class="c1"># ``GenerateTrainingDataTask``. The path is automatically</span>
+        <span class="c1"># formatted to read from the run_folder to ensure data versioning</span>
+        <span class="c1"># and isolation of output between executions.</span>
+        <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">data_manager</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;training.csv&quot;</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Train our machine learning model.</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBRegressor</span><span class="p">(</span><span class="n">enable_categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;article_id&quot;</span><span class="p">]],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">])</span>
+
+        <span class="c1"># Store model to disk to later be used when we want</span>
+        <span class="c1"># to do inference.</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">stream</span><span class="p">)</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">default_storage</span><span class="o">.</span><span class="n">touch</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">default_context</span><span class="o">.</span><span class="n">gluepy</span><span class="o">.</span><span class="n">run_folder</span><span class="p">,</span> <span class="s2">&quot;model.pkl&quot;</span><span class="p">),</span> <span class="n">stream</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<section id="passing-objects-between-tasks">
+<h3>Passing objects between Tasks<a class="headerlink" href="#passing-objects-between-tasks" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">run()</span></code> method is the entrypoint to any <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a>, and you may notice that <code class="docutils literal notranslate"><span class="pre">run()</span></code> do not accept any keyword argument
+being passed into it. This is an intentional design choice to avoid data scientists building in-memory dependencies between tasks
+that make it very challenging to try subset of a <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a>, or orchestrate your various tasks in parallel across a cluster of machines
+that do not share memory.</p>
+<p>The preferred way to pass data between a series of <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a> is to simply write to disk using the <code class="docutils literal notranslate"><span class="pre">default_storage</span></code> object as described
+in <a class="reference internal" href="data.html#topic-storage"><span class="std std-ref">Storage and File System</span></a>, and load it from disk in the next step.</p>
+<p>This ensures that if a step fail, it can be retried without re-running the full <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="configuration.html" class="btn btn-neutral float-left" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="data.html" class="btn btn-neutral float-right" title="Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gluepy.
+      <span class="lastupdated">Last updated on Feb 17, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

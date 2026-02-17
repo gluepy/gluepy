@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command Line Interface (CLI) &mdash; Gluepy 1.5.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1cd648e3"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Directed Acyclic Graphs (DAG)" href="dags.html" />
+    <link rel="prev" title="API Reference" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Gluepy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Using Gluepy</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Command Line Interface (CLI)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gluepy-commands">Gluepy Commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dag-command">dag command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#startproject-command">startproject command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#startmodule-command">startmodule command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#airflow-generate-command">airflow generate command</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-your-own-cli-commands">Create your own CLI commands</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dags.html">Directed Acyclic Graphs (DAG)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/index.html">Gluepy internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Gluepy FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Gluepy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Command Line Interface (CLI)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/ref/cli.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="command-line-interface-cli">
+<h1>Command Line Interface (CLI)<a class="headerlink" href="#command-line-interface-cli" title="Link to this heading"></a></h1>
+<p>All Gluepy projects have a CLI exposed through the <code class="docutils literal notranslate"><span class="pre">manage.py</span></code> file located in project root. This command line interface allow you to
+execute your DAGs, retry previous runs and manage your project in various ways.</p>
+<p>The CLI comes with a set of commands out of the box, but it is also extendable and allow you to <a class="reference internal" href="#cli-custom-commands"><span class="std std-ref">Create your own CLI commands</span></a>.</p>
+<section id="gluepy-commands">
+<span id="cli"></span><h2>Gluepy Commands<a class="headerlink" href="#gluepy-commands" title="Link to this heading"></a></h2>
+<section id="dag-command">
+<span id="cli-dag"></span><h3>dag command<a class="headerlink" href="#dag-command" title="Link to this heading"></a></h3>
+<p>This command allow you to run a <a class="reference internal" href="dags.html#dags"><span class="std std-ref">DAG</span></a> registered in the <a class="reference internal" href="dags.html#dags-registry"><span class="std std-ref">DAG Registry</span></a> by its <code class="docutils literal notranslate"><span class="pre">label</span></code> attribute. The <code class="docutils literal notranslate"><span class="pre">label</span></code> attribute
+can either be set explicitally, or it default to the lowercase string of the <a class="reference internal" href="dags.html#dags"><span class="std std-ref">DAG</span></a> class name.</p>
+</section>
+<section id="startproject-command">
+<span id="cli-startproject"></span><h3>startproject command<a class="headerlink" href="#startproject-command" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="gluepy.commands.gluepy.startproject">
+<span class="sig-name descname"><span class="pre">startproject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">t.Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">t.Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">t.Any</span></span></span><a class="reference external" href="https://github.com/gluepy/gluepy/blob/main/gluepy/commands/gluepy.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gluepy.commands.gluepy.startproject" title="Link to this definition"></a></dt>
+<dd><p>Command used to initiate a new Gluepy project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – project name</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="startmodule-command">
+<span id="cli-startmodule"></span><h3>startmodule command<a class="headerlink" href="#startmodule-command" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="gluepy.commands.gluepy.startmodule">
+<span class="sig-name descname"><span class="pre">startmodule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">t.Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">t.Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">t.Any</span></span></span><a class="reference external" href="https://github.com/gluepy/gluepy/blob/main/gluepy/commands/gluepy.py#L32"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gluepy.commands.gluepy.startmodule" title="Link to this definition"></a></dt>
+<dd><p>Command used to initiate a new Module in existing Gluepy project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>module</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – module name</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="airflow-generate-command">
+<span id="cli-airflow-generate"></span><h3>airflow generate command<a class="headerlink" href="#airflow-generate-command" title="Link to this heading"></a></h3>
+<p>This command is used to generate DAG files in Airflow format to be used to run Gluepy DAGs using Airflow as an orchestrator.
+The command sits under the <code class="docutils literal notranslate"><span class="pre">airflow</span></code> CLI command group and is used by executing <code class="docutils literal notranslate"><span class="pre">./manage.py</span> <span class="pre">airflow</span> <span class="pre">generate</span></code>.</p>
+<p>The command is leveraging the following settings:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AIRFLOW_TEMPLATE</span></code>. Path to <code class="docutils literal notranslate"><span class="pre">.j2</span></code> Jinja file that contains template of how the Gluepy DAG is transformed into Airflow format. Defaults to template that generate Airflow DAG using <code class="docutils literal notranslate"><span class="pre">KubernetesPodOperator</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AIRFLOW_DAG_PREFIX</span></code>. Prefix in each Airflow DAG file. E.g. your Gluepy DAG is named <code class="docutils literal notranslate"><span class="pre">forecaster</span></code> and with <code class="docutils literal notranslate"><span class="pre">AIRFLOW_DAG_PREFIX</span></code> set to <code class="docutils literal notranslate"><span class="pre">&quot;myproject&quot;</span></code> the resulting Airflow DAGs would be named <code class="docutils literal notranslate"><span class="pre">myproject_forecaster</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AIRFLOW_IMAGE</span></code>. Image name to be used in template using the <code class="docutils literal notranslate"><span class="pre">KubernetesPodOperator</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AIRFLOW_CONFIGMAPS</span></code>. Configmaps to populate environment variables used in the <code class="docutils literal notranslate"><span class="pre">KubernetesPodOperator</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AIRFLOW_POD_RESOURCES</span></code>. Resource limits and requests to be used in the <code class="docutils literal notranslate"><span class="pre">KubernetesPodOperator</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">KUBERNETES_CONFIG</span></code>. Optional path to the kubernetes config that allow connection to cluster, used in <code class="docutils literal notranslate"><span class="pre">KubernetesPodOperator</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="create-your-own-cli-commands">
+<span id="cli-custom-commands"></span><h2>Create your own CLI commands<a class="headerlink" href="#create-your-own-cli-commands" title="Link to this heading"></a></h2>
+<p>To write your own custom CLI commands in your project, see our tutorial <a class="reference internal" href="../intro/tutorial04.html"><span class="doc">Part 4: Custom CLI commands</span></a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dags.html" class="btn btn-neutral float-right" title="Directed Acyclic Graphs (DAG)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gluepy.
+      <span class="lastupdated">Last updated on Feb 17, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

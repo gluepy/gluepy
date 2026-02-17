@@ -1,0 +1,235 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data &mdash; Gluepy 1.5.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1cd648e3"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Settings" href="settings.html" />
+    <link rel="prev" title="Directed Acyclic Graphs (DAG)" href="dags.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Gluepy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Using Gluepy</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dags.html">Directed Acyclic Graphs (DAG)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general-notes">General notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#separating-dataframes-from-storage">Separating Dataframes from Storage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#storage-backends">Storage Backends</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-localstorage-class">The LocalStorage Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-googlestorage-class">The GoogleStorage Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-s3storage-class">The S3Storage Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-basestorage-class">The BaseStorage Class</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#data-backends">Data Backends</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-pandasdatamanager-class">The PandasDataManager Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-basedatamanager-class">The BaseDataManager Class</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/index.html">Gluepy internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Gluepy FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Gluepy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/ref/data.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="data">
+<h1>Data<a class="headerlink" href="#data" title="Link to this heading"></a></h1>
+<p>Data interactions is a key component of any project that leverage Gluepy. As a technology agnostic framework, we intend to make Gluepy flexible
+for you to customize and configure to work with what ever your data technology stack of choice is, and no matter which cloud provider you are using.</p>
+<p>This file describes some of the features that might be relevant to Gluepy
+usage. It is not intended as a replacement for server-specific documentation or
+reference manuals.</p>
+<section id="general-notes">
+<h2>General notes<a class="headerlink" href="#general-notes" title="Link to this heading"></a></h2>
+<section id="separating-dataframes-from-storage">
+<span id="separate-data-from-storage"></span><h3>Separating Dataframes from Storage<a class="headerlink" href="#separating-dataframes-from-storage" title="Link to this heading"></a></h3>
+<p>When it comes to interacting with data, Gluepy are separating the various kind of actions into two types of actions,
+the “File system actions” such as listing directories, creating files, checking paths and so on is managed by the <a class="reference internal" href="#storage-backends"><span class="std std-ref">Storage Backends</span></a>.
+While the “dataframe” reads and writes are managed by the <a class="reference internal" href="#data-backends"><span class="std std-ref">Data Backends</span></a>.</p>
+<p>This means that you can separately define if you are using Local filesystem, S3 file system or Google Storage file system, from if you are using Pandas, Polars or PySpark
+in your project.</p>
+</section>
+</section>
+<section id="storage-backends">
+<span id="id1"></span><h2>Storage Backends<a class="headerlink" href="#storage-backends" title="Link to this heading"></a></h2>
+<p>As described in our <span class="xref std std-doc">Storages Topic guide</span>, all file interactions such as creating directories, checking for file existance, creating files or reading files are done using
+the <code class="docutils literal notranslate"><span class="pre">default_storage</span></code> object. This object is lazily evaluated at runtime to whatever <a class="reference internal" href="#storage-backends"><span class="std std-ref">Storage Backends</span></a> defined in <a class="reference internal" href="settings.html#std-setting-STORAGE_BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">STORAGE_BACKEND</span></code></a>.</p>
+<p>This means that by using <code class="docutils literal notranslate"><span class="pre">default_storage</span></code> and modifying <a class="reference internal" href="settings.html#std-setting-STORAGE_BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">STORAGE_BACKEND</span></code></a> in your project, you can use the same code or libraries on multiple
+file systems simply by adjusting your configuration.</p>
+<p>By default, Gluepy comes included with the following <a class="reference internal" href="settings.html#std-setting-STORAGE_BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">STORAGE_BACKEND</span></code></a> support:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#storage-backend-local"><span class="std std-ref">The LocalStorage Class</span></a></p></li>
+<li><p><a class="reference internal" href="#storage-backend-google"><span class="std std-ref">The GoogleStorage Class</span></a></p></li>
+<li><p><a class="reference internal" href="#storage-backend-s3"><span class="std std-ref">The S3Storage Class</span></a></p></li>
+</ul>
+<section id="the-localstorage-class">
+<span id="storage-backend-local"></span><h3>The LocalStorage Class<a class="headerlink" href="#the-localstorage-class" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">LocalStorage</span></code> class is the storage implementation that use the local file system, and is used by Gluepy as a default <a class="reference internal" href="settings.html#std-setting-STORAGE_BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">STORAGE_BACKEND</span></code></a> when you start a new project.
+The <code class="docutils literal notranslate"><span class="pre">LocalStorage</span></code> backend is based on the interface and methods defined on <a class="reference internal" href="#storage-backend-base"><span class="std std-ref">The BaseStorage Class</span></a>.</p>
+</section>
+<section id="the-googlestorage-class">
+<span id="storage-backend-google"></span><h3>The GoogleStorage Class<a class="headerlink" href="#the-googlestorage-class" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">GoogleStorage</span></code> class is the storage implementation that use <a class="reference external" href="https://cloud.google.com/storage">GoogleStorage</a> as a file system. It is based on the interface and methods defined on <a class="reference internal" href="#storage-backend-base"><span class="std std-ref">The BaseStorage Class</span></a>.</p>
+<p>The class is a wrapper around the <a class="reference external" href="https://pypi.org/project/google-cloud-storage/">google-cloud-storage</a> PyPI package and is able to use the same authentication methods as defined in <a class="reference external" href="https://cloud.google.com/docs/authentication/client-libraries">Google Documentation</a>.</p>
+<section id="custom-settings">
+<h4>Custom Settings<a class="headerlink" href="#custom-settings" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">GOOGLE_GCS_BUCKET</span></code> define the name of the GoogleStorage bucket that you want to use.</p></li>
+</ul>
+<p>Use <a class="reference internal" href="settings.html#std-setting-STORAGE_ROOT"><code class="xref std std-setting docutils literal notranslate"><span class="pre">STORAGE_ROOT</span></code></a> to define where on bucket files are stored, this setting should be set to a relative path on the bucket. E.g. <code class="docutils literal notranslate"><span class="pre">&quot;my_project/data/&quot;</span></code>.</p>
+</section>
+</section>
+<section id="the-s3storage-class">
+<span id="storage-backend-s3"></span><h3>The S3Storage Class<a class="headerlink" href="#the-s3storage-class" title="Link to this heading"></a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The S3Storage is partly implemented and is currently missing some implementations such as <code class="docutils literal notranslate"><span class="pre">cp()</span></code>, <code class="docutils literal notranslate"><span class="pre">isdir()</span></code> and <code class="docutils literal notranslate"><span class="pre">isfile()</span></code>.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">S3Storage</span></code> class is the storage implementation that use <a class="reference external" href="https://aws.amazon.com/s3/">S3</a> as a file system. It is based on the interface and methods defined on <a class="reference internal" href="#storage-backend-base"><span class="std std-ref">The BaseStorage Class</span></a>.</p>
+<p>The class is a wrapper around the <a class="reference external" href="https://pypi.org/project/boto3/">boto3</a> PyPI package and is able to use Access Key and Access Secret Key as authentication method.</p>
+<section id="id2">
+<h4>Custom Settings<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AWS_S3_REGION_NAME</span></code> defines the AWS region to use. E.g. <code class="docutils literal notranslate"><span class="pre">&quot;eu-west-1&quot;</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AWS_S3_ENDPOINT_URL</span></code> custom S3 URL to use when connecting to S3, including scheme.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AWS_ACCESS_KEY_ID</span></code> AWS Access Key to be used for authentication together with <code class="docutils literal notranslate"><span class="pre">AWS_SECRET_ACCESS_KEY</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AWS_SECRET_ACCESS_KEY</span></code> AWS Secret Key to be used for authentication together with <code class="docutils literal notranslate"><span class="pre">AWS_ACCESS_KEY_ID</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AWS_STORAGE_BUCKET_NAME</span></code> name of the S3 bucket to connect to.</p></li>
+</ul>
+<p>Use <a class="reference internal" href="settings.html#std-setting-STORAGE_ROOT"><code class="xref std std-setting docutils literal notranslate"><span class="pre">STORAGE_ROOT</span></code></a> to define where on bucket files are stored, this setting should be set to a relative path on the bucket. E.g. <code class="docutils literal notranslate"><span class="pre">&quot;my_project/data/&quot;</span></code>.</p>
+</section>
+</section>
+<section id="the-basestorage-class">
+<span id="storage-backend-base"></span><h3>The BaseStorage Class<a class="headerlink" href="#the-basestorage-class" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">BaseStorage</span></code> class is the default interface that define the required methods and arguments for any storage implementation.
+This is an abstract class that raise <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code> on use, but is used by <a class="reference internal" href="#storage-backend-local"><span class="std std-ref">The LocalStorage Class</span></a> and other storage backends
+to ensure consistency.</p>
+</section>
+</section>
+<section id="data-backends">
+<span id="id3"></span><h2>Data Backends<a class="headerlink" href="#data-backends" title="Link to this heading"></a></h2>
+<p>As described in our <a class="reference internal" href="../topics/data.html"><span class="doc">Data Topic guide</span></a>, all dataframe read and writes are done using
+the <code class="docutils literal notranslate"><span class="pre">data_manager</span></code> object. This object is lazily evaluated at runtime to whatever <a class="reference internal" href="#data-backends"><span class="std std-ref">Data Backends</span></a> defined in <code class="xref std std-setting docutils literal notranslate"><span class="pre">DATA_BACKEND</span></code>.</p>
+<p>This means that by using <code class="docutils literal notranslate"><span class="pre">data_manager</span></code> and modifying <code class="xref std std-setting docutils literal notranslate"><span class="pre">DATA_BACKEND</span></code> in your project, you can customize the behavior of Gluepy and work
+with your prefered ways of dataframe technologies such as Polars, PySpark or Pandas.</p>
+<p>By default, Gluepy comes included with the following <code class="xref std std-setting docutils literal notranslate"><span class="pre">DATA_BACKEND</span></code> support:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#data-backend-pandas"><span class="std std-ref">The PandasDataManager Class</span></a></p></li>
+</ul>
+<section id="the-pandasdatamanager-class">
+<span id="data-backend-pandas"></span><h3>The PandasDataManager Class<a class="headerlink" href="#the-pandasdatamanager-class" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">PandasDataManager</span></code> class is the data manager implementation that use interacts with <a class="reference external" href="https://pypi.org/project/pandas/">Pandas Dataframes</a>, and is used by Gluepy as a default <code class="xref std std-setting docutils literal notranslate"><span class="pre">DATA_BACKEND</span></code> when you start a new project.
+The <code class="docutils literal notranslate"><span class="pre">PandasDataManager</span></code> backend is based on the interface and methods defined on <a class="reference internal" href="#data-backend-base"><span class="std std-ref">The BaseDataManager Class</span></a>.</p>
+</section>
+<section id="the-basedatamanager-class">
+<span id="data-backend-base"></span><h3>The BaseDataManager Class<a class="headerlink" href="#the-basedatamanager-class" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">BaseDataManager</span></code> class is the default interface that define the required methods and arguments for any data manager implementation.
+This is an abstract class that raise <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code> on use, but is used by <a class="reference internal" href="#data-backend-pandas"><span class="std std-ref">The PandasDataManager Class</span></a> and other data manager backends
+to ensure consistency.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dags.html" class="btn btn-neutral float-left" title="Directed Acyclic Graphs (DAG)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="settings.html" class="btn btn-neutral float-right" title="Settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gluepy.
+      <span class="lastupdated">Last updated on Feb 17, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

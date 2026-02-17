@@ -1,0 +1,216 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing your first Gluepy app, part 4 &mdash; Gluepy 1.5.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1cd648e3"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contributing to Gluepy" href="contributing.html" />
+    <link rel="prev" title="Writing your first Gluepy app, part 3" href="tutorial03.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Gluepy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Gluepy at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial01.html">Writing your first Gluepy app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial02.html">Writing your first Gluepy app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial03.html">Writing your first Gluepy app, part 3</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Writing your first Gluepy app, part 4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reviewing-the-default-cli-command">Reviewing the default CLI command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-custom-cli-command">Creating a custom CLI command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wrapping-up">Wrapping up</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html">Contributing to Gluepy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Using Gluepy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/index.html">Gluepy internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Gluepy FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Gluepy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Getting started</a></li>
+      <li class="breadcrumb-item active">Writing your first Gluepy app, part 4</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/intro/tutorial04.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="writing-your-first-gluepy-app-part-4">
+<h1>Writing your first Gluepy app, part 4<a class="headerlink" href="#writing-your-first-gluepy-app-part-4" title="Link to this heading"></a></h1>
+<p>In the previous parts of this tutorial <a class="reference internal" href="tutorial01.html"><span class="doc">Writing your first Gluepy app, part 1</span></a>, <a class="reference internal" href="tutorial02.html"><span class="doc">Writing your first Gluepy app, part 2</span></a> and <a class="reference internal" href="tutorial03.html"><span class="doc">Writing your first Gluepy app, part 3</span></a> we have setup
+a project that contains a <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a> that train a machine learning model on some sample data.</p>
+<p>Next up, we’ll talk about the CLI and commands.</p>
+<p>Gluepy already comes bundled with pre-existing commands that allow you to do basic tasks such as running your <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a>
+with the <a class="reference internal" href="../ref/cli.html#cli-dag"><span class="std std-ref">dag command</span></a>, but there may be situations where you want to add functionality or scripts to your project that
+does not fit into the concept of a <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a> or <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a>. E.g. you may want to write a command that copies a run folder,
+or a command that takes a trained .pkl model file and deploys it in a registry.</p>
+<p>In this final step of the tutorial, we will introduce the concept of writing custom <a class="reference internal" href="../ref/cli.html#cli"><span class="std std-ref">Gluepy Commands</span></a> that copies the output of a previous
+run to a new location, to simulate a deployment to production.</p>
+<section id="reviewing-the-default-cli-command">
+<h2>Reviewing the default CLI command<a class="headerlink" href="#reviewing-the-default-cli-command" title="Link to this heading"></a></h2>
+<p>If you recall <a class="reference internal" href="tutorial01.html"><span class="doc">Writing your first Gluepy app, part 1</span></a>, when we created out <code class="docutils literal notranslate"><span class="pre">forecaster</span></code> module using the <code class="docutils literal notranslate"><span class="pre">startmodule</span></code> command, it generated a file
+at <code class="docutils literal notranslate"><span class="pre">forecaster/commands.py</span></code> that looks like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.commands</span><span class="w"> </span><span class="kn">import</span> <span class="n">cli</span>
+
+
+<span class="nd">@cli</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">():</span>
+    <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="s2">&quot;Sample command called&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>What happens here is the following:</p>
+<ul class="simple">
+<li><p>The command is using <a class="reference external" href="https://click.palletsprojects.com/en/8.1.x/">Click</a> under the hood for logic related to CLI such as
+adding options, groups of commands, help text and more.</p></li>
+<li><p>All commands in Gluepy served on <code class="docutils literal notranslate"><span class="pre">manage.py</span></code> is part of the <code class="docutils literal notranslate"><span class="pre">gluepy.commands.cli</span></code> group. You must add a command to
+<code class="docutils literal notranslate"><span class="pre">gluepy.commands.cli</span></code> using the <code class="docutils literal notranslate"><span class="pre">&#64;cli.command()</span></code> operator.</p></li>
+</ul>
+<p>This command can be called using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>sample
+Sample<span class="w"> </span><span class="nb">command</span><span class="w"> </span>called
+</pre></div>
+</div>
+</section>
+<section id="creating-a-custom-cli-command">
+<h2>Creating a custom CLI command<a class="headerlink" href="#creating-a-custom-cli-command" title="Link to this heading"></a></h2>
+<p>Now let’s modify this <code class="docutils literal notranslate"><span class="pre">sample</span></code> command to instead receive a path to a run folder, and copy the .pkl model file that we created in <a class="reference internal" href="tutorial02.html"><span class="doc">Writing your first Gluepy app, part 2</span></a>
+to a <code class="docutils literal notranslate"><span class="pre">/data/production</span></code> directory to simulate a deployment. In a real project, you may instead deploy the model to something like <a class="reference external" href="https://mlflow.org/">MLFlow</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.commands</span><span class="w"> </span><span class="kn">import</span> <span class="n">cli</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.storages</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_storage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.conf</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_context</span>
+
+
+<span class="nd">@cli</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;run_folder&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">deploy</span><span class="p">(</span><span class="n">run_folder</span><span class="p">):</span>
+    <span class="n">default_storage</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span>
+     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">run_folder</span><span class="p">,</span> <span class="s2">&quot;model.pkl&quot;</span><span class="p">),</span>
+     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;production&quot;</span><span class="p">,</span> <span class="s2">&quot;model.pkl&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="s2">&quot;Model deployed to production&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The code above defines the following:</p>
+<ul class="simple">
+<li><p>Add a new command named <code class="docutils literal notranslate"><span class="pre">deploy</span></code> to the <code class="docutils literal notranslate"><span class="pre">manage.py</span></code> CLI using the <code class="docutils literal notranslate"><span class="pre">&#64;cli.command()</span></code> decorator.</p></li>
+<li><p>Add a new argument using <a class="reference external" href="https://click.palletsprojects.com/en/8.1.x/">Click</a> that expect user to pass a <a class="reference internal" href="../topics/configuration.html#context-run-folder"><span class="std std-ref">Run Folder</span></a> path.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">default_storage</span></code> to copy the file from our run folder, to a centralized folder we use for “production” models.</p></li>
+</ul>
+<p>This can now be called in the following manner.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>deploy<span class="w"> </span>runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/
+Model<span class="w"> </span>deployed<span class="w"> </span>to<span class="w"> </span>production
+</pre></div>
+</div>
+</section>
+<section id="wrapping-up">
+<h2>Wrapping up<a class="headerlink" href="#wrapping-up" title="Link to this heading"></a></h2>
+<p>That was it for this tutorial. We have now learned:</p>
+<ul class="simple">
+<li><p>How to create new projects</p></li>
+<li><p>How to create a <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a> consisting of 2 <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a> that train a machine learning model.</p></li>
+<li><p>Using output versioning with <a class="reference internal" href="../topics/configuration.html#context-run-folder"><span class="std std-ref">Run Folder</span></a>.</p></li>
+<li><p>Retrying DAG runs and running subset of runs.</p></li>
+<li><p>Parameterizing our model using YAML and <a class="reference internal" href="../topics/configuration.html#topic-context"><span class="std std-ref">Context</span></a>.</p></li>
+<li><p>File system interactions with <code class="docutils literal notranslate"><span class="pre">default_storage</span></code> and <a class="reference internal" href="../topics/data.html#topic-storage"><span class="std std-ref">Storage and File System</span></a>.</p></li>
+</ul>
+<p>You should now be familiar with the key concepts of Gluepy. To read more details, see</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../topics/index.html"><span class="doc">Topic guides</span></a></p></li>
+<li><p><a class="reference internal" href="../ref/index.html"><span class="doc">Reference guides</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial03.html" class="btn btn-neutral float-left" title="Writing your first Gluepy app, part 3" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing to Gluepy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gluepy.
+      <span class="lastupdated">Last updated on Feb 17, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

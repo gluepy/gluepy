@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing your first Gluepy app, part 3 &mdash; Gluepy 1.5.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1cd648e3"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Writing your first Gluepy app, part 4" href="tutorial04.html" />
+    <link rel="prev" title="Writing your first Gluepy app, part 2" href="tutorial02.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Gluepy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Gluepy at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial01.html">Writing your first Gluepy app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial02.html">Writing your first Gluepy app, part 2</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Writing your first Gluepy app, part 3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-context-parameters">Using Context Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-an-an-existing-context">Loading an an existing Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retry-subset-of-dag">Retry subset of DAG</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial04.html">Writing your first Gluepy app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html">Contributing to Gluepy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Using Gluepy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/index.html">Gluepy internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Gluepy FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Gluepy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Getting started</a></li>
+      <li class="breadcrumb-item active">Writing your first Gluepy app, part 3</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/intro/tutorial03.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="writing-your-first-gluepy-app-part-3">
+<h1>Writing your first Gluepy app, part 3<a class="headerlink" href="#writing-your-first-gluepy-app-part-3" title="Link to this heading"></a></h1>
+<p>In the previous parts of this tutorial <a class="reference internal" href="tutorial01.html"><span class="doc">Writing your first Gluepy app, part 1</span></a> and <a class="reference internal" href="tutorial02.html"><span class="doc">Writing your first Gluepy app, part 2</span></a> we have built a simple <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a> consisting of two <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a>
+that generate a set of data, and then fit an <code class="docutils literal notranslate"><span class="pre">xgboost</span></code> regressor on the data.</p>
+<p>In this step, we will do the following:</p>
+<ul class="simple">
+<li><p>Parameterize the features used in the training of our machine learning mdoel using the <a class="reference internal" href="../topics/configuration.html#topic-context"><span class="std std-ref">Context</span></a> to easily try new features without changing our code.</p></li>
+<li><p>Retry a pre-existing run to replicate our previous results.</p></li>
+</ul>
+<section id="using-context-parameters">
+<h2>Using Context Parameters<a class="headerlink" href="#using-context-parameters" title="Link to this heading"></a></h2>
+<p>As described in <a class="reference internal" href="../topics/configuration.html#topic-context"><span class="std std-ref">Context</span></a>, the Context can be accessed using <code class="docutils literal notranslate"><span class="pre">default_context</span></code>, and contains
+the various configurations and parameters that should apply to our run, that by default is populated by the <code class="docutils literal notranslate"><span class="pre">configs/context.yaml</span></code> file.</p>
+<p>This file is a sandbox where you and your team can store any parameter in YAML format that you may want to be able to tweak to adjust the behavior
+of your <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a>.</p>
+<p>In our case, we’ll use the context to parameterize the features used for training our ML model.</p>
+<p>Let’s customize our <code class="docutils literal notranslate"><span class="pre">context.yaml</span></code> file in the following manner:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">meta</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">run_id</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">run_folder</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">created_at</span><span class="p">:</span>
+
+<span class="nt">forecaster</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">features</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">article_id</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">date</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>By adding the <code class="docutils literal notranslate"><span class="pre">forecaster</span></code> section above, we can access the features attribute in Python using
+<code class="docutils literal notranslate"><span class="pre">default_context.forecaster.features</span></code>.</p>
+<p>Now let’s update our <code class="docutils literal notranslate"><span class="pre">TrainingTask</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xgboost</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xgb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.conf</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_context</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_manager</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TrainingTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;training&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">data_manager</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;training.csv&quot;</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBRegressor</span><span class="p">(</span><span class="n">enable_categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># We update this row to refer to the columns to use as</span>
+        <span class="c1"># features using the context attribute.</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">default_context</span><span class="o">.</span><span class="n">forecaster</span><span class="o">.</span><span class="n">features</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>This will now make it possible for our team to experiment and tweak the execution of
+our machine learning pipeline by adjusting the YAML configuration instead of deploying new
+versions of the code.</p>
+</section>
+<section id="loading-an-an-existing-context">
+<h2>Loading an an existing Context<a class="headerlink" href="#loading-an-an-existing-context" title="Link to this heading"></a></h2>
+<p>As you could see in the log output of <a class="reference internal" href="tutorial02.html"><span class="doc">Writing your first Gluepy app, part 2</span></a>, each execution of our DAG will do the following:</p>
+<ul class="simple">
+<li><p>Assign a unique <a class="reference internal" href="../topics/configuration.html#context-run-id"><span class="std std-ref">Run ID</span></a> to this training run of our model.</p></li>
+<li><p>Assign a unique <a class="reference internal" href="../topics/configuration.html#context-run-folder"><span class="std std-ref">Run Folder</span></a> to version and isolate the <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a> and all our output.</p></li>
+<li><p>Gluepy automatically serialize and save our <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a> to <code class="docutils literal notranslate"><span class="pre">context.yaml</span></code> within the run folder.</p></li>
+<li><p>Even though we only tell our code to read and write <code class="docutils literal notranslate"><span class="pre">training.csv</span></code>, Gluepy automatically format the path to <code class="docutils literal notranslate"><span class="pre">/demo/data/runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/training.csv</span></code></p></li>
+</ul>
+<p>This makes it very easy to re-run a previous execution or configuration of your model to recreate results,
+or inspect what parameters that were used to generate a given result.</p>
+<p>For example, if your <a class="reference internal" href="../topics/configuration.html#context-run-folder"><span class="std std-ref">Run Folder</span></a> is <code class="docutils literal notranslate"><span class="pre">runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054</span></code>, you will find a
+file named <code class="docutils literal notranslate"><span class="pre">context.yaml</span></code> in the root of the directory which contains all the <a class="reference internal" href="../topics/configuration.html#topic-context"><span class="std std-ref">Context</span></a> parameters used for that run,
+and meta information such as the run id, run folder and timestamp of run execution.</p>
+<p>The <a class="reference internal" href="../ref/cli.html#cli-dag"><span class="std std-ref">dag command</span></a> support options such as <code class="docutils literal notranslate"><span class="pre">--retry</span></code> that allow you to retry a pre-existing run.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>--retry<span class="w"> </span>runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054<span class="w"> </span>sample
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,131<span class="w"> </span><span class="nb">local</span><span class="w"> </span>-<span class="w"> </span>Reading<span class="w"> </span>file<span class="w"> </span>from<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;/Users/lind.marcus/src/gluepy-tutorial/demo/data/runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/context.yaml&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,132<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Started<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;BootstrapTask&#39;</span>
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,132<span class="w"> </span>tasks<span class="w"> </span>-
+<span class="w">         </span>Run<span class="w"> </span>ID:<span class="w"> </span>c29b8b49-dee9-4984-8ccc-860651780054
+<span class="w">         </span>Run<span class="w"> </span>Folder:<span class="w"> </span>runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054
+
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,132<span class="w"> </span><span class="nb">local</span><span class="w"> </span>-<span class="w"> </span>Writing<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;/Users/lind.marcus/src/gluepy-tutorial/demo/data/runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/context.yaml&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,133<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Completed<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;BootstrapTask&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.000831<span class="w"> </span>seconds
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,133<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Started<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;GetTrainingDataTask&#39;</span>
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,134<span class="w"> </span>pandas<span class="w"> </span>-<span class="w"> </span>Writing<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/training.csv&#39;</span>.
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,136<span class="w"> </span><span class="nb">local</span><span class="w"> </span>-<span class="w"> </span>Writing<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;/Users/lind.marcus/src/gluepy-tutorial/demo/data/runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/training.csv&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,136<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Completed<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;GetTrainingDataTask&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.003068<span class="w"> </span>seconds
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,136<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Started<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;TrainingTask&#39;</span>
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,136<span class="w"> </span><span class="nb">local</span><span class="w"> </span>-<span class="w"> </span>Reading<span class="w"> </span>file<span class="w"> </span>from<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;/Users/lind.marcus/src/gluepy-tutorial/demo/data/runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/training.csv&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,136<span class="w"> </span>pandas<span class="w"> </span>-<span class="w"> </span>Reading<span class="w"> </span>file<span class="w"> </span>from<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;training.csv&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">16</span>:01:01,174<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Completed<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;TrainingTask&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.038568<span class="w"> </span>seconds
+</pre></div>
+</div>
+<p>Notice that instead of creating a new unique <a class="reference internal" href="../topics/configuration.html#context-run-id"><span class="std std-ref">Run ID</span></a>, Gluepy is loading the <code class="docutils literal notranslate"><span class="pre">context.yaml</span></code> file in the path provided,
+and reusing the same parameters and <a class="reference internal" href="../topics/configuration.html#context-run-folder"><span class="std std-ref">Run Folder</span></a>.</p>
+<p>This ensures that the same parameters are being used as before, even if you code and default parameters have been changed since.</p>
+</section>
+<section id="retry-subset-of-dag">
+<h2>Retry subset of DAG<a class="headerlink" href="#retry-subset-of-dag" title="Link to this heading"></a></h2>
+<p>In the step above, we showed you how to use <code class="docutils literal notranslate"><span class="pre">--retry</span></code> of the <a class="reference internal" href="../ref/cli.html#cli-dag"><span class="std std-ref">dag command</span></a> to rerun a previous execution using the same <a class="reference internal" href="../topics/configuration.html#context-run-folder"><span class="std std-ref">Run Folder</span></a> and <a class="reference internal" href="../topics/configuration.html#topic-context"><span class="std std-ref">Context</span></a>.</p>
+<p>The <a class="reference internal" href="../ref/cli.html#cli-dag"><span class="std std-ref">dag command</span></a> also support options such as <code class="docutils literal notranslate"><span class="pre">--from-task</span></code> and <code class="docutils literal notranslate"><span class="pre">--task</span></code> that does the same thing, but only retries a subset of the <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a>. This can be incredibly useful when you have
+long running pipelines, and you want to skip sections of it and only rerun any <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a> that you have changed.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>--from-task<span class="w"> </span>training<span class="w"> </span>--retry<span class="w"> </span>runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054<span class="w"> </span>sample
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">15</span>:58:29,845<span class="w"> </span><span class="nb">local</span><span class="w"> </span>-<span class="w"> </span>Reading<span class="w"> </span>file<span class="w"> </span>from<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;/Users/lind.marcus/src/gluepy-tutorial/demo/data/runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/context.yaml&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">15</span>:58:29,845<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Started<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;TrainingTask&#39;</span>
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">15</span>:58:29,845<span class="w"> </span><span class="nb">local</span><span class="w"> </span>-<span class="w"> </span>Reading<span class="w"> </span>file<span class="w"> </span>from<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;/Users/lind.marcus/src/gluepy-tutorial/demo/data/runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/training.csv&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">15</span>:58:29,846<span class="w"> </span>pandas<span class="w"> </span>-<span class="w"> </span>Reading<span class="w"> </span>file<span class="w"> </span>from<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;training.csv&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">15</span>:58:29,898<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Completed<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;TrainingTask&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.052679<span class="w"> </span>seconds
+</pre></div>
+</div>
+<p>Note that this time when we run our <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a>, we no longer execute the <code class="docutils literal notranslate"><span class="pre">BootstrapTask</span></code> or the <code class="docutils literal notranslate"><span class="pre">GetTrainingDataTask</span></code> but instead jump
+to <code class="docutils literal notranslate"><span class="pre">TrainingTask</span></code>. This execution will load the <code class="docutils literal notranslate"><span class="pre">training.csv</span></code> file that was generated the first time we executed this run.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial02.html" class="btn btn-neutral float-left" title="Writing your first Gluepy app, part 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial04.html" class="btn btn-neutral float-right" title="Writing your first Gluepy app, part 4" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gluepy.
+      <span class="lastupdated">Last updated on Feb 17, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

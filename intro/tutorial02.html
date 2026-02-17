@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing your first Gluepy app, part 2 &mdash; Gluepy 1.5.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1cd648e3"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Writing your first Gluepy app, part 3" href="tutorial03.html" />
+    <link rel="prev" title="Writing your first Gluepy app, part 1" href="tutorial01.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Gluepy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Gluepy at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial01.html">Writing your first Gluepy app, part 1</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Writing your first Gluepy app, part 2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generate-training-data">Generate Training Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training-our-machine-learning-model">Training our Machine Learning Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial03.html">Writing your first Gluepy app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial04.html">Writing your first Gluepy app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html">Contributing to Gluepy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Using Gluepy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/index.html">Gluepy internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Gluepy FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Gluepy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Getting started</a></li>
+      <li class="breadcrumb-item active">Writing your first Gluepy app, part 2</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/intro/tutorial02.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="writing-your-first-gluepy-app-part-2">
+<h1>Writing your first Gluepy app, part 2<a class="headerlink" href="#writing-your-first-gluepy-app-part-2" title="Link to this heading"></a></h1>
+<p>In the previous step <a class="reference internal" href="tutorial01.html"><span class="doc">Writing your first Gluepy app, part 1</span></a>, we setup our Project, created our <code class="docutils literal notranslate"><span class="pre">forecaster</span></code> module, and tried running our first <code class="docutils literal notranslate"><span class="pre">SampleDAG</span></code>.
+Next up, we will write some of our own code that introduce the topics of how Gluepy help you accessing your data by writing a simple forecaster training step.</p>
+<p>In this tutorial we will:</p>
+<ul class="simple">
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">GetTrainingDataTask</span></code> that generate some sample training data for us.</p></li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">TrainingTask</span></code> that use <code class="docutils literal notranslate"><span class="pre">xgboost</span></code> to train a regression model.</p></li>
+</ul>
+<section id="generate-training-data">
+<h2>Generate Training Data<a class="headerlink" href="#generate-training-data" title="Link to this heading"></a></h2>
+<p>The first step we want to do is to modify our <code class="docutils literal notranslate"><span class="pre">forecaster/tasks.py</span></code> file and add the following class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_manager</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">GetTrainingDataTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;get-data&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Entrypoint to our task&quot;&quot;&quot;</span>
+        <span class="c1"># Generating a sample dataframe to later</span>
+        <span class="c1"># be used for training. In a real project</span>
+        <span class="c1"># you would likely instead read data from a</span>
+        <span class="c1"># pre-existing dataset.</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span>
+                 <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                 <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                 <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                 <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+                 <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;article_id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="p">})</span>
+
+        <span class="c1"># Write dataset to run_folder.</span>
+        <span class="n">data_manager</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;training.csv&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This does a few simple things:</p>
+<ul class="simple">
+<li><p>Define a new <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a> instance where the business logic lives in the <code class="docutils literal notranslate"><span class="pre">run()</span></code> method.</p></li>
+<li><p>Generate mock data as a Pandas Dataframe that will later be used for training.</p></li>
+<li><p>Use the <a class="reference internal" href="../topics/data.html#topic-data"><span class="std std-ref">data_manager</span></a> to store the dataframe in the run’s <a class="reference internal" href="../topics/configuration.html#context-run-folder"><span class="std std-ref">Run Folder</span></a>.</p></li>
+</ul>
+<p>Next up, we need to add this new <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a> to our <code class="docutils literal notranslate"><span class="pre">SampleDAG</span></code> within our <code class="docutils literal notranslate"><span class="pre">forecaster/dags.py</span></code> file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAG</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.tasks</span><span class="w"> </span><span class="kn">import</span> <span class="n">GetTrainingDataTask</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SampleDAG</span><span class="p">(</span><span class="n">DAG</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;sample&quot;</span>
+    <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">GetTrainingDataTask</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Now let’s try running our <code class="docutils literal notranslate"><span class="pre">SampleDAG</span></code> again with the <a class="reference internal" href="../ref/cli.html#cli-dag"><span class="std std-ref">dag command</span></a> to ensure it is still working.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>sample
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:48:44,061<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Started<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;BootstrapTask&#39;</span>
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:48:44,062<span class="w"> </span>tasks<span class="w"> </span>-
+<span class="w">         </span>Run<span class="w"> </span>ID:<span class="w"> </span>e7966509-ca8f-4e12-8c9f-7b0b1c2fcfd4
+<span class="w">         </span>Run<span class="w"> </span>Folder:<span class="w"> </span>runs/2024/6/25/e7966509-ca8f-4e12-8c9f-7b0b1c2fcfd4
+
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:48:44,062<span class="w"> </span><span class="nb">local</span><span class="w"> </span>-<span class="w"> </span>Writing<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;/demo/data/runs/2024/6/25/e7966509-ca8f-4e12-8c9f-7b0b1c2fcfd4/context.yaml&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:48:44,062<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Completed<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;BootstrapTask&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.000991<span class="w"> </span>seconds
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:48:44,062<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Started<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;GetTrainingDataTask&#39;</span>
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:48:44,064<span class="w"> </span>pandas<span class="w"> </span>-<span class="w"> </span>Writing<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;runs/2024/6/25/e7966509-ca8f-4e12-8c9f-7b0b1c2fcfd4/training.csv&#39;</span>.
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:48:44,102<span class="w"> </span><span class="nb">local</span><span class="w"> </span>-<span class="w"> </span>Writing<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;/demo/data/runs/2024/6/25/e7966509-ca8f-4e12-8c9f-7b0b1c2fcfd4/training.csv&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:48:44,102<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Completed<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;GetTrainingDataTask&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.039749<span class="w"> </span>seconds
+</pre></div>
+</div>
+</section>
+<section id="training-our-machine-learning-model">
+<h2>Training our Machine Learning Model<a class="headerlink" href="#training-our-machine-learning-model" title="Link to this heading"></a></h2>
+<p>Next up, it is time to create our <code class="docutils literal notranslate"><span class="pre">TrainingTask</span></code>. First, we must first install some additional dependencies that we will use to train our
+machine learning model.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>scikit-learn<span class="w"> </span>xgboost
+</pre></div>
+</div>
+<p>After installing <code class="docutils literal notranslate"><span class="pre">xgboost</span></code> and <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> we can create our <code class="docutils literal notranslate"><span class="pre">TrainingTask</span></code> class.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xgboost</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xgb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.conf</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_context</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_manager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.storages</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_storage</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TrainingTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;training&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Read the training dataset previous generated in</span>
+        <span class="c1"># ``GenerateTrainingDataTask``. The path is automatically</span>
+        <span class="c1"># formatted to read from the run_folder to ensure data versioning</span>
+        <span class="c1"># and isolation of output between executions.</span>
+        <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">data_manager</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;training.csv&quot;</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Train our machine learning model.</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBRegressor</span><span class="p">(</span><span class="n">enable_categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;article_id&quot;</span><span class="p">]],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">])</span>
+
+        <span class="c1"># Store model to disk to later be used when we want</span>
+        <span class="c1"># to do inference.</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">stream</span><span class="p">)</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">default_storage</span><span class="o">.</span><span class="n">touch</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">default_context</span><span class="o">.</span><span class="n">gluepy</span><span class="o">.</span><span class="n">run_folder</span><span class="p">,</span> <span class="s2">&quot;model.pkl&quot;</span><span class="p">),</span> <span class="n">stream</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>We must then add our new <code class="docutils literal notranslate"><span class="pre">TrainingTask</span></code> to our <code class="docutils literal notranslate"><span class="pre">SampleDAG</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAG</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.tasks</span><span class="w"> </span><span class="kn">import</span> <span class="n">GetTrainingDataTask</span><span class="p">,</span> <span class="n">TrainingTask</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SampleDAG</span><span class="p">(</span><span class="n">DAG</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;sample&quot;</span>
+    <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">GetTrainingDataTask</span><span class="p">,</span> <span class="n">TrainingTask</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Finally, we can try executing our updated <code class="docutils literal notranslate"><span class="pre">SampleDAG</span></code> using the <a class="reference internal" href="../ref/cli.html#cli-dag"><span class="std std-ref">dag command</span></a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>sample
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">13</span>:10:37,903<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Started<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;BootstrapTask&#39;</span>
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">13</span>:10:37,903<span class="w"> </span>tasks<span class="w"> </span>-
+<span class="w">         </span>Run<span class="w"> </span>ID:<span class="w"> </span>c29b8b49-dee9-4984-8ccc-860651780054
+<span class="w">         </span>Run<span class="w"> </span>Folder:<span class="w"> </span>runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054
+
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">13</span>:10:37,904<span class="w"> </span><span class="nb">local</span><span class="w"> </span>-<span class="w"> </span>Writing<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;/demo/data/runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/context.yaml&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">13</span>:10:37,904<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Completed<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;BootstrapTask&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.001035<span class="w"> </span>seconds
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">13</span>:10:37,904<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Started<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;GetTrainingDataTask&#39;</span>
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">13</span>:10:37,905<span class="w"> </span>pandas<span class="w"> </span>-<span class="w"> </span>Writing<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/training.csv&#39;</span>.
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">13</span>:10:37,906<span class="w"> </span><span class="nb">local</span><span class="w"> </span>-<span class="w"> </span>Writing<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;/demo/data/runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/training.csv&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">13</span>:10:37,906<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Completed<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;GetTrainingDataTask&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.002413<span class="w"> </span>seconds
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">13</span>:10:37,906<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Started<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;TrainingTask&#39;</span>
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">13</span>:10:37,906<span class="w"> </span><span class="nb">local</span><span class="w"> </span>-<span class="w"> </span>Reading<span class="w"> </span>file<span class="w"> </span>from<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;/demo/data/runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/training.csv&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">13</span>:10:37,906<span class="w"> </span>pandas<span class="w"> </span>-<span class="w"> </span>Reading<span class="w"> </span>file<span class="w"> </span>from<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;training.csv&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">13</span>:10:37,945<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Completed<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;TrainingTask&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.038396<span class="w"> </span>seconds
+</pre></div>
+</div>
+<p>Note the following:</p>
+<ul class="simple">
+<li><p>Gluepy automatically assign a unique <a class="reference internal" href="../topics/configuration.html#context-run-id"><span class="std std-ref">Run ID</span></a> to this training run of our model.</p></li>
+<li><p>Gluepy automatically assign a unique <a class="reference internal" href="../topics/configuration.html#context-run-folder"><span class="std std-ref">Run Folder</span></a> to version and isolate the <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a> and all our output.</p></li>
+<li><p>Gluepy automatically serialize and save our <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a> to <code class="docutils literal notranslate"><span class="pre">context.yaml</span></code> within the run folder.</p></li>
+<li><p>Even though we only tell our code to read and write <code class="docutils literal notranslate"><span class="pre">training.csv</span></code>, Gluepy automatically format the path to <code class="docutils literal notranslate"><span class="pre">/demo/data/runs/2024/6/25/c29b8b49-dee9-4984-8ccc-860651780054/training.csv</span></code></p></li>
+</ul>
+<p>We have now created a set of custom <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a> instances that use the <code class="docutils literal notranslate"><span class="pre">data_manager</span></code> object and <a class="reference internal" href="../topics/data.html#topic-data"><span class="std std-ref">Data and DataFrames</span></a> to read and write data. Next up we will see how we can use <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a> to parameterize our project and make it easier to configure in the future.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial01.html" class="btn btn-neutral float-left" title="Writing your first Gluepy app, part 1" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial03.html" class="btn btn-neutral float-right" title="Writing your first Gluepy app, part 3" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gluepy.
+      <span class="lastupdated">Last updated on Feb 17, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

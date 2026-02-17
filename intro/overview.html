@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gluepy at a glance &mdash; Gluepy 1.5.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1cd648e3"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Quick install guide" href="install.html" />
+    <link rel="prev" title="Getting started" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Gluepy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Gluepy at a glance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-gluepy">What is Gluepy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#what-gluepy-is-not">What Gluepy is not</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#design-your-dag-pipeline">Design your DAG (Pipeline)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#next-step-execute-it">Next step, execute it!</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#load-your-dataframes">Load your DataFrames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#leverage-file-system-api">Leverage File System API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-and-recreate-all-output">Version and recreate all output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extendability-and-configuration">Extendability and configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial01.html">Writing your first Gluepy app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial02.html">Writing your first Gluepy app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial03.html">Writing your first Gluepy app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial04.html">Writing your first Gluepy app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html">Contributing to Gluepy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Using Gluepy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/index.html">Gluepy internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Gluepy FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Gluepy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Getting started</a></li>
+      <li class="breadcrumb-item active">Gluepy at a glance</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/intro/overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gluepy-at-a-glance">
+<h1>Gluepy at a glance<a class="headerlink" href="#gluepy-at-a-glance" title="Link to this heading"></a></h1>
+<p>Gluepy was developed by a team with a lot of experience in the fast-paced world of consulting,
+and is designed to make development tasks fast and easy, with a structure that steer data scientists
+into reusable, configurable patterns that can be put in production. Here’s an informal overview of how
+to create an AI and ML driven app using Gluepy.</p>
+<p>The goal of this document is to give you enough technical specifics to
+understand how Gluepy works, but this isn’t intended to be a tutorial or
+reference – but we’ve got both! When you’re ready to start a project, you can
+<a class="reference internal" href="tutorial01.html"><span class="doc">start with the tutorial</span></a> or <a class="reference internal" href="../topics/index.html"><span class="doc">dive right into more
+detailed documentation</span></a>.</p>
+<section id="what-is-gluepy">
+<h2>What is Gluepy<a class="headerlink" href="#what-is-gluepy" title="Link to this heading"></a></h2>
+<p>Gluepy is a framework that allow you as an AI Engineer to apply a structure to your Machine Learning repositories that makes it easy to productionize workloads
+and guide your Data Scientist colleagues away from trying to deploy Jupyter Notebooks in production.</p>
+<p>Gluepy do not involve itself with the details of your workload and is agnostic to what kind of Machine Learning tools or algorithm that you are building. It is simply focusing on
+standardizing how your team write their steps in your pipeline, how configuration is managed, and how you can easily move from local experiments on someones laptop to a production
+deployment in the cloud.</p>
+<section id="what-gluepy-is-not">
+<h3>What Gluepy is not<a class="headerlink" href="#what-gluepy-is-not" title="Link to this heading"></a></h3>
+<p>To avoid misunderstandings, here are a few examples of misconceptions of what Gluepy is not.</p>
+<ul class="simple">
+<li><p>Gluepy is <strong>not</strong> an Orchestrator such as Airflow. Gluepy is agnostic to how your execution is scheduled or what tools you use to run your code.</p></li>
+<li><p>Gluepy is <strong>not</strong> an ETL tool. We personally use tools such as <a class="reference external" href="https://www.getdbt.com/">DBT</a> for our data pipelines and transformations in parallel
+to using Gluepy for our Machine Learning models and pipelines.</p></li>
+<li><p>Gluepy is <strong>not</strong> opinionated only for a single type of ML workload or cloud provider.</p></li>
+</ul>
+</section>
+</section>
+<section id="design-your-dag-pipeline">
+<span id="overview-dag"></span><h2>Design your DAG (Pipeline)<a class="headerlink" href="#design-your-dag-pipeline" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAG</span><span class="p">,</span> <span class="n">Task</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SampleATask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;sample_a&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello &quot;</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SampleBTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;sample_b&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;World!&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SampleDAG</span><span class="p">(</span><span class="n">DAG</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;sample&quot;</span>
+    <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">SampleATask</span><span class="p">,</span> <span class="n">SampleBTask</span><span class="p">,</span> <span class="p">]</span>
+</pre></div>
+</div>
+<section id="next-step-execute-it">
+<h3>Next step, execute it!<a class="headerlink" href="#next-step-execute-it" title="Link to this heading"></a></h3>
+<p>The DAG is automatically registered and available through <a class="reference internal" href="../ref/cli.html#cli"><span class="std std-ref">Gluepy Commands</span></a> and can be executed
+with a single command.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>sample
+Hello
+World!
+</pre></div>
+</div>
+</section>
+</section>
+<section id="load-your-dataframes">
+<span id="interact-with-data"></span><h2>Load your DataFrames<a class="headerlink" href="#load-your-dataframes" title="Link to this heading"></a></h2>
+<p>Gluepy provides a wrapper around any Dataframe backend of your choice (Pandas, Polars, PySpark etc) to ensure that
+your project have consistency throughout in regards to file storages used, which path data is stored from,
+automatic output versioning and safe usage of credentials.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_manager</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DataFrameTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;dataframe&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Reading from /data/training.parquet</span>
+        <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">data_manager</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;training.parquet&quot;</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;new_column&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># Automatically version output in unique run folder for this</span>
+        <span class="c1"># current execution, since not defining ``root=True``.</span>
+        <span class="c1"># /data/runs/2024/01/01/af41a763-18bc-44b0-9293-f52266898a89/training_v2.parquet</span>
+        <span class="n">data_manager</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;training_v2.parquet&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">data_manager</span></code> object can be configured to point to any custom backend that may read in other types of
+dataframes than Pandas as used in the example above, see <a class="reference internal" href="../topics/data.html#topic-data"><span class="std std-ref">Data and DataFrames</span></a>.</p>
+</section>
+<section id="leverage-file-system-api">
+<span id="interact-with-filesystem"></span><h2>Leverage File System API<a class="headerlink" href="#leverage-file-system-api" title="Link to this heading"></a></h2>
+<p>In a data driven project, there are more type of file interactions than just DataFrames. Gluepy comes with an exhaustive
+API that allow you to interact with the file system in a cloud and SDK agnostic manner, which ensures that your code is
+reusable, modular and can easily be deployed to use Local File System, Google Cloud Storage, S3 Bucket or other storage backends.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringIO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Task</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.files.storages</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_storage</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">FileSystemTask</span><span class="p">(</span><span class="n">Task</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;filesystem&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create a file</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">touch</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">,</span> <span class="n">StringIO</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">))</span>
+
+        <span class="c1"># Read a file</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Delete a file</span>
+        <span class="n">default_storage</span><span class="o">.</span><span class="n">rm</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Copy a file</span>
+        <span class="n">default_storage</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;file2.txt&quot;</span><span class="p">)</span>
+
+        <span class="c1"># List files and directories in path</span>
+        <span class="n">files</span><span class="p">,</span> <span class="n">dirs</span> <span class="o">=</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">ls</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Create a new directory</span>
+        <span class="n">default_storage</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;tmp/&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check if a path is a directory</span>
+        <span class="n">default_storage</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="s2">&quot;tmp/&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check if a path is a file</span>
+        <span class="n">default_storage</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check if a file exist</span>
+        <span class="n">default_storage</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;file.txt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">default_storage</span></code> object can easily be configured to point to different file systems or storage backend
+in case you want to run this code locally, on S3, GCS or other backends. See more on <a class="reference internal" href="../topics/data.html#topic-storage"><span class="std std-ref">Storage and File System</span></a>.</p>
+</section>
+<section id="version-and-recreate-all-output">
+<span id="result-versioning-and-retry"></span><h2>Version and recreate all output<a class="headerlink" href="#version-and-recreate-all-output" title="Link to this heading"></a></h2>
+<p>As part of a ML/Data Science driven project, you may run your models hundreds of times with varying output
+due to version of model used or <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a> parameters defined for that particular execution.</p>
+<p>Gluepy is designed to make it very easy to version the configuration and the output of a single execution
+to ensure that the configuration used can be loaded later in time, and that output can be recreated.</p>
+<p>This is all done using the concepts of <a class="reference internal" href="../topics/configuration.html#context-run-id"><span class="std std-ref">Run ID</span></a> and <a class="reference internal" href="../topics/configuration.html#context-run-folder"><span class="std std-ref">Run Folder</span></a>.</p>
+<p>The <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a> is automatically serialized and stored in YAML format on every run, and any Dataframe is loaded and stored in the <a class="reference internal" href="../topics/configuration.html#context-run-folder"><span class="std std-ref">Run Folder</span></a>
+without any need for any data scientist to define so explicitally.</p>
+<p>These are the right, opinionated defaults to ensure that your project has the ability to recreate
+previous output.</p>
+</section>
+<section id="extendability-and-configuration">
+<span id="configuration"></span><h2>Extendability and configuration<a class="headerlink" href="#extendability-and-configuration" title="Link to this heading"></a></h2>
+<p>Gluepy was built by a team with a rich experience of the AI Consulting world, which means that any code written must be able
+to be deployed to various cloud environments and run with varying parameters that fit each client the best.</p>
+<p>Gluepy comes with built in support for:</p>
+<ul>
+<li><p><a class="reference internal" href="../topics/modules.html"><span class="doc">Modules</span></a> are reusable python packages that can be enabled in a project, and automatically loaded
+as part of the bootstrap process that registers the code and makes it available through the <a class="reference internal" href="../ref/cli.html#cli"><span class="std std-ref">Gluepy Commands</span></a>.</p></li>
+<li><p><a class="reference internal" href="../topics/configuration.html#topic-settings"><span class="std std-ref">Settings</span></a> are global configuration of your project such as which modules that are enabled, how
+the logging configuration is defined, what credentials that are used to connect to data warehouse etc. Settings support
+<a class="reference internal" href="../topics/configuration.html#topic-settings-by-environment"><span class="std std-ref">Different Settings by Environment</span></a>.</p></li>
+<li><p><a class="reference internal" href="../topics/configuration.html#topic-context"><span class="std std-ref">Context</span></a> are model parameters that can be adjusted to impact the output or behavior of the execution, and
+other meta parameter around the execution used to be able to recreate any output.</p></li>
+<li><p><a class="reference internal" href="../ref/data.html#storage-backends"><span class="std std-ref">Storage Backends</span></a> are plug-and-play classes that adhere to Gluepy’s predefined progammatic interfaces and
+provides logic to connect to the file system of your choice. You can easily create your own custom storage backend
+to work with your selected cloud provider.</p></li>
+<li><p><a class="reference internal" href="../ref/data.html#data-backends"><span class="std std-ref">Data Backends</span></a> are plug-and-play classes that adhere to Gluepy’s predefined progammatic interfaces and
+provides logic to load the data in the format of your choice. By default Gluepy comes with the
+<code class="docutils literal notranslate"><span class="pre">PandasDataManager</span></code> enabled, but you can easily write your own custom data backend that would return
+data as <code class="docutils literal notranslate"><span class="pre">polars</span></code> or <code class="docutils literal notranslate"><span class="pre">pyspark</span></code> dataframes.</p>
+<p>Gluepy is trying to strike the correct balance between being opinionated enough that steers data scientists
+towards best practices, while also allowing for configurability and extendability to ensure that AI Engineers have
+the ability to customize the behavior to deploy to their chosen technology stack and platform.</p>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="install.html" class="btn btn-neutral float-right" title="Quick install guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gluepy.
+      <span class="lastupdated">Last updated on Feb 17, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

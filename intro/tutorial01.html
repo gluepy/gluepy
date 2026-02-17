@@ -1,0 +1,212 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writing your first Gluepy app, part 1 &mdash; Gluepy 1.5.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1cd648e3"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Writing your first Gluepy app, part 2" href="tutorial02.html" />
+    <link rel="prev" title="Quick install guide" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Gluepy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Gluepy at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html">Quick install guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Writing your first Gluepy app, part 1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-project">Creating a Project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-module">Create a Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-our-module">Install our Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-our-first-dag">Run our first DAG</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial02.html">Writing your first Gluepy app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial03.html">Writing your first Gluepy app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial04.html">Writing your first Gluepy app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html">Contributing to Gluepy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Using Gluepy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/index.html">Gluepy internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Gluepy FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Gluepy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Getting started</a></li>
+      <li class="breadcrumb-item active">Writing your first Gluepy app, part 1</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/intro/tutorial01.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="writing-your-first-gluepy-app-part-1">
+<h1>Writing your first Gluepy app, part 1<a class="headerlink" href="#writing-your-first-gluepy-app-part-1" title="Link to this heading"></a></h1>
+<p>Let’s learn by writing a simple pipeline.</p>
+<p>Throughout this tutorial, we’ll walk you through how to setup a new Gluepy project
+and how to leverage the various expects of Gluepy by writing a simple forecasting training
+pipeline.</p>
+<p>We’ll assume that you already have <a class="reference internal" href="install.html"><span class="doc">Gluepy installed</span></a> already. You can tell if Gluepy is installed with the following
+execution in your terminal</p>
+<pre class="literal-block">&gt;&gt;&gt; import gluepy
+&gt;&gt;&gt; print(gluepy.VERSION)
+1.2</pre>
+<p>If Gluepy is installed, you should see the version of your installation. The version you have installed may
+be different from the version displayed above.</p>
+<section id="creating-a-project">
+<h2>Creating a Project<a class="headerlink" href="#creating-a-project" title="Link to this heading"></a></h2>
+<p>The first time you use Gluepy, you need to do some initial setup to get the
+structure and files of your project in place. This is what is referred to as a ‘Gluepy Project’
+and it includes a <a class="reference internal" href="../ref/cli.html#cli"><span class="std std-ref">CLI entrypoint</span></a>, a set of <a class="reference internal" href="../topics/configuration.html#topic-settings"><span class="std std-ref">Settings</span></a> and a set of Gluepy <a class="reference internal" href="../topics/modules.html"><span class="doc">modules</span></a>.</p>
+<p>To create your project, go to a new directory where you want to store your code and run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>gluepy-cli<span class="w"> </span>startproject<span class="w"> </span>demo
+Created<span class="w"> </span>project<span class="w"> </span><span class="s1">&#39;demo&#39;</span>
+</pre></div>
+</div>
+<p>This will create a <code class="docutils literal notranslate"><span class="pre">demo/</span></code> directory with the following structure:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">configs/</span></code>. The folder that contain all configurations in your application.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">context.yaml</span></code>. The default parameters that populate your <a class="reference internal" href="../ref/settings.html#context"><span class="std std-ref">Context</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">settings.py</span></code>. The application parameters that populate your <a class="reference internal" href="../ref/settings.html"><span class="doc">Settings</span></a>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">manage.py</span></code>. The entrypoint to your project and the <a class="reference internal" href="../ref/cli.html#cli"><span class="std std-ref">CLI</span></a> from where you will execute your commands.</p></li>
+</ul>
+<p>Next up, we want to create our first module that holds the logic of our application.</p>
+</section>
+<section id="create-a-module">
+<h2>Create a Module<a class="headerlink" href="#create-a-module" title="Link to this heading"></a></h2>
+<p>Up until now, you have only created the minimal configuration required by a Gluepy project. None of the files you created
+in the previous steps actually holds any business logic for your data pipelines.</p>
+<p>Let’s create our first <a class="reference internal" href="../topics/modules.html"><span class="doc">Module</span></a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>startmodule<span class="w"> </span>forecaster
+Created<span class="w"> </span>module<span class="w"> </span><span class="s1">&#39;forecaster&#39;</span>
+</pre></div>
+</div>
+<p>This will create a new <code class="docutils literal notranslate"><span class="pre">forecaster/</span></code> directory within your project that holds the initial files
+you will need for your Gluepy module in the following structure:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dags.py</span></code>. This is the module that holds all your <a class="reference internal" href="../ref/dags.html#dags"><span class="std std-ref">DAG</span></a> definitions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tasks.py</span></code>. This is the module that holds all your <a class="reference internal" href="../ref/dags.html#tasks"><span class="std std-ref">Task</span></a> definitions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">commands.py</span></code>. This is the module that holds all your custom <a class="reference internal" href="../ref/cli.html#cli"><span class="std std-ref">Gluepy Commands</span></a>.</p></li>
+</ul>
+<p>These files can be replaced with directories named <code class="docutils literal notranslate"><span class="pre">tasks/</span></code>, <code class="docutils literal notranslate"><span class="pre">commands/</span></code> and <code class="docutils literal notranslate"><span class="pre">dags/</span></code> if your module grows to consist of many
+classes and functions that you want to separate into different files.</p>
+</section>
+<section id="install-our-module">
+<h2>Install our Module<a class="headerlink" href="#install-our-module" title="Link to this heading"></a></h2>
+<p>To install and enable our module in our project, you need to go to the <code class="docutils literal notranslate"><span class="pre">configs/settings.py</span></code> file and add it to the <a class="reference internal" href="../ref/settings.html#std-setting-INSTALLED_MODULES"><code class="xref std std-setting docutils literal notranslate"><span class="pre">INSTALLED_MODULES</span></code></a>.</p>
+<p>This will automatically import all the DAGs, Tasks and Commands defined in your module and expose it through the <code class="docutils literal notranslate"><span class="pre">manage.py</span></code> <a class="reference internal" href="../ref/cli.html#cli"><span class="std std-ref">Gluepy Commands</span></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.py</span>
+<span class="n">INSTALLED_MODULES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;forecaster&quot;</span><span class="p">,</span> <span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="run-our-first-dag">
+<h2>Run our first DAG<a class="headerlink" href="#run-our-first-dag" title="Link to this heading"></a></h2>
+<p>Now that we have created our project named <code class="docutils literal notranslate"><span class="pre">demo</span></code>, added our first module named <code class="docutils literal notranslate"><span class="pre">forecaster</span></code> and activated it in our project,
+let’s ensure things are working correctly by running the <code class="docutils literal notranslate"><span class="pre">SampleDAG</span></code> defined to us by default in our <code class="docutils literal notranslate"><span class="pre">dags.py</span></code> file using the <a class="reference internal" href="../ref/cli.html#cli-dag"><span class="std std-ref">dag command</span></a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>sample
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:28:47,057<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Started<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;BootstrapTask&#39;</span>
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:28:47,057<span class="w"> </span>tasks<span class="w"> </span>-
+<span class="w">         </span>Run<span class="w"> </span>ID:<span class="w"> </span>c24ef3e4-d869-427b-905e-8672caa4cd54
+<span class="w">         </span>Run<span class="w"> </span>Folder:<span class="w"> </span>runs/2024/6/25/c24ef3e4-d869-427b-905e-8672caa4cd54
+
+DEBUG<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:28:47,058<span class="w"> </span><span class="nb">local</span><span class="w"> </span>-<span class="w"> </span>Writing<span class="w"> </span>file<span class="w"> </span>to<span class="w"> </span>path<span class="w"> </span><span class="s1">&#39;/demo/data/runs/2024/6/25/c24ef3e4-d869-427b-905e-8672caa4cd54/context.yaml&#39;</span>.
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:28:47,058<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Completed<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;BootstrapTask&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.001315<span class="w"> </span>seconds
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:28:47,058<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Started<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;SampleTask&#39;</span>
+INFO<span class="w"> </span><span class="m">2024</span>-06-25<span class="w"> </span><span class="m">12</span>:28:47,058<span class="w"> </span>dag<span class="w"> </span>-<span class="w"> </span>----------<span class="w"> </span>Completed<span class="w"> </span>task<span class="w"> </span><span class="s1">&#39;SampleTask&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.000001<span class="w"> </span>seconds
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-left" title="Quick install guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial02.html" class="btn btn-neutral float-right" title="Writing your first Gluepy app, part 2" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gluepy.
+      <span class="lastupdated">Last updated on Feb 17, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
