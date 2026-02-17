@@ -161,6 +161,45 @@ class CeleryTestCase(TestCase):
             self.assertEqual(signal_content.read(), "success")
             self.assertEqual(result["status"], "success")
 
+    def test_run_dag_task_reads_run_folder_after_run_dag(self):
+        """
+        Ensure run_folder is read from default_context AFTER run_dag()
+        completes, not before. This prevents a stale run_folder when
+        run_dag() sets up its own context (e.g. via retry path).
+        """
+        captured_func = self._create_app_and_capture_task()
+
+        pre_run_folder = "stale/pre/run_folder"
+        post_run_folder = "correct/post/run_folder"
+
+        mock_context = mock.MagicMock()
+        mock_context.gluepy.run_folder = pre_run_folder
+
+        def simulate_run_dag(*args, **kwargs):
+            # Simulate run_dag changing the context's run_folder
+            mock_context.gluepy.run_folder = post_run_folder
+
+        with mock.patch("gluepy.exec.boot.bootstrap"), mock.patch(
+            "gluepy.commands.dag.run_dag", side_effect=simulate_run_dag
+        ), mock.patch("gluepy.files.storages.default_storage") as mock_storage, mock.patch(
+            "gluepy.conf.default_context", mock_context
+        ):
+            result = captured_func(
+                None,
+                "test_label",
+                retry=None,
+                patch=None,
+                local_patch=None,
+                from_task=None,
+                task=None,
+            )
+
+            # Signal must use the POST-run_dag run_folder, not the stale one
+            signal_path = mock_storage.touch.call_args[0][0]
+            self.assertIn(post_run_folder, signal_path)
+            self.assertNotIn(pre_run_folder, signal_path)
+            self.assertEqual(result["run_folder"], post_run_folder)
+
     def test_run_dag_task_writes_failure_signal(self):
         captured_func = self._create_app_and_capture_task()
 
@@ -184,6 +223,45 @@ class CeleryTestCase(TestCase):
             signal_content = mock_storage.touch.call_args[0][1]
             self.assertTrue(signal_path.endswith(".dag_failed"))
             self.assertEqual(signal_content.read(), "task exploded")
+
+    def test_run_dag_task_reads_run_folder_after_run_dag_on_failure(self):
+        """
+        Ensure run_folder is read from default_context AFTER run_dag()
+        sets up context, even when run_dag() raises an exception.
+        """
+        captured_func = self._create_app_and_capture_task()
+
+        pre_run_folder = "stale/pre/run_folder"
+        post_run_folder = "correct/post/run_folder"
+
+        mock_context = mock.MagicMock()
+        mock_context.gluepy.run_folder = pre_run_folder
+
+        def simulate_run_dag_failure(*args, **kwargs):
+            # Simulate run_dag changing context before failing
+            mock_context.gluepy.run_folder = post_run_folder
+            raise RuntimeError("task exploded")
+
+        with mock.patch("gluepy.exec.boot.bootstrap"), mock.patch(
+            "gluepy.commands.dag.run_dag", side_effect=simulate_run_dag_failure
+        ), mock.patch("gluepy.files.storages.default_storage") as mock_storage, mock.patch(
+            "gluepy.conf.default_context", mock_context
+        ):
+            with self.assertRaises(RuntimeError):
+                captured_func(
+                    None,
+                    "test_label",
+                    retry=None,
+                    patch=None,
+                    local_patch=None,
+                    from_task=None,
+                    task=None,
+                )
+
+            # Signal must use the POST-run_dag run_folder, not the stale one
+            signal_path = mock_storage.touch.call_args[0][0]
+            self.assertIn(post_run_folder, signal_path)
+            self.assertNotIn(pre_run_folder, signal_path)
 
     def test_run_dag_task_reraises_on_failure(self):
         """

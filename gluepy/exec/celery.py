@@ -38,10 +38,6 @@ def create_celery_app():
 
         bootstrap()
 
-        from gluepy.conf import default_context
-
-        run_folder = default_context.gluepy.run_folder
-
         try:
             run_dag(
                 label,
@@ -54,6 +50,9 @@ def create_celery_app():
         except Exception as e:
             logger.error(f"DAG '{label}' failed: {e}", exc_info=True)
             try:
+                from gluepy.conf import default_context
+
+                run_folder = default_context.gluepy.run_folder
                 signal_path = os.path.join(run_folder, ".dag_failed")
                 default_storage.touch(signal_path, StringIO(str(e)))
                 logger.info(f"Wrote failure signal to {signal_path}")
@@ -63,6 +62,9 @@ def create_celery_app():
                 )
             raise
 
+        from gluepy.conf import default_context
+
+        run_folder = default_context.gluepy.run_folder
         signal_path = os.path.join(run_folder, ".dag_success")
         default_storage.touch(signal_path, StringIO("success"))
         logger.info(f"Wrote success signal to {signal_path}")
