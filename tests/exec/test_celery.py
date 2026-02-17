@@ -86,11 +86,14 @@ class CeleryTestCase(TestCase):
             kwargs={"label": "my_dag", "retry": "some/path"},
         )
 
-    def test_run_dag_task(self):
+    def _create_app_and_capture_task(self):
+        """
+        Helper to create celery app and capture the registered
+        run_dag_task function.
+        """
         mock_app = mock.Mock()
         self.mock_celery_module.Celery.return_value = mock_app
 
-        # Capture the decorated function
         captured_func = None
 
         def capture_task(**kwargs):
@@ -106,11 +109,15 @@ class CeleryTestCase(TestCase):
         from gluepy.exec.celery import create_celery_app
 
         create_celery_app()
+        return captured_func
+
+    def test_run_dag_task(self):
+        captured_func = self._create_app_and_capture_task()
         self.assertIsNotNone(captured_func)
 
         with mock.patch("gluepy.exec.boot.bootstrap") as mock_bootstrap, mock.patch(
             "gluepy.commands.dag.run_dag"
-        ) as mock_run_dag:
+        ) as mock_run_dag, mock.patch("gluepy.files.storages.default_storage") as _:
             captured_func(
                 None,
                 "test_label",
@@ -129,3 +136,73 @@ class CeleryTestCase(TestCase):
                 from_task=None,
                 task=None,
             )
+
+    def test_run_dag_task_writes_success_signal(self):
+        captured_func = self._create_app_and_capture_task()
+
+        with mock.patch("gluepy.exec.boot.bootstrap"), mock.patch(
+            "gluepy.commands.dag.run_dag"
+        ), mock.patch("gluepy.files.storages.default_storage") as mock_storage:
+            result = captured_func(
+                None,
+                "test_label",
+                retry=None,
+                patch=None,
+                local_patch=None,
+                from_task=None,
+                task=None,
+            )
+
+            # Verify .dag_success signal was written to the run folder
+            mock_storage.touch.assert_called_once()
+            signal_path = mock_storage.touch.call_args[0][0]
+            signal_content = mock_storage.touch.call_args[0][1]
+            self.assertTrue(signal_path.endswith(".dag_success"))
+            self.assertEqual(signal_content.read(), "success")
+            self.assertEqual(result["status"], "success")
+
+    def test_run_dag_task_writes_failure_signal(self):
+        captured_func = self._create_app_and_capture_task()
+
+        with mock.patch("gluepy.exec.boot.bootstrap"), mock.patch(
+            "gluepy.commands.dag.run_dag", side_effect=RuntimeError("task exploded")
+        ), mock.patch("gluepy.files.storages.default_storage") as mock_storage:
+            with self.assertRaises(RuntimeError):
+                captured_func(
+                    None,
+                    "test_label",
+                    retry=None,
+                    patch=None,
+                    local_patch=None,
+                    from_task=None,
+                    task=None,
+                )
+
+            # Verify .dag_failed signal was written with the error message
+            mock_storage.touch.assert_called_once()
+            signal_path = mock_storage.touch.call_args[0][0]
+            signal_content = mock_storage.touch.call_args[0][1]
+            self.assertTrue(signal_path.endswith(".dag_failed"))
+            self.assertEqual(signal_content.read(), "task exploded")
+
+    def test_run_dag_task_reraises_on_failure(self):
+        """
+        Ensure the original exception is re-raised after
+        writing the failure signal.
+        """
+        captured_func = self._create_app_and_capture_task()
+
+        with mock.patch("gluepy.exec.boot.bootstrap"), mock.patch(
+            "gluepy.commands.dag.run_dag", side_effect=ValueError("bad input")
+        ), mock.patch("gluepy.files.storages.default_storage"):
+            with self.assertRaises(ValueError) as cm:
+                captured_func(
+                    None,
+                    "test_label",
+                    retry=None,
+                    patch=None,
+                    local_patch=None,
+                    from_task=None,
+                    task=None,
+                )
+            self.assertEqual(str(cm.exception), "bad input")
