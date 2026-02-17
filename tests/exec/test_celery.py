@@ -37,6 +37,42 @@ class CeleryTestCase(TestCase):
         )
         self.assertEqual(app, mock_app)
 
+    def test_create_celery_app_forwards_celery_settings(self):
+        """Ensure CELERY_ prefixed settings are forwarded via config_from_object.
+
+        This verifies the fix for using dir()+getattr() instead of vars()
+        on the LazyProxy default_settings.
+        """
+        mock_app = mock.Mock()
+        self.mock_celery_module.Celery.return_value = mock_app
+        mock_app.task.return_value = lambda f: f
+
+        from gluepy.exec.celery import create_celery_app
+
+        # Add a custom CELERY_ setting to the test settings module
+        import settings as test_settings
+
+        test_settings.CELERY_TASK_SERIALIZER = "json"
+        try:
+            # Reset default_settings so it picks up the new attribute
+            from gluepy.conf import default_settings
+            from gluepy.utils.loading import empty
+
+            default_settings._wrapped = empty
+
+            create_celery_app()
+
+            # config_from_object should have been called with a dict
+            # containing our custom setting (but not BROKER_URL/RESULT_BACKEND)
+            mock_app.config_from_object.assert_called_once()
+            config = mock_app.config_from_object.call_args[0][0]
+            self.assertEqual(config["CELERY_TASK_SERIALIZER"], "json")
+            self.assertNotIn("CELERY_BROKER_URL", config)
+            self.assertNotIn("CELERY_RESULT_BACKEND", config)
+        finally:
+            # Clean up the test setting we added
+            del test_settings.CELERY_TASK_SERIALIZER
+
     def test_submit_dag(self):
         mock_app = mock.Mock()
         self.mock_celery_module.Celery.return_value = mock_app

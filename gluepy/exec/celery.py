@@ -9,11 +9,14 @@ def create_celery_app():
         broker=default_settings.CELERY_BROKER_URL,
         backend=getattr(default_settings, "CELERY_RESULT_BACKEND", None),
     )
-    # Apply any CELERY_ prefixed settings
+    # Apply any CELERY_ prefixed settings.
+    # Use dir() + getattr() instead of vars() because default_settings
+    # is a LazyProxy — vars() returns the proxy's __dict__, not the
+    # wrapped Settings object's attributes.
     app.config_from_object(
         {
-            k: v
-            for k, v in vars(default_settings).items()
+            k: getattr(default_settings, k)
+            for k in dir(default_settings)
             if k.startswith("CELERY_")
             and k not in ("CELERY_BROKER_URL", "CELERY_RESULT_BACKEND")
         }
