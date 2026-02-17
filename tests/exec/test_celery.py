@@ -181,7 +181,9 @@ class CeleryTestCase(TestCase):
 
         with mock.patch("gluepy.exec.boot.bootstrap"), mock.patch(
             "gluepy.commands.dag.run_dag", side_effect=simulate_run_dag
-        ), mock.patch("gluepy.files.storages.default_storage") as mock_storage, mock.patch(
+        ), mock.patch(
+            "gluepy.files.storages.default_storage"
+        ) as mock_storage, mock.patch(
             "gluepy.conf.default_context", mock_context
         ):
             result = captured_func(
@@ -244,7 +246,9 @@ class CeleryTestCase(TestCase):
 
         with mock.patch("gluepy.exec.boot.bootstrap"), mock.patch(
             "gluepy.commands.dag.run_dag", side_effect=simulate_run_dag_failure
-        ), mock.patch("gluepy.files.storages.default_storage") as mock_storage, mock.patch(
+        ), mock.patch(
+            "gluepy.files.storages.default_storage"
+        ) as mock_storage, mock.patch(
             "gluepy.conf.default_context", mock_context
         ):
             with self.assertRaises(RuntimeError):
