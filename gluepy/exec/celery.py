@@ -1,4 +1,10 @@
+import os
+import logging
+from io import StringIO
+
 from gluepy.conf import default_settings
+
+logger = logging.getLogger(__name__)
 
 
 def create_celery_app():
@@ -28,22 +34,43 @@ def create_celery_app():
     ):
         from gluepy.exec.boot import bootstrap
         from gluepy.commands.dag import run_dag
+        from gluepy.files.storages import default_storage
 
         bootstrap()
-        run_dag(
-            label,
-            retry=retry,
-            patch=patch,
-            local_patch=local_patch,
-            from_task=from_task,
-            task=task,
-        )
+
         from gluepy.conf import default_context
+
+        run_folder = default_context.gluepy.run_folder
+
+        try:
+            run_dag(
+                label,
+                retry=retry,
+                patch=patch,
+                local_patch=local_patch,
+                from_task=from_task,
+                task=task,
+            )
+        except Exception as e:
+            logger.error(f"DAG '{label}' failed: {e}", exc_info=True)
+            try:
+                signal_path = os.path.join(run_folder, ".dag_failed")
+                default_storage.touch(signal_path, StringIO(str(e)))
+                logger.info(f"Wrote failure signal to {signal_path}")
+            except Exception as signal_error:
+                logger.error(
+                    f"Failed to write failure signal: {signal_error}", exc_info=True
+                )
+            raise
+
+        signal_path = os.path.join(run_folder, ".dag_success")
+        default_storage.touch(signal_path, StringIO("success"))
+        logger.info(f"Wrote success signal to {signal_path}")
 
         return {
             "status": "success",
             "run_id": default_context.gluepy.run_id,
-            "run_folder": default_context.gluepy.run_folder,
+            "run_folder": run_folder,
         }
 
     return app
