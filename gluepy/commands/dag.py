@@ -23,9 +23,14 @@ logger = logging.getLogger(__name__)
 @click.option("--retry", type=str)
 @click.option("--skip-eval", is_flag=True, default=False, help="Skip evaluation tasks")
 @click.option(
-    "--eval-only", is_flag=True, default=False, help="Run only evaluation tasks (requires --retry)"
+    "--eval-only",
+    is_flag=True,
+    default=False,
+    help="Run only evaluation tasks (requires --retry)",
 )
-@click.option("--compare", type=str, multiple=True, help="Compare metrics across run folders")
+@click.option(
+    "--compare", type=str, multiple=True, help="Compare metrics across run folders"
+)
 @click.argument("label")
 def dag(
     label,
@@ -84,7 +89,9 @@ def run_dag(
     """
     DAG = _get_dag_by_label(label)
     assert not (from_task and task), "Only one of --from-task or --task can be set."
-    assert not (skip_eval and eval_only), "--skip-eval and --eval-only are mutually exclusive."
+    assert not (
+        skip_eval and eval_only
+    ), "--skip-eval and --eval-only are mutually exclusive."
     assert not (eval_only and not retry), "--eval-only requires --retry."
     retry = retry if retry is None else retry.strip(default_storage.separator)
 
