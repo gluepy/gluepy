@@ -34,6 +34,11 @@ All configuration is driven by a Python settings module, pointed to by the `GLUE
 
 See [references/settings.md](references/settings.md) for details.
 
+### Experiments
+Gluepy supports autonomous experimentation where an AI agent iteratively improves a DAG's work tasks while evaluation tasks remain frozen. Use `EvaluationTask` subclasses in `eval_tasks` to define metrics, then run `/experiment` to start the loop.
+
+See [references/experiments.md](references/experiments.md) for details.
+
 ## Quick Start
 
 ```python

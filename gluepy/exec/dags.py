@@ -24,6 +24,7 @@ class DAG:
     label = None
     extra_options = {}
     tasks = []
+    eval_tasks = []
 
     def __init__(self) -> None:
         self.label == self.label or self.__class__.__name__.lower()
@@ -37,14 +38,24 @@ class DAG:
             )
         REGISTRY[label] = cls
 
-    def inject_tasks(self) -> List[Task]:
+    def inject_tasks(self, skip_eval=False, eval_only=False) -> List[Task]:
         """Inject all tasks including :setting:`START_TASK` to the final
         list of executable tasks of this DAG.
+
+        Args:
+            skip_eval (bool): If True, exclude evaluation tasks.
+            eval_only (bool): If True, return only the start task and evaluation tasks.
 
         Returns:
             List[Task]: Full list of tasks of DAG.
         """
-        return [import_string(default_settings.START_TASK)] + self.tasks
+        start = [import_string(default_settings.START_TASK)]
+        if eval_only:
+            return start + list(self.eval_tasks)
+        work = start + list(self.tasks)
+        if skip_eval or not self.eval_tasks:
+            return work
+        return work + list(self.eval_tasks)
 
 
 REGISTRY = {}

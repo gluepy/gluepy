@@ -30,7 +30,15 @@ def create_celery_app():
 
     @app.task(name="gluepy.run_dag", bind=True)
     def run_dag_task(
-        self, label, retry=None, patch=None, local_patch=None, from_task=None, task=None
+        self,
+        label,
+        retry=None,
+        patch=None,
+        local_patch=None,
+        from_task=None,
+        task=None,
+        skip_eval=False,
+        eval_only=False,
     ):
         from gluepy.exec.boot import bootstrap
         from gluepy.commands.dag import run_dag
@@ -46,6 +54,8 @@ def create_celery_app():
                 local_patch=local_patch,
                 from_task=from_task,
                 task=task,
+                skip_eval=skip_eval,
+                eval_only=eval_only,
             )
         except Exception as e:
             logger.error(f"DAG '{label}' failed: {e}", exc_info=True)

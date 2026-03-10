@@ -9,5 +9,6 @@ Introductions to all the key parts of Gluepy you'll need to know:
 
    configuration
    dags
+   experiments
    data
    modules

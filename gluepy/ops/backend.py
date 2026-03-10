@@ -178,6 +178,17 @@ class BaseOpsBackend:
         """
         raise NotImplementedError
 
+    def get_metrics(self) -> Dict:
+        """Returns all metrics logged during the current run.
+
+        Returns:
+            Dict: Dictionary of metric key-value pairs.
+
+        Raises:
+            NotImplementedError: Method needs to be implemented by concrete class
+        """
+        raise NotImplementedError
+
 
 class LoggingOpsBackend(BaseOpsBackend):
     """Simple logging-based MLOps backend that logs operations to stdout.
@@ -187,6 +198,9 @@ class LoggingOpsBackend(BaseOpsBackend):
     debugging purposes.
     """
 
+    def __init__(self):
+        self._metrics: Dict = {}
+
     def create_run(
         self,
         dag: str,
@@ -195,6 +209,7 @@ class LoggingOpsBackend(BaseOpsBackend):
         username: Optional[str] = "AnonymousUser",
     ) -> str:
         """Creates a new run and logs its creation."""
+        self._metrics = {}
         if run_id is None:
             run_id = str(uuid.uuid4())
 
@@ -243,10 +258,15 @@ class LoggingOpsBackend(BaseOpsBackend):
         timestamp: Optional[datetime] = None,
     ) -> None:
         """Logs a metric by printing it to stdout."""
+        self._metrics[key] = value
         current_time = timestamp or datetime.now()
         logger.info(
             f"Logging metric at {current_time}:\n" f"Key: {key}\n" f"Value: {value}"
         )
+
+    def get_metrics(self) -> Dict:
+        """Returns all metrics logged during the current run."""
+        return dict(self._metrics)
 
     def log_param(
         self,
