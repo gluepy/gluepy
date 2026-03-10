@@ -62,8 +62,42 @@ class SkillCommandTestCase(TestCase):
             "dags.md",
             "settings.md",
             "data.md",
+            "experiments.md",
         ]:
             self.assertTrue(
                 os.path.exists(os.path.join(ref_dir, ref_file)),
                 f"Reference file '{ref_file}' not found",
             )
+
+    def test_skill_claude_creates_command(self):
+        runner = CliRunner()
+        result = runner.invoke(cli, ["skill", "claude"])
+        self.assertEqual(result.exit_code, 0)
+        self.assertTrue(
+            os.path.exists(os.path.join(".claude", "commands", "experiment.md"))
+        )
+
+    def test_skill_cursor_creates_command(self):
+        runner = CliRunner()
+        result = runner.invoke(cli, ["skill", "cursor"])
+        self.assertEqual(result.exit_code, 0)
+        self.assertTrue(
+            os.path.exists(os.path.join(".cursor", "commands", "experiment.md"))
+        )
+
+    def test_skill_github_does_not_create_command(self):
+        runner = CliRunner()
+        result = runner.invoke(cli, ["skill", "github"])
+        self.assertEqual(result.exit_code, 0)
+        self.assertFalse(
+            os.path.exists(os.path.join(".github", "commands", "experiment.md"))
+        )
+
+    def test_skill_does_not_copy_commands_dir_to_skills(self):
+        """Ensure the commands/ subdir is not copied into the skills directory."""
+        runner = CliRunner()
+        result = runner.invoke(cli, ["skill", "claude"])
+        self.assertEqual(result.exit_code, 0)
+        self.assertFalse(
+            os.path.exists(os.path.join(".claude", "skills", "gluepy", "commands"))
+        )

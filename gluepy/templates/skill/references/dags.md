@@ -82,3 +82,38 @@ class ConsumeTask(Task):
 ```
 
 Files written without `root=True` are stored relative to the current run folder, keeping runs isolated.
+
+## Evaluation Tasks (eval_tasks)
+
+DAGs can have an `eval_tasks` list for evaluation steps that run after work tasks:
+
+```python
+from gluepy.exec import DAG, EvaluationTask
+from gluepy.ops import default_mlops
+
+class ComputeMetricsTask(EvaluationTask):
+    """Computes accuracy metrics.
+
+    Metrics:
+        mape (float): Mean Absolute Percentage Error. Lower is better.
+    """
+    label = "compute_metrics"
+
+    def run(self):
+        # ... compute metrics ...
+        default_mlops.log_metric("mape", mape_value)
+
+class MyDAG(DAG):
+    label = "my_dag"
+    tasks = [WorkTaskA, WorkTaskB]
+    eval_tasks = [ComputeMetricsTask]
+```
+
+`EvaluationTask` subclasses must call `default_mlops.log_metric()` and document metrics in their docstring.
+
+CLI flags for evaluation:
+- `--skip-eval`: Skip evaluation tasks
+- `--eval-only --retry <run_folder>`: Run only evaluation tasks on an existing run
+- `--compare <folder1> <folder2>`: Compare metrics across runs
+
+See [references/experiments.md](references/experiments.md) for the full experiment workflow.

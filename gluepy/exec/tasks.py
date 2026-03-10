@@ -64,3 +64,15 @@ class BootstrapTask(Task):
             default_storage.runpath("context.yaml"),
             StringIO(yaml.dump(default_context.to_dict())),
         )
+
+
+class EvaluationTask(Task):
+    """Base class for evaluation tasks.
+
+    Subclasses must implement run() and call default_mlops.log_metric()
+    for each metric they compute. Document metrics and their significance
+    in the class docstring so that agents and developers can understand
+    what is being measured and what "improvement" means.
+    """
+
+    pass

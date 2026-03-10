@@ -1,5 +1,7 @@
 import os
+import json
 import logging
+from io import StringIO
 from pathlib import Path
 from typing import List, Optional
 import time
@@ -19,6 +21,16 @@ logger = logging.getLogger(__name__)
 @click.option("--patch", "-p", type=str, multiple=True)
 @click.option("--local-patch", "-lp", type=str, multiple=True)
 @click.option("--retry", type=str)
+@click.option("--skip-eval", is_flag=True, default=False, help="Skip evaluation tasks")
+@click.option(
+    "--eval-only",
+    is_flag=True,
+    default=False,
+    help="Run only evaluation tasks (requires --retry)",
+)
+@click.option(
+    "--compare", type=str, multiple=True, help="Compare metrics across run folders"
+)
 @click.argument("label")
 def dag(
     label,
@@ -27,9 +39,22 @@ def dag(
     local_patch: Optional[List[str]] = None,
     from_task: Optional[str] = None,
     task: Optional[str] = None,
+    skip_eval: bool = False,
+    eval_only: bool = False,
+    compare: Optional[tuple] = None,
 ):
     """Wrapper around run_dag function to expose to CLI"""
-    run_dag(label, retry, patch, from_task, task, local_patch=local_patch)
+    run_dag(
+        label,
+        retry,
+        patch,
+        from_task,
+        task,
+        local_patch=local_patch,
+        skip_eval=skip_eval,
+        eval_only=eval_only,
+        compare=compare,
+    )
 
 
 def run_dag(
@@ -39,6 +64,9 @@ def run_dag(
     from_task: Optional[str] = None,
     task: Optional[str] = None,
     local_patch: Optional[List[str]] = None,
+    skip_eval: bool = False,
+    eval_only: bool = False,
+    compare: Optional[tuple] = None,
 ):
     """Command to run a DAG by its label.
 
@@ -54,11 +82,22 @@ def run_dag(
             single task in DAG. Defaults to None.
         local_patch (Optional[List[str]], optional): Path to local patch YAML files
             to override context with. Defaults to None.
+        skip_eval (bool): If True, skip evaluation tasks.
+        eval_only (bool): If True, run only evaluation tasks (requires retry).
+        compare (Optional[tuple]): Run folders to compare metrics across.
 
     """
     DAG = _get_dag_by_label(label)
     assert not (from_task and task), "Only one of --from-task or --task can be set."
+    assert not (
+        skip_eval and eval_only
+    ), "--skip-eval and --eval-only are mutually exclusive."
+    assert not (eval_only and not retry), "--eval-only requires --retry."
     retry = retry if retry is None else retry.strip(default_storage.separator)
+
+    if compare:
+        _compare_runs(label, list(compare))
+        return
 
     local_patch_dicts = []
     if local_patch:
@@ -92,7 +131,8 @@ def run_dag(
             evaluate_lazy=True,
         )
 
-    tasks = DAG().inject_tasks()
+    dag_instance = DAG()
+    tasks = dag_instance.inject_tasks(skip_eval=skip_eval, eval_only=eval_only)
 
     if task:
         tasks = [_get_task_by_label(task)]
@@ -118,6 +158,47 @@ def run_dag(
             f"---------- Completed task '{t.__name__}' in "
             f"{'{:f}'.format(time_end-time_start)} seconds"
         )
+
+    if (not skip_eval and dag_instance.eval_tasks) or eval_only:
+        metrics = default_mlops.get_metrics()
+        if metrics:
+            print("=== GLUEPY METRICS ===")
+            for key, value in metrics.items():
+                print(f"metric:{key}={value}")
+            print("=== END METRICS ===")
+            default_storage.touch(
+                default_storage.runpath("metrics.json"),
+                StringIO(json.dumps(metrics, indent=2)),
+            )
+
+
+def _compare_runs(label, run_folders):
+    """Compare metrics across multiple run folders."""
+    all_metrics = {}
+    all_keys = set()
+    for folder in run_folders:
+        folder = folder.strip(default_storage.separator)
+        metrics_path = os.path.join(folder, "metrics.json")
+        if default_storage.exists(metrics_path):
+            content = default_storage.open(metrics_path, mode="r")
+            metrics = json.loads(content)
+            all_metrics[folder] = metrics
+            all_keys.update(metrics.keys())
+        else:
+            logger.warning(f"No metrics.json found in '{folder}'")
+            all_metrics[folder] = {}
+
+    if not all_keys:
+        print("No metrics found in any of the specified run folders.")
+        return
+
+    sorted_keys = sorted(all_keys)
+    header = "run_folder\t" + "\t".join(sorted_keys)
+    print(header)
+    for folder in run_folders:
+        folder = folder.strip(default_storage.separator)
+        values = [str(all_metrics[folder].get(k, "N/A")) for k in sorted_keys]
+        print(f"{folder}\t" + "\t".join(values))
 
 
 def _get_dag_by_label(label):

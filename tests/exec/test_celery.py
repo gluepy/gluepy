@@ -135,6 +135,8 @@ class CeleryTestCase(TestCase):
                 local_patch=None,
                 from_task=None,
                 task=None,
+                skip_eval=False,
+                eval_only=False,
             )
 
     def test_run_dag_task_writes_success_signal(self):
