@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experiments &mdash; Gluepy 1.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=34bb78ad" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=72d88caf"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data" href="data.html" />
+    <link rel="prev" title="DAGs" href="dags.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Gluepy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Using Gluepy</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dags.html">DAGs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Experiments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-eval-tasks-to-a-dag">Adding eval_tasks to a DAG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-evaluationtask-subclasses">Writing EvaluationTask Subclasses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cli-flags">CLI Flags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#structured-metrics-output">Structured Metrics Output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-experiments-with-claude-code">Running Experiments with Claude Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-frozen-paths">Customizing Frozen Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interpreting-experiment-log-tsv">Interpreting experiment_log.tsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tips-for-writing-dags-that-experiment-well">Tips for Writing DAGs That Experiment Well</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/index.html">Gluepy internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Gluepy FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Gluepy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Using Gluepy</a></li>
+      <li class="breadcrumb-item active">Experiments</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/topics/experiments.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="experiments">
+<h1>Experiments<a class="headerlink" href="#experiments" title="Link to this heading"></a></h1>
+<p>Gluepy supports autonomous, long-running experimentation where an AI coding agent iteratively improves a DAG’s work tasks while evaluation tasks remain frozen. This ensures all improvements are genuine and metrics cannot be gamed.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The experiment system adds three concepts to Gluepy:</p>
+<ol class="arabic simple">
+<li><p><strong>EvaluationTask</strong> – a <code class="docutils literal notranslate"><span class="pre">Task</span></code> subclass for evaluation steps that must remain untouched during experiments.</p></li>
+<li><p><strong>eval_tasks</strong> – a new attribute on <code class="docutils literal notranslate"><span class="pre">DAG</span></code> that separates evaluation from work.</p></li>
+<li><p><strong>Structured metrics output</strong> – a machine-readable block printed after evaluation, enabling agents to parse results.</p></li>
+</ol>
+<p>An AI agent (Claude Code, Cursor, etc.) drives the experiment loop: it modifies work task code, runs the DAG, reads the metrics, and decides whether to keep or revert changes.</p>
+</section>
+<section id="adding-eval-tasks-to-a-dag">
+<h2>Adding eval_tasks to a DAG<a class="headerlink" href="#adding-eval-tasks-to-a-dag" title="Link to this heading"></a></h2>
+<p>Add an <code class="docutils literal notranslate"><span class="pre">eval_tasks</span></code> list to your DAG alongside the existing <code class="docutils literal notranslate"><span class="pre">tasks</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.exec</span><span class="w"> </span><span class="kn">import</span> <span class="n">DAG</span><span class="p">,</span> <span class="n">EvaluationTask</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gluepy.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_mlops</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.tasks</span><span class="w"> </span><span class="kn">import</span> <span class="n">PrepareDataTask</span><span class="p">,</span> <span class="n">TrainModelTask</span><span class="p">,</span> <span class="n">PredictTask</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ComputeAccuracyTask</span><span class="p">(</span><span class="n">EvaluationTask</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes forecast accuracy metrics.</span>
+
+<span class="sd">    Metrics:</span>
+<span class="sd">        forecast_mape (float): Mean Absolute Percentage Error.</span>
+<span class="sd">            Primary measure of forecast accuracy. Lower is better.</span>
+<span class="sd">        forecast_bias (float): Systematic directional error.</span>
+<span class="sd">            Closer to 0.0 is better.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;compute_accuracy&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># ... compute metrics ...</span>
+        <span class="n">default_mlops</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;forecast_mape&quot;</span><span class="p">,</span> <span class="n">mape_score</span><span class="p">)</span>
+        <span class="n">default_mlops</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;forecast_bias&quot;</span><span class="p">,</span> <span class="n">mean_bias</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ForecastDAG</span><span class="p">(</span><span class="n">DAG</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;forecast&quot;</span>
+    <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">PrepareDataTask</span><span class="p">,</span> <span class="n">TrainModelTask</span><span class="p">,</span> <span class="n">PredictTask</span><span class="p">]</span>
+    <span class="n">eval_tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">ComputeAccuracyTask</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">eval_tasks</span></code> is omitted, the DAG behaves exactly as before – fully backward compatible.</p>
+</section>
+<section id="writing-evaluationtask-subclasses">
+<h2>Writing EvaluationTask Subclasses<a class="headerlink" href="#writing-evaluationtask-subclasses" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">EvaluationTask</span></code> is a subclass of <code class="docutils literal notranslate"><span class="pre">Task</span></code>. The key contract is:</p>
+<ol class="arabic simple">
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">default_mlops.log_metric(key,</span> <span class="pre">value)</span></code> for every metric computed.</p></li>
+<li><p>Document metrics and their significance in the class docstring.</p></li>
+<li><p>The agent reads docstrings to understand what “improvement” means – no explicit <code class="docutils literal notranslate"><span class="pre">primary_metric</span></code> tagging needed.</p></li>
+</ol>
+<p>Write descriptive docstrings that explain:</p>
+<ul class="simple">
+<li><p>What each metric measures</p></li>
+<li><p>What direction is “better” (lower/higher/closer to a target)</p></li>
+<li><p>How metrics relate to each other</p></li>
+<li><p>Any hard constraints (e.g., “must be 1.0”)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ValidateOutputTask</span><span class="p">(</span><span class="n">EvaluationTask</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validates ETL output correctness.</span>
+
+<span class="sd">    Metrics:</span>
+<span class="sd">        row_count_match (float): 1.0 if output row count matches</span>
+<span class="sd">            expected, 0.0 otherwise. Must be 1.0.</span>
+<span class="sd">        processing_time_seconds (float): Wall-clock time for the</span>
+<span class="sd">            pipeline. Lower is better.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;validate_output&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># ... validation logic ...</span>
+        <span class="n">default_mlops</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;row_count_match&quot;</span><span class="p">,</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">valid</span> <span class="k">else</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">default_mlops</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;processing_time_seconds&quot;</span><span class="p">,</span> <span class="n">elapsed</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="cli-flags">
+<h2>CLI Flags<a class="headerlink" href="#cli-flags" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">dag</span></code> command supports several flags for evaluation control:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run work tasks + evaluation tasks (default)</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>forecast
+
+<span class="c1"># Skip evaluation tasks</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>forecast<span class="w"> </span>--skip-eval
+
+<span class="c1"># Run only evaluation tasks on an existing run</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>forecast<span class="w"> </span>--eval-only<span class="w"> </span>--retry<span class="w"> </span>&lt;run_folder&gt;
+
+<span class="c1"># Compare metrics across runs</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>dag<span class="w"> </span>forecast<span class="w"> </span>--compare<span class="w"> </span>&lt;run_folder_1&gt;<span class="w"> </span>&lt;run_folder_2&gt;
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">--eval-only</span></code> requires <code class="docutils literal notranslate"><span class="pre">--retry</span></code> because evaluation tasks need an existing run’s output to evaluate.</p>
+<p><code class="docutils literal notranslate"><span class="pre">--skip-eval</span></code> and <code class="docutils literal notranslate"><span class="pre">--eval-only</span></code> are mutually exclusive.</p>
+<p><code class="docutils literal notranslate"><span class="pre">--compare</span></code> reads <code class="docutils literal notranslate"><span class="pre">metrics.json</span></code> from each run folder and prints a TSV table for easy comparison.</p>
+</section>
+<section id="structured-metrics-output">
+<h2>Structured Metrics Output<a class="headerlink" href="#structured-metrics-output" title="Link to this heading"></a></h2>
+<p>After evaluation tasks run, the DAG runner prints a machine-readable block to stdout:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>=== GLUEPY METRICS ===
+metric:forecast_mape=12.5
+metric:forecast_bias=-0.03
+=== END METRICS ===
+</pre></div>
+</div>
+<p>This uses <code class="docutils literal notranslate"><span class="pre">print()</span></code> (not <code class="docutils literal notranslate"><span class="pre">logger.info()</span></code>) so agents can reliably extract metrics with <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">&quot;^metric:&quot;</span></code> regardless of logging configuration.</p>
+<p>Metrics are also persisted to <code class="docutils literal notranslate"><span class="pre">metrics.json</span></code> in the run folder for programmatic access and the <code class="docutils literal notranslate"><span class="pre">--compare</span></code> feature.</p>
+</section>
+<section id="running-experiments-with-claude-code">
+<h2>Running Experiments with Claude Code<a class="headerlink" href="#running-experiments-with-claude-code" title="Link to this heading"></a></h2>
+<p>After installing the skill (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">skill</span> <span class="pre">claude</span></code>), use the <code class="docutils literal notranslate"><span class="pre">/experiment</span></code> command:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>/experiment forecast &quot;improve the MAPE score&quot;
+</pre></div>
+</div>
+<p>The agent will:</p>
+<ol class="arabic simple">
+<li><p>Verify git is available and the project is a git repository</p></li>
+<li><p>Run a setup checklist with you (frozen paths, baseline metrics)</p></li>
+<li><p>Create an experiment branch</p></li>
+<li><p>Enter an autonomous loop: modify code, run DAG, evaluate, keep/revert</p></li>
+</ol>
+<p>For Cursor users, run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">skill</span> <span class="pre">cursor</span></code> and use the same <code class="docutils literal notranslate"><span class="pre">/experiment</span></code> command.</p>
+</section>
+<section id="customizing-frozen-paths">
+<h2>Customizing Frozen Paths<a class="headerlink" href="#customizing-frozen-paths" title="Link to this heading"></a></h2>
+<p>During setup, the agent agrees with you on which paths are frozen (cannot be modified). The defaults are:</p>
+<ul class="simple">
+<li><p>Evaluation task modules (files containing <code class="docutils literal notranslate"><span class="pre">EvaluationTask</span></code> subclasses)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setup.py</span></code>, <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Dockerfile*</span></code>, <code class="docutils literal notranslate"><span class="pre">.dockerignore</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.github/workflows/</span></code></p></li>
+</ul>
+<p>Everything else is fair game, including configs, dependencies, tests, and DAG definitions.</p>
+</section>
+<section id="interpreting-experiment-log-tsv">
+<h2>Interpreting experiment_log.tsv<a class="headerlink" href="#interpreting-experiment-log-tsv" title="Link to this heading"></a></h2>
+<p>The experiment log tracks all experiments as a TSV file:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>experiment_id</p></td>
+<td><p>Sequential integer</p></td>
+</tr>
+<tr class="row-odd"><td><p>timestamp</p></td>
+<td><p>ISO 8601 timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>run_id</p></td>
+<td><p>Gluepy run ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>metrics</p></td>
+<td><p>All metrics as semicolon-separated key=value pairs</p></td>
+</tr>
+<tr class="row-even"><td><p>status</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">keep</span></code>, <code class="docutils literal notranslate"><span class="pre">discard</span></code>, <code class="docutils literal notranslate"><span class="pre">crash</span></code>, or <code class="docutils literal notranslate"><span class="pre">timeout</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>description</p></td>
+<td><p>What was changed</p></td>
+</tr>
+<tr class="row-even"><td><p>commit</p></td>
+<td><p>Git commit hash</p></td>
+</tr>
+<tr class="row-odd"><td><p>duration_seconds</p></td>
+<td><p>Wall-clock time for the run</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tips-for-writing-dags-that-experiment-well">
+<h2>Tips for Writing DAGs That Experiment Well<a class="headerlink" href="#tips-for-writing-dags-that-experiment-well" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Clear metric docstrings</strong>: The agent’s decision quality depends on understanding what metrics mean.</p></li>
+<li><p><strong>Fast execution</strong>: Shorter DAG runs mean more experiments per hour. Consider using data subsets during experimentation.</p></li>
+<li><p><strong>Deterministic evaluation</strong>: Non-deterministic evaluations add noise. Average over multiple samples if needed.</p></li>
+<li><p><strong>Modular work tasks</strong>: Smaller, focused tasks are easier for the agent to modify without breaking things.</p></li>
+<li><p><strong>Good defaults</strong>: Start with reasonable hyperparameters so the agent has a solid baseline to improve from.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dags.html" class="btn btn-neutral float-left" title="DAGs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="data.html" class="btn btn-neutral float-right" title="Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Gluepy.
+      <span class="lastupdated">Last updated on Mar 10, 2026.
+      </span></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
